@@ -1,0 +1,13 @@
+# Cloudflare Workers — static assets deploy for usefulwords.forhuman.ca.
+#
+# No Worker script. The "assets" directive tells Cloudflare to serve the
+# contents of ./public directly from the edge, with /404.html returned
+# for any missing route.
+
+name = "usefulwords"
+compatibility_date = "2026-06-01"
+
+[assets]
+directory = "./public"
+not_found_handling = "404-page"
+html_handling = "auto-trailing-slash"

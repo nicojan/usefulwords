@@ -1,0 +1,13 @@
+# System
+.DS_Store
+Thumbs.db
+*~
+
+# Editor / agent
+.claude/
+.vscode/
+.idea/
+
+# Node (only if wrangler ever pulls deps locally)
+node_modules/
+.wrangler/
