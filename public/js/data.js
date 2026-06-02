@@ -51,7 +51,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Japan's ageing demographic poses serious challenges for its pension system.", zh: "日本日益高齡化的人口結構對其退休金制度構成嚴峻挑戰。" }
               ],
-              seeAlso: ["generation", "workforce"]
+              seeAlso: ["generation", "workforce"],
+              tags: ["work-economy"]
             },
             {
               id: "hierarchy",
@@ -63,7 +64,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Traditional workplace hierarchies are gradually giving way to flatter, more collaborative structures.", zh: "傳統的職場階級制度正逐漸讓位於更扁平、更具協作性的組織結構。" }
               ],
-              seeAlso: ["tradition", "workforce"]
+              seeAlso: ["tradition", "workforce"],
+              tags: ["work-economy"]
             },
             {
               id: "tradition",
@@ -87,7 +89,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Education remains one of the most effective ways to dismantle long-standing prejudice.", zh: "教育仍是消除長期積累的偏見最有效的途徑之一。" }
               ],
-              seeAlso: ["discriminatory", "marginalized"]
+              seeAlso: ["discriminatory", "marginalized"],
+              tags: ["education-learning"]
             },
             {
               id: "integration",
@@ -201,7 +204,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Mental health issues are far more prevalent among adolescents than they were a decade ago.", zh: "青少年的心理健康問題比十年前要普遍得多。" }
               ],
-              seeAlso: ["ubiquitous", "pervasive"]
+              seeAlso: ["ubiquitous", "pervasive"],
+              tags: ["health-lifestyle"]
             },
             {
               id: "discriminatory",
@@ -267,7 +271,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Rural regions continue to urbanize as young people move to cities in search of work.", zh: "隨著年輕人為了工作機會而遷往城市，鄉村地區持續走向都市化。" }
               ],
-              seeAlso: ["urbanized", "demographic"]
+              seeAlso: ["urbanized", "demographic"],
+              tags: ["environment", "work-economy"]
             },
             {
               id: "embrace",
@@ -355,7 +360,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Digital literacy is now considered as essential as reading and writing.", zh: "數位素養如今被視為與讀寫能力同等重要。" }
               ],
-              seeAlso: ["accessible", "educate"]
+              seeAlso: ["accessible", "educate"],
+              tags: ["society-culture", "technology-media"]
             },
             {
               id: "expertise",
@@ -367,7 +373,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Real expertise is built through years of deliberate practice, not weekend workshops.", zh: "真正的專業是靠多年的刻意練習累積而來，而非靠週末的工作坊。" }
               ],
-              seeAlso: ["qualification", "scholarly"]
+              seeAlso: ["qualification", "scholarly"],
+              tags: ["work-economy"]
             },
             {
               id: "qualification",
@@ -379,7 +386,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Employers increasingly value practical experience alongside formal qualifications.", zh: "雇主越來越重視實務經驗，而不只是看重正式學歷。" }
               ],
-              seeAlso: ["expertise", "vocational"]
+              seeAlso: ["expertise", "vocational"],
+              tags: ["work-economy"]
             },
             {
               id: "discipline",
@@ -481,7 +489,8 @@ window.UW_DATA = {
               examples: [
                 { en: "An inclusive classroom benefits every student, not only those with special needs.", zh: "包容性的課堂讓每一位學生受益，而不僅是有特殊需求的學生。" }
               ],
-              seeAlso: ["accessible", "integration"]
+              seeAlso: ["accessible", "integration"],
+              tags: ["society-culture"]
             },
             {
               id: "competitive",
@@ -505,7 +514,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Germany's vocational training system is widely admired for its links to industry.", zh: "德國的職業訓練體系因其與產業界的緊密連結而廣受推崇。" }
               ],
-              seeAlso: ["qualification", "skilled"]
+              seeAlso: ["qualification", "skilled"],
+              tags: ["work-economy"]
             },
             {
               id: "formative",
@@ -583,7 +593,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Universities must equip graduates with skills that machines cannot easily replicate.", zh: "大學必須讓畢業生具備機器難以輕易取代的能力。" }
               ],
-              seeAlso: ["educate", "skilled"]
+              seeAlso: ["educate", "skilled"],
+              tags: ["work-economy", "technology-media"]
             },
             {
               id: "mentor-v",
@@ -683,7 +694,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Cutting transport emissions is critical to meeting national climate targets.", zh: "削減交通運輸的排放對於達成國家氣候目標至關重要。" }
               ],
-              seeAlso: ["pollution", "mitigate"]
+              seeAlso: ["pollution", "mitigate"],
+              tags: ["work-economy"]
             },
             {
               id: "sustainability",
@@ -732,7 +744,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Air pollution shortens life expectancy in many of the world's largest cities.", zh: "空氣污染縮短了世界上許多大城市居民的預期壽命。" }
               ],
-              seeAlso: ["emissions", "toxic"]
+              seeAlso: ["emissions", "toxic"],
+              tags: ["health-lifestyle"]
             },
             {
               id: "habitat",
@@ -775,7 +788,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Renewable energy now accounts for nearly a third of the country's electricity supply.", zh: "再生能源目前已佔該國電力供應的近三分之一。" }
               ],
-              seeAlso: ["sustainable", "finite"]
+              seeAlso: ["sustainable", "finite"],
+              tags: ["work-economy"]
             },
             {
               id: "finite",
@@ -787,7 +801,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Fossil fuels are a finite resource, and the world has known this for decades.", zh: "化石燃料是有限的資源，全世界對此已知曉數十年。" }
               ],
-              seeAlso: ["depleted", "renewable"]
+              seeAlso: ["depleted", "renewable"],
+              tags: ["work-economy"]
             },
             {
               id: "biodegradable",
@@ -811,7 +826,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Hazardous waste must be transported and disposed of under strict regulation.", zh: "有害廢棄物的運輸與處置必須受到嚴格規範。" }
               ],
-              seeAlso: ["toxic", "pollution"]
+              seeAlso: ["toxic", "pollution"],
+              tags: ["health-lifestyle"]
             },
             {
               id: "pristine",
@@ -847,7 +863,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Toxic chemicals from the factory have seeped into the local groundwater.", zh: "工廠排放的有毒化學物質已滲入當地的地下水。" }
               ],
-              seeAlso: ["hazardous", "pollution"]
+              seeAlso: ["hazardous", "pollution"],
+              tags: ["health-lifestyle"]
             }
           ]
         },
@@ -913,7 +930,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Factories that pollute the river should be fined far more heavily than they currently are.", zh: "污染河流的工廠所受到的罰款，應遠高於目前的水準。" }
               ],
-              seeAlso: ["pollution", "toxic"]
+              seeAlso: ["pollution", "toxic"],
+              tags: ["work-economy"]
             },
             {
               id: "regenerate",
@@ -990,7 +1008,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Mass surveillance raises serious questions about the limits of state power.", zh: "大規模監控引發了關於國家權力界限的嚴肅問題。" }
               ],
-              seeAlso: ["privacy", "pervasive"]
+              seeAlso: ["privacy", "pervasive"],
+              tags: ["society-culture"]
             },
             {
               id: "innovation",
@@ -1002,7 +1021,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Genuine innovation rarely happens in isolation; it builds on what came before.", zh: "真正的創新很少是憑空出現的；它總是建立在前人的成果之上。" }
               ],
-              seeAlso: ["innovate", "disruptive"]
+              seeAlso: ["innovate", "disruptive"],
+              tags: ["work-economy"]
             },
             {
               id: "platform",
@@ -1014,7 +1034,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Social media platforms wield enormous influence over public discourse.", zh: "社群平台對公共輿論發揮著巨大的影響力。" }
               ],
-              seeAlso: ["algorithm", "misinformation"]
+              seeAlso: ["algorithm", "misinformation"],
+              tags: ["society-culture"]
             },
             {
               id: "algorithm",
@@ -1051,7 +1072,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Many users surrender their privacy in exchange for free online services.", zh: "許多使用者為了免費的線上服務而放棄了自己的隱私。" }
               ],
-              seeAlso: ["surveillance", "platform"]
+              seeAlso: ["surveillance", "platform"],
+              tags: ["society-culture"]
             },
             {
               id: "misinformation",
@@ -1063,7 +1085,8 @@ window.UW_DATA = {
               examples: [
                 { en: "The rapid spread of misinformation online has eroded trust in mainstream media.", zh: "網路上錯誤訊息的快速傳播削弱了大眾對主流媒體的信任。" }
               ],
-              seeAlso: ["platform", "circulate"]
+              seeAlso: ["platform", "circulate"],
+              tags: ["society-culture"]
             }
           ]
         },
@@ -1105,7 +1128,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Skills that were prized a decade ago can become obsolete in just a few years.", zh: "十年前備受重視的技能，如今可能僅在數年內便已過時。" }
               ],
-              seeAlso: ["redundant", "displace"]
+              seeAlso: ["redundant", "displace"],
+              tags: ["work-economy"]
             },
             {
               id: "sophisticated",
@@ -1129,7 +1153,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Ride-hailing apps proved disruptive to the taxi industry within just a few years.", zh: "叫車應用程式在短短數年內便顛覆了傳統計程車產業。" }
               ],
-              seeAlso: ["innovation", "displace"]
+              seeAlso: ["innovation", "displace"],
+              tags: ["work-economy"]
             },
             {
               id: "pervasive",
@@ -1153,7 +1178,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Designers openly admit that many social platforms are engineered to be addictive.", zh: "設計師們公開承認，許多社群平台正是被刻意設計成令人上癮。" }
               ],
-              seeAlso: ["platform", "algorithm"]
+              seeAlso: ["platform", "algorithm"],
+              tags: ["health-lifestyle"]
             },
             {
               id: "biased",
@@ -1165,7 +1191,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Studies have found that hiring algorithms can be just as biased as the humans who designed them.", zh: "研究發現，僱用演算法可能與設計它的人類一樣帶有偏見。" }
               ],
-              seeAlso: ["algorithm", "discriminatory"]
+              seeAlso: ["algorithm", "discriminatory"],
+              tags: ["society-culture", "work-economy"]
             }
           ]
         },
@@ -1208,7 +1235,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Streaming services have largely displaced traditional cable subscriptions in younger households.", zh: "在年輕家庭中，串流服務已大致取代了傳統的有線電視訂閱。" }
               ],
-              seeAlso: ["obsolete", "disruptive"]
+              seeAlso: ["obsolete", "disruptive"],
+              tags: ["work-economy"]
             },
             {
               id: "innovate",
@@ -1268,7 +1296,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Authoritarian regimes routinely censor news that contradicts the official narrative.", zh: "威權政權慣於審查任何與官方說法相左的新聞。" }
               ],
-              seeAlso: ["surveillance", "platform"]
+              seeAlso: ["surveillance", "platform"],
+              tags: ["society-culture"]
             }
           ]
         }
@@ -1309,7 +1338,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Researchers attribute Okinawan longevity to diet, community, and a strong sense of purpose.", zh: "研究人員將沖繩居民的長壽歸因於飲食、社群連結與強烈的人生目標感。" }
               ],
-              seeAlso: ["nutrition", "wellbeing"]
+              seeAlso: ["nutrition", "wellbeing"],
+              tags: ["society-culture"]
             },
             {
               id: "epidemic",
@@ -1346,7 +1376,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Childhood obesity has more than tripled in many developed countries since the 1980s.", zh: "自一九八〇年代以來，許多已開發國家的兒童肥胖率已增加了三倍以上。" }
               ],
-              seeAlso: ["sedentary", "prevention"]
+              seeAlso: ["sedentary", "prevention"],
+              tags: ["society-culture"]
             },
             {
               id: "prevention",
@@ -1358,7 +1389,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Investment in prevention often costs far less than treating illness after it appears.", zh: "投資於預防的成本，往往遠低於疾病出現後的治療費用。" }
               ],
-              seeAlso: ["prevent", "preventable"]
+              seeAlso: ["prevent", "preventable"],
+              tags: ["work-economy"]
             },
             {
               id: "stress",
@@ -1370,7 +1402,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Chronic stress has been linked to heart disease, depression, and weakened immunity.", zh: "長期壓力已被證實與心臟病、憂鬱症及免疫力下降有所關聯。" }
               ],
-              seeAlso: ["chronic", "alleviate"]
+              seeAlso: ["chronic", "alleviate"],
+              tags: ["work-economy"]
             },
             {
               id: "vaccine",
@@ -1424,7 +1457,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Chronic illnesses now account for the majority of healthcare spending in developed countries.", zh: "慢性疾病現已佔已開發國家醫療支出的大部分。" }
               ],
-              seeAlso: ["stress", "preventable"]
+              seeAlso: ["stress", "preventable"],
+              tags: ["work-economy"]
             },
             {
               id: "preventable",
@@ -1436,7 +1470,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Many road deaths are entirely preventable with safer infrastructure and stricter enforcement.", zh: "若有更安全的基礎設施與更嚴格的執法，許多交通事故死亡是完全可以避免的。" }
               ],
-              seeAlso: ["prevention", "prevent"]
+              seeAlso: ["prevention", "prevent"],
+              tags: ["society-culture"]
             },
             {
               id: "nutritious",
@@ -1627,7 +1662,8 @@ window.UW_DATA = {
               examples: [
                 { en: "An ageing workforce is forcing many countries to rethink retirement policy.", zh: "勞動力高齡化迫使許多國家重新思考退休制度。" }
               ],
-              seeAlso: ["demographic", "automation"]
+              seeAlso: ["demographic", "automation"],
+              tags: ["society-culture"]
             },
             {
               id: "recession",
@@ -1639,7 +1675,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Young graduates entering the job market during a recession often suffer lasting wage penalties.", zh: "在經濟衰退期間進入職場的年輕畢業生，往往會長期承受較低的薪資待遇。" }
               ],
-              seeAlso: ["volatile", "inflation"]
+              seeAlso: ["volatile", "inflation"],
+              tags: ["society-culture"]
             },
             {
               id: "inflation",
@@ -1651,7 +1688,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Persistent inflation erodes household savings, especially for those on fixed incomes.", zh: "持續的通貨膨脹會侵蝕家庭儲蓄，對於收入固定者尤其不利。" }
               ],
-              seeAlso: ["recession", "volatile"]
+              seeAlso: ["recession", "volatile"],
+              tags: ["society-culture"]
             },
             {
               id: "entrepreneur",
@@ -1675,7 +1713,8 @@ window.UW_DATA = {
               examples: [
                 { en: "The new regulations threaten the livelihoods of thousands of small fishermen.", zh: "新法規威脅到數以千計小型漁民的生計。" }
               ],
-              seeAlso: ["precarious", "subsidy"]
+              seeAlso: ["precarious", "subsidy"],
+              tags: ["society-culture"]
             },
             {
               id: "subsidy",
@@ -1687,7 +1726,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Without state subsidies, the renewable energy sector would have grown far more slowly.", zh: "若沒有國家補貼，再生能源產業的成長速度將會慢得多。" }
               ],
-              seeAlso: ["subsidize", "livelihood"]
+              seeAlso: ["subsidize", "livelihood"],
+              tags: ["environment"]
             },
             {
               id: "outsourcing",
@@ -1777,7 +1817,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Gig workers often live in a precarious financial situation, one cancelled shift away from trouble.", zh: "零工工作者的財務狀況往往十分不穩定，只要少接一個班就可能陷入困境。" }
               ],
-              seeAlso: ["livelihood", "volatile"]
+              seeAlso: ["livelihood", "volatile"],
+              tags: ["society-culture"]
             },
             {
               id: "profitable",
@@ -1867,7 +1908,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Farmers who diversify their crops cope far better with unpredictable weather.", zh: "作物種類多元化的農民，在面對難以預測的天氣時往往更具韌性。" }
               ],
-              seeAlso: ["diversity", "volatile"]
+              seeAlso: ["diversity", "volatile"],
+              tags: ["environment"]
             },
             {
               id: "privatize",
@@ -1879,7 +1921,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Critics argue that privatizing essential services rarely lowers prices in the long run.", zh: "批評者認為，將基本公共服務私有化在長期而言鮮少能降低價格。" }
               ],
-              seeAlso: ["subsidize", "restructure"]
+              seeAlso: ["subsidize", "restructure"],
+              tags: ["society-culture"]
             },
             {
               id: "subsidize",
@@ -1891,7 +1934,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Several European countries heavily subsidize public transport in order to reduce car use.", zh: "多個歐洲國家大力補貼公共運輸，以期減少私家車的使用。" }
               ],
-              seeAlso: ["subsidy", "privatize"]
+              seeAlso: ["subsidy", "privatize"],
+              tags: ["environment"]
             },
             {
               id: "monetize",
@@ -1903,7 +1947,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Creators struggle to monetize their work fairly when platforms take such a large cut.", zh: "當平台抽成如此之高時，創作者很難公平地將自己的作品變現。" }
               ],
-              seeAlso: ["platform", "profitable"]
+              seeAlso: ["platform", "profitable"],
+              tags: ["technology-media"]
             }
           ]
         }
@@ -2015,7 +2060,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Her hypothesis was that early bilingual exposure sharpens attention later in life.", zh: "她的假設是，早期接觸雙語有助於日後集中注意力。" }
               ],
-              seeAlso: ["premise", "assume"]
+              seeAlso: ["premise", "assume"],
+              tags: ["education-learning"]
             },
             {
               id: "paradigm",
@@ -2027,7 +2073,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Streaming has become the dominant paradigm for how we consume music.", zh: "串流已成為我們消費音樂的主導模式。" }
               ],
-              seeAlso: ["framework", "perspective"]
+              seeAlso: ["framework", "perspective"],
+              tags: ["technology-media"]
             },
             {
               id: "premise",
@@ -2075,7 +2122,8 @@ window.UW_DATA = {
               examples: [
                 { en: "The author builds a framework for thinking about ethics in the age of AI.", zh: "作者建立了一套思考人工智能時代倫理問題的框架。" }
               ],
-              seeAlso: ["paradigm", "concept"]
+              seeAlso: ["paradigm", "concept"],
+              tags: ["technology-media"]
             },
             {
               id: "perspective",
@@ -2141,7 +2189,8 @@ window.UW_DATA = {
               examples: [
                 { en: "These chemicals have a detrimental impact on the environment.", zh: "這些化學品對環境有危害。" }
               ],
-              seeAlso: []
+              seeAlso: [],
+              tags: ["environment"]
             },
             {
               id: "essential",
@@ -2165,7 +2214,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Ecological problems usually require holistic solutions.", zh: "生態問題通常需要全面性的解決方法。" }
               ],
-              seeAlso: []
+              seeAlso: [],
+              tags: ["environment"]
             },
             {
               id: "implausible",
@@ -2250,7 +2300,8 @@ window.UW_DATA = {
                 { en: "The mobile phone, that most ubiquitous of consumer-electronic appliances, is about to enter a new age.", zh: "作爲使用最普遍的消費電器，收音機將進入一個新時代。" },
                 { en: "Leather is very much in fashion this season, as is the ubiquitous denim.", zh: "皮裝在這個季節非常流行，當然牛仔服也似乎無處不在。" }
               ],
-              seeAlso: []
+              seeAlso: [],
+              tags: ["technology-media"]
             },
             {
               id: "vital",

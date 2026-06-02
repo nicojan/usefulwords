@@ -165,6 +165,22 @@
       `;
   }
 
+  // Cross-tagged entries pointing IN to a topic — flat list, used by
+  // the "More words tagged here" surface at the bottom of each topic.
+  function entriesTaggedFor(topicId) {
+    const out = [];
+    for (const s of DATA.sections) {
+      if (s.id === topicId) continue;
+      const all = s.entries
+        ? s.entries
+        : s.categories.flatMap((c) => c.entries.map((e) => ({ ...e, _cat: c.id })));
+      for (const e of all) {
+        if (e.tags && e.tags.includes(topicId)) out.push({ entry: e, sectionId: s.id });
+      }
+    }
+    return out;
+  }
+
   function sectionHTML(section) {
     let body = "";
     if (section.categories) {
@@ -172,6 +188,26 @@
     } else {
       body = section.entries.map((e) => entryHTML(e, 3, null)).join("");
     }
+
+    // "More words tagged here" — chips for entries living in OTHER
+    // topics but tagged with this one. Discoverable cross-references
+    // without duplicating the entries.
+    const tagged = entriesTaggedFor(section.id);
+    const moreHTML = tagged.length
+      ? `<aside class="tagged-here" aria-label="More words tagged for ${esc(section.label.en)}">
+           <h3 class="tagged-here__heading">Also Tagged Here <span class="tagged-here__zh" lang="zh-Hant">相關詞彙</span></h3>
+           <div class="tagged-here__list">
+             ${tagged
+               .map(
+                 ({ entry, sectionId }) =>
+                   `<a class="tagged-chip" href="#${escAttr(entry.id)}" data-recent="${escAttr(entry.id)}" style="--also-tint: ${SECTION_TINT_VAR[sectionId]}">
+                      ${esc(entry.word)}
+                    </a>`
+               )
+               .join("")}
+           </div>
+         </aside>`
+      : "";
 
     const total =
       section.entries?.length ??
@@ -181,6 +217,21 @@
       ? `<p class="section__intro">${esc(section.intro.en)}</p>
          <p class="section__intro section__intro--zh" lang="zh-Hant">${esc(section.intro.zh)}</p>`
       : "";
+
+    // Inline category jump-nav — only render for sections with 4+
+    // categories (currently just transitions). For 3-POS topics, the
+    // category cards in the body are self-evident enough.
+    const sectionChipsHTML =
+      section.categories && section.categories.length >= 4
+        ? `<nav class="section-chips" aria-label="${esc(section.label.en)} categories">
+             ${section.categories
+               .map(
+                 (c) =>
+                   `<a class="section-chip" href="#cat-${escAttr(c.id)}-${escAttr(section.id)}" data-cat="${escAttr(c.id)}">${esc(c.label.en)}</a>`
+               )
+               .join("")}
+           </nav>`
+        : "";
 
     return `
       <section class="section" id="${escAttr(section.id)}" data-section="${escAttr(section.id)}" aria-labelledby="sec-h-${escAttr(section.id)}">
@@ -192,7 +243,9 @@
           <span class="section__count" aria-label="${total} words">${total}&nbsp;words</span>
         </header>
         ${introHTML}
+        ${sectionChipsHTML}
         <div class="section__body">${body}</div>
+        ${moreHTML}
       </section>
     `;
   }
@@ -379,9 +432,18 @@
         searchInput.focus();
       });
     }
-    // Cmd/Ctrl + K → focus search
+    // Keyboard shortcuts: Cmd/Ctrl+K and "/" both focus the search
+    // input (the latter mirrors the IDE-style shortcut some users
+    // expect). Don't hijack "/" when the user is already typing into
+    // a field — let them type the character.
     document.addEventListener("keydown", (e) => {
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+      const isEditableTarget =
+        e.target instanceof HTMLInputElement ||
+        e.target instanceof HTMLTextAreaElement ||
+        e.target?.isContentEditable;
+      const cmdK = (e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k";
+      const slash = e.key === "/" && !isEditableTarget && !e.metaKey && !e.ctrlKey && !e.altKey;
+      if (cmdK || slash) {
         e.preventDefault();
         searchInput.focus();
         searchInput.select();
@@ -398,8 +460,11 @@
     return parseInt(v, 10) || 60;
   }
 
-  const chipsEl = document.getElementById("chips");
-  let chipsRenderedFor = null; // section id whose categories are currently in chipsEl
+  // The dropup chips overlay was removed in favour of an inline chip
+  // strip rendered inside any section that has 4+ categories (currently
+  // only the transitions section). For 3-POS topic sections, the three
+  // category cards in the content area are already self-evident, so a
+  // jump-nav adds clutter without value.
 
   // Apple HIG topic tints — each topic has its own systemColor so
   // active states, the brand glyph, and chip highlights re-tint as the
@@ -459,45 +524,6 @@
     return null;
   }
 
-  function renderChips(section) {
-    if (!chipsEl || chipsRenderedFor === section.id) return;
-    chipsRenderedFor = section.id;
-    const items = section.categories
-      .map(
-        (c) => `
-        <a class="chip" href="#cat-${escAttr(c.id)}" data-chip="${escAttr(c.id)}">${esc(c.label.en)}</a>`
-      )
-      .join("");
-    chipsEl.innerHTML = `<div class="chips__list">${items}</div>`;
-  }
-
-  function sizeChips() {
-    if (!chipsEl) return;
-    // Set width from the visual viewport (excludes scrollbar gutter).
-    const vw = document.documentElement.clientWidth || window.innerWidth;
-    // Wider viewports get a centered, capped column.
-    if (vw >= 760) {
-      const max = 720;
-      const w = Math.min(max, vw - 48);
-      chipsEl.style.width = `${w}px`;
-      chipsEl.style.left = `${(vw - w) / 2}px`;
-    } else {
-      chipsEl.style.width = `${vw - 24}px`;
-      chipsEl.style.left = "12px";
-    }
-  }
-
-  function positionChips(sectionId) {
-    if (!chipsEl) return;
-    sizeChips();
-    const tab = document.querySelector(`.tab[data-target="${sectionId}"]`);
-    if (!tab) return;
-    const tabRect = tab.getBoundingClientRect();
-    const chipsRect = chipsEl.getBoundingClientRect();
-    const chevronX = tabRect.left + tabRect.width / 2 - chipsRect.left;
-    chipsEl.style.setProperty("--chevron-x", `${chevronX}px`);
-  }
-
   function setupTabbar() {
     const sections = Array.from(document.querySelectorAll(".section"));
     if (!sections.length) return;
@@ -518,31 +544,6 @@
           inline: "center",
         });
       }
-      if (!chipsEl) return;
-
-      const section = DATA.sections.find((s) => s.id === id);
-      const hasCats = !onLanding && !!(section && section.categories && section.categories.length);
-
-      if (hasCats) {
-        if (chipsEl.hasAttribute("hidden")) chipsEl.removeAttribute("hidden");
-        renderChips(section);
-        positionChips(id);
-        chipsEl.inert = false;
-        // Two-frame defer so layout settles before the show transition,
-        // then dispatch a scroll event so the chips' scroll-spy picks
-        // up the current category and highlights its chip.
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            chipsEl.classList.add("is-visible");
-            window.dispatchEvent(new Event("scroll"));
-          });
-        });
-        document.body.classList.add("chips-visible");
-      } else {
-        chipsEl.classList.remove("is-visible");
-        chipsEl.inert = true;
-        document.body.classList.remove("chips-visible");
-      }
     }
 
     function sync() {
@@ -552,9 +553,6 @@
         if (s.hidden) continue;
         if (s.getBoundingClientRect().top <= probe) current = s.id;
       }
-      // No section has crossed the probe yet — user is still on the landing.
-      // Default the tab/tint to the first section so the UI doesn't feel blank,
-      // but flag onLanding so activate() can hide the chips overlay.
       const onLanding = current === null;
       if (!current) current = sections[0].id;
       activate(current, onLanding);
@@ -569,11 +567,7 @@
       });
     }
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", () => {
-      sync();
-      const activeTab = document.querySelector('.tab[aria-current="true"]');
-      if (activeTab) positionChips(activeTab.dataset.target);
-    });
+    window.addEventListener("resize", sync);
     sync();
 
     tabs.forEach((t) => {
@@ -590,82 +584,77 @@
     });
   }
 
-  function setupChips() {
-    if (!chipsEl) return;
+  // Inline category chips — rendered inside any section with 4+
+  // categories (the transitions section). Sticky just below the
+  // section header so the jump-nav stays accessible while scrolling
+  // through long category lists. Scroll-spy highlights the current
+  // category's chip.
+  function setupSectionChips() {
+    const navs = Array.from(document.querySelectorAll(".section-chips"));
+    if (!navs.length) return;
 
-    // Event delegation — chips are re-rendered on section change.
-    chipsEl.addEventListener("click", (e) => {
-      const c = e.target.closest(".chip");
-      if (!c) return;
+    // Click → smooth-scroll to that category.
+    document.addEventListener("click", (e) => {
+      const chip = e.target.closest(".section-chip");
+      if (!chip) return;
       e.preventDefault();
-      const catId = c.dataset.chip;
-      const sectionId = chipsRenderedFor;
-      if (!sectionId) return;
-      const el = document.getElementById(`cat-${catId}-${sectionId}`);
+      const targetId = chip.getAttribute("href")?.slice(1);
+      if (!targetId) return;
+      const el = document.getElementById(targetId);
       if (el) {
         el.scrollIntoView({ behavior: "smooth", block: "start" });
-        history.replaceState(null, "", `#cat-${catId}-${sectionId}`);
+        history.replaceState(null, "", `#${targetId}`);
       }
     });
 
-    let lastActive = null;
-    function sync() {
-      if (!chipsEl.classList.contains("is-visible")) return;
-
-      // Filter to the active section's categories — every primary section
-      // can have its own categories now, and the chips list shows only the
-      // ones for whichever section the user is currently in.
-      const activeTab = document.querySelector('.tab[aria-current="true"]')?.dataset.target;
-      if (!activeTab) return;
-      const sectionCats = Array.from(document.querySelectorAll(`#${activeTab} .category`));
-      if (!sectionCats.length) return;
-
+    // Scroll-spy: for each nav, mark the chip whose category last
+    // crossed the probe.
+    function syncOne(nav) {
+      const sectionEl = nav.closest(".section");
+      if (!sectionEl) return;
+      const cats = Array.from(sectionEl.querySelectorAll(".category"));
+      if (!cats.length) return;
       const probe = topbarHeight() + 140;
-      // Default to the first category in the active section.
-      let current = sectionCats[0].dataset.cat;
-      for (const c of sectionCats) {
+      let current = cats[0].dataset.cat;
+      for (const c of cats) {
         if (c.hidden) continue;
         if (c.getBoundingClientRect().top <= probe) current = c.dataset.cat;
       }
-
       let activeChip = null;
-      chipsEl.querySelectorAll(".chip").forEach((c) => {
-        const matches = c.dataset.chip === current;
+      nav.querySelectorAll(".section-chip").forEach((c) => {
+        const matches = c.dataset.cat === current;
         c.setAttribute("aria-current", matches ? "true" : "false");
         if (matches) activeChip = c;
       });
-
-      if (activeChip && current !== lastActive) {
-        lastActive = current;
-        // Vertical scroll inside the chips column to keep active chip in view.
+      // Keep the active chip visible inside the horizontal scroller.
+      if (activeChip && nav.dataset.lastActive !== current) {
+        nav.dataset.lastActive = current;
         activeChip.scrollIntoView({
           behavior: "smooth",
           block: "nearest",
+          inline: "center",
         });
       }
     }
-
+    function sync() { navs.forEach(syncOne); }
     let raf = null;
-    function onScroll() {
+    window.addEventListener("scroll", () => {
       if (raf) return;
-      raf = requestAnimationFrame(() => {
-        raf = null;
-        sync();
-      });
-    }
-    window.addEventListener("scroll", onScroll, { passive: true });
+      raf = requestAnimationFrame(() => { raf = null; sync(); });
+    }, { passive: true });
     window.addEventListener("resize", sync);
-    // Sync after the tabbar's activate() runs (which calls renderChips).
-    requestAnimationFrame(sync);
+    sync();
   }
 
   // --- "See also" chips: scroll + flash target -------------------
 
   function setupSeeAlso() {
     root.addEventListener("click", (e) => {
-      const link = e.target.closest(".see-chip");
+      const link =
+        e.target.closest(".see-chip") || e.target.closest(".tagged-chip");
       if (!link) return;
-      const id = link.dataset.see;
+      const id = link.dataset.see || link.dataset.recent;
+      if (!id) return;
       const target = document.getElementById(id);
       if (!target) return;
       e.preventDefault();
@@ -923,7 +912,7 @@
     render();
     setupSearch();
     setupTabbar();
-    setupChips();
+    setupSectionChips();
     setupSeeAlso();
     setupSwipeNav();
     renderRecent();
