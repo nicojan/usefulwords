@@ -315,12 +315,14 @@
     if (empty) empty.hidden = !(q && totalShown === 0);
     if (searchClear) searchClear.hidden = q.length === 0;
 
-    // Landing surfaces (recent + topic grid) get out of the way when
-    // a query is active.
+    // Landing surfaces (recent + WOD + topic grid) get out of the way
+    // when a query is active.
     const recentSec = document.getElementById("recent-section");
     const topicsSec = document.querySelector(".topics");
+    const wodSec = document.getElementById("wod-section");
     if (recentSec) recentSec.hidden = !!q || getRecent().length === 0;
     if (topicsSec) topicsSec.hidden = !!q;
+    if (wodSec && wodSec.dataset.available === "true") wodSec.hidden = !!q;
 
     // Summary line — total matches and how many topics they span.
     const summary = document.getElementById("search-summary");
@@ -674,6 +676,87 @@
     });
   }
 
+  // --- Word of the Day --------------------------------------------
+  // Deterministic by date: every visitor sees the same word all day,
+  // and the choice changes at local midnight. Seeded from YYYY-MM-DD
+  // so the index is stable across reloads. Skips the transitions
+  // section since transitions aren't really "words" you'd reflect on.
+
+  function todayKey() {
+    const d = new Date();
+    return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+  }
+  function seedFromDate(key) {
+    let h = 2166136261;
+    for (let i = 0; i < key.length; i++) {
+      h ^= key.charCodeAt(i);
+      h = Math.imul(h, 16777619);
+    }
+    return Math.abs(h);
+  }
+  function pickWodId() {
+    // Eligible: every entry whose section is not transitions.
+    const eligible = [];
+    for (const s of DATA.sections) {
+      if (s.id === "transitions") continue;
+      const list = s.entries
+        ? s.entries
+        : s.categories.flatMap((c) => c.entries);
+      for (const e of list) eligible.push({ id: e.id, sectionId: s.id });
+    }
+    if (!eligible.length) return null;
+    const seed = seedFromDate(todayKey());
+    return eligible[seed % eligible.length];
+  }
+
+  function renderWod() {
+    const section = document.getElementById("wod-section");
+    const body = document.getElementById("wod-body");
+    if (!section || !body) return;
+    const pick = pickWodId();
+    if (!pick) {
+      section.hidden = true;
+      return;
+    }
+    const found = findEntry(pick.id);
+    if (!found) {
+      section.hidden = true;
+      return;
+    }
+    const { entry, sectionId, categoryId } = found;
+    const sectionData = DATA.sections.find((s) => s.id === sectionId);
+    const pos = POS_LABEL_FOR_CATEGORY[categoryId];
+
+    section.dataset.available = "true";
+    section.style.setProperty("--wod-tint", SECTION_TINT_VAR[sectionId] || SECTION_TINT_VAR["society-culture"]);
+    body.innerHTML = `
+      <div class="wod__word-row">
+        <a class="wod__word" href="#${escAttr(entry.id)}" data-wod="${escAttr(entry.id)}">${esc(entry.word)}</a>
+        ${pos ? `<span class="wod__pos" aria-hidden="true">${esc(pos)}</span>` : ""}
+      </div>
+      ${entry.definition.en ? `<p class="wod__def">${esc(entry.definition.en)}</p>` : ""}
+      ${entry.definition.zh ? `<p class="wod__def-zh" lang="zh-Hant">${esc(entry.definition.zh)}</p>` : ""}
+      <a class="wod__link" href="#${escAttr(sectionId)}">
+        Open in ${esc(sectionData?.label.en || sectionId)}
+      </a>
+    `;
+    section.hidden = false;
+
+    // Tapping the word jumps to its full entry and marks it as recent.
+    body.querySelector('[data-wod]')?.addEventListener('click', (e) => {
+      const id = e.currentTarget.dataset.wod;
+      const target = document.getElementById(id);
+      if (!target) return;
+      e.preventDefault();
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+      target.classList.remove("is-target");
+      void target.offsetWidth;
+      target.classList.add("is-target");
+      history.replaceState(null, "", `#${id}`);
+      pushRecent(id);
+    });
+  }
+
   // --- Recently viewed entries (top of landing) -------------------
   const RECENT_MAX = 5;
   function getRecent() {
@@ -826,6 +909,7 @@
     setupSeeAlso();
     setupSwipeNav();
     renderRecent();
+    renderWod();
     setupHint();
     handleInitialHash();
   });

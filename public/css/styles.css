@@ -8,6 +8,13 @@
 * { margin: 0; }
 html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 body { line-height: 1.5; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+/* Webfonts use font-display: optional (set on the Google Fonts URL),
+   so the page renders once with the system fallback and never swaps —
+   eliminating font-swap CLS. If Fraunces / Plex / Noto land in the
+   100 ms window the browser uses them; if not, the page stays on the
+   fallback stack below for the session. Returning visitors with the
+   fonts cached see the webfonts. */
 img, svg { display: block; max-width: 100%; }
 input, button, textarea, select { font: inherit; color: inherit; }
 button { background: none; border: none; padding: 0; cursor: pointer; }
@@ -58,6 +65,10 @@ a { color: inherit; text-decoration: none; }
   --tint-on:           #ffffff;
   --tint-soft:         color-mix(in srgb, var(--tint), transparent 85%);
 
+  /* Human (forhuman.ca) brand terracotta — used as a stable accent
+     for the brand glyph so it doesn't re-tint with the active topic. */
+  --brand-terracotta:  #B86F4A;
+
   /* Search match highlight */
   --hl:               rgba(255, 204, 0, 0.42);  /* systemYellow tint */
 
@@ -74,11 +85,12 @@ a { color: inherit; text-decoration: none; }
   --accent-2:         var(--tint);
   --accent-soft:      var(--tint-soft);
 
-  /* Type */
-  --font-display: "Fraunces", "Times New Roman", Georgia, serif;
-  --font-sans:    -apple-system, BlinkMacSystemFont, "SF Pro Text", "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+  /* Type — webfont first; if the optional load doesn't finish in time
+     the page sits permanently on the system fallback for this session */
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-sans:    "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
   --font-zh-serif: "Noto Serif TC", "Songti TC", "PMingLiU", serif;
-  --font-zh-sans:  "PingFang TC", "Noto Sans TC", "Heiti TC", sans-serif;
+  --font-zh-sans:  "Noto Sans TC", "PingFang TC", "Heiti TC", sans-serif;
 
   /* Geometry */
   --max-w:        680px;
@@ -125,6 +137,7 @@ a { color: inherit; text-decoration: none; }
     --tint:              var(--tint-society-culture);
     --tint-on:           #ffffff;
     --tint-soft:         color-mix(in srgb, var(--tint), transparent 78%);
+    --brand-terracotta:  #D08B62;   /* slightly brighter for dark */
 
     --hl:               rgba(255, 214, 10, 0.36);  /* systemYellow dark */
   }
@@ -196,12 +209,11 @@ body.chips-visible {
   font-variation-settings: "opsz" 14, "SOFT" 50;
 }
 .topbar__brand-mark {
-  color: var(--tint);
+  color: var(--brand-terracotta);
   font-size: 20px;
   line-height: 0;
   position: relative;
   top: 2px;
-  transition: color 0.3s var(--ease);
 }
 .topbar__brand-name { color: var(--label); }
 
@@ -264,6 +276,16 @@ body.chips-visible {
   padding: 48px 0 28px;
   border-bottom: 1px solid var(--rule);
   margin-bottom: 28px;
+}
+.masthead__mark {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 36px;
+  line-height: 1;
+  color: var(--brand-terracotta);
+  margin: 0 0 6px;
+  font-variation-settings: "opsz" 60, "SOFT" 30;
 }
 .masthead__title {
   font-family: var(--font-display);
@@ -416,6 +438,102 @@ body.chips-visible {
   overflow: hidden;
   pointer-events: none;
 }
+
+/* Word of the day — daily entry surfaced as a compact card. Tinted
+   on its left edge with the word's owning-topic color. */
+.wod {
+  position: relative;
+  margin: 22px 0 0;
+  padding: 14px 16px 16px 20px;
+  background: var(--bg-tertiary);
+  border: 0.5px solid var(--separator);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.wod[hidden] { display: none; }
+.wod::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--wod-tint, var(--tint));
+}
+.wod__head { margin-bottom: 8px; }
+.wod__eyebrow {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--label-2);
+}
+.wod__eyebrow span {
+  font-family: var(--font-zh-sans);
+  font-weight: 400;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  margin-left: 6px;
+  color: var(--label-3);
+}
+.wod__body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.wod__word-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.wod__word {
+  font-family: var(--font-display);
+  font-style: normal;
+  font-weight: 500;
+  font-size: 26px;
+  line-height: 1.05;
+  letter-spacing: -0.018em;
+  color: var(--label);
+  font-variation-settings: "opsz" 28, "SOFT" 40;
+}
+.wod__pos {
+  font-family: var(--font-sans);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--label-2);
+}
+.wod__def {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--label);
+  margin-top: 4px;
+}
+.wod__def-zh {
+  font-family: var(--font-zh-sans);
+  font-size: 13px;
+  color: var(--label-2);
+  margin-top: 2px;
+}
+.wod__link {
+  margin-top: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--label);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.wod__link::after {
+  content: "→";
+  color: var(--wod-tint, var(--tint));
+  margin-left: 2px;
+}
+.wod__link:hover { text-decoration: underline; text-decoration-color: var(--wod-tint); }
 
 /* Recent words — shows when user has navigated to specific entries */
 .recent {

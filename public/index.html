@@ -17,8 +17,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,400..600,30..100;1,9..144,400..600,30..100&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Sans+TC:wght@400;500&family=Noto+Serif+TC:wght@400;500&display=optional"
+    />
+    <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,400..600,30..100;1,9..144,400..600,30..100&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Sans+TC:wght@400;500&family=Noto+Serif+TC:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,400..600,30..100;1,9..144,400..600,30..100&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Sans+TC:wght@400;500&family=Noto+Serif+TC:wght@400;500&display=optional"
     />
     <link rel="stylesheet" href="css/styles.css" />
   </head>
@@ -30,6 +35,7 @@
       <a id="top" tabindex="-1"></a>
 
       <section class="masthead" aria-labelledby="masthead-title">
+        <p class="masthead__mark" aria-hidden="true">¶</p>
         <h1 id="masthead-title" class="masthead__title">
           <span class="masthead__title-en">Useful Words</span>
           <span class="masthead__title-zh" lang="zh-Hant">實用詞彙</span>
@@ -41,6 +47,15 @@
         <p class="masthead__stats">
           <span id="masthead-count">—</span> words · 8 topics · EN&nbsp;/&nbsp;繁中
         </p>
+      </section>
+
+      <section class="wod" id="wod-section" aria-labelledby="wod-heading" hidden>
+        <header class="wod__head">
+          <h2 id="wod-heading" class="wod__eyebrow">Today <span lang="zh-Hant">今日一字</span></h2>
+        </header>
+        <div class="wod__body" id="wod-body">
+          <!-- rendered by app.js -->
+        </div>
       </section>
 
       <section class="recent" id="recent-section" aria-labelledby="recent-heading" hidden>
