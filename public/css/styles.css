@@ -400,6 +400,110 @@ body.chips-visible {
   .topics__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 
+/* Onboarding hint — small, dismissable once user interacts */
+.hint {
+  margin: 14px 4px 0;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--label-2);
+  transition: opacity 0.35s var(--ease), max-height 0.35s var(--ease), margin-top 0.35s var(--ease);
+}
+.hint[hidden] { display: none; }
+.hint--dismissed {
+  opacity: 0;
+  max-height: 0;
+  margin-top: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Recent words — shows when user has navigated to specific entries */
+.recent {
+  margin: 26px 0 -6px;
+}
+.recent__header {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0 4px 12px;
+}
+.recent__heading {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--label);
+  font-variation-settings: "opsz" 60, "SOFT" 40;
+}
+.recent__heading-zh {
+  font-family: var(--font-zh-serif);
+  font-size: 13px;
+  color: var(--label-2);
+  letter-spacing: 0.02em;
+}
+.recent__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.recent-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: var(--bg-tertiary);
+  border: 0.5px solid var(--separator);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--label);
+  text-decoration: none;
+  font-variation-settings: "opsz" 14, "SOFT" 50;
+  transition: background 0.15s var(--ease);
+  -webkit-tap-highlight-color: transparent;
+}
+.recent-chip:hover {
+  background: color-mix(in srgb, var(--bg-tertiary), var(--tint) 6%);
+}
+.recent-chip__pos {
+  font-family: var(--font-sans);
+  font-style: italic;
+  font-size: 11px;
+  color: var(--label-2);
+  letter-spacing: 0.02em;
+}
+
+/* Per-topic intro line under the section title */
+.section__intro {
+  margin: 0 4px 12px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--label-2);
+  max-width: 56ch;
+}
+.section__intro--zh {
+  font-size: 13px;
+  margin-top: -8px;
+  color: var(--label-2);
+}
+
+/* Search summary — appears while a query is active */
+.search-summary {
+  margin: 18px 4px 4px;
+  font-size: 13px;
+  color: var(--label-2);
+  font-feature-settings: "tnum";
+}
+.search-summary[hidden] { display: none; }
+.search-summary strong {
+  color: var(--label);
+  font-weight: 600;
+}
+
 /* --- Section --- */
 /* --- Topic section (= primary page) --- */
 .section {

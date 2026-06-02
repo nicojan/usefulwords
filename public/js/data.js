@@ -6,6 +6,10 @@ window.UW_DATA = {
     {
       id: "society-culture",
       label: { en: "society & culture", zh: "社會與文化" },
+      intro: {
+        en: "Vocabulary for writing about people, identity, communities, and how societies function.",
+        zh: "描述人群、身份、社群與社會運作的詞彙。"
+      },
       categories: [
         {
           id: "nouns",
@@ -318,6 +322,10 @@ window.UW_DATA = {
     {
       id: "education-learning",
       label: { en: "education", zh: "教育" },
+      intro: {
+        en: "Words for essays on schools, learning, and the systems that shape what we know.",
+        zh: "適用於描寫學校、學習與知識體系的詞彙。"
+      },
       categories: [
         {
           id: "nouns",
@@ -630,6 +638,10 @@ window.UW_DATA = {
     {
       id: "environment",
       label: { en: "environment", zh: "環境" },
+      intro: {
+        en: "Terms for ecological systems, sustainability, and the climate.",
+        zh: "用於書寫生態系統、永續發展與氣候議題的詞彙。"
+      },
       categories: [
         {
           id: "nouns",
@@ -942,6 +954,10 @@ window.UW_DATA = {
     {
       id: "technology-media",
       label: { en: "technology", zh: "科技" },
+      intro: {
+        en: "Vocabulary for the digital age — automation, media, and how information moves.",
+        zh: "描寫數位時代、自動化與資訊傳播的詞彙。"
+      },
       categories: [
         {
           id: "nouns",
@@ -1254,6 +1270,10 @@ window.UW_DATA = {
     {
       id: "health-lifestyle",
       label: { en: "health", zh: "健康" },
+      intro: {
+        en: "Words for writing about wellbeing, illness, and the habits that shape both.",
+        zh: "描寫健康、疾病以及影響身心狀態之習慣的詞彙。"
+      },
       categories: [
         {
           id: "nouns",
@@ -1566,6 +1586,10 @@ window.UW_DATA = {
     {
       id: "work-economy",
       label: { en: "work", zh: "工作" },
+      intro: {
+        en: "Vocabulary for jobs, business, and how economies create and distribute value.",
+        zh: "描寫工作、商業與經濟運作的詞彙。"
+      },
       categories: [
         {
           id: "nouns",
@@ -1878,6 +1902,10 @@ window.UW_DATA = {
     {
       id: "concepts",
       label: { en: "concepts", zh: "概念" },
+      intro: {
+        en: "Cross-topic abstract vocabulary that elevates any argument.",
+        zh: "可運用於各種主題、能提升論述深度的抽象詞彙。"
+      },
       categories: [
         {
           id: "nouns",
@@ -2384,6 +2412,10 @@ window.UW_DATA = {
     {
       id: "transitions",
       label: { en: "transitions", zh: "轉換" },
+      intro: {
+        en: "Linking words and phrases that connect ideas and shape an argument.",
+        zh: "連接論點、推進論述的轉折詞與片語。"
+      },
       categories: [
         {
           id: "agreement-addition-similarity",

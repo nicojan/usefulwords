@@ -43,6 +43,16 @@
         </p>
       </section>
 
+      <section class="recent" id="recent-section" aria-labelledby="recent-heading" hidden>
+        <header class="recent__header">
+          <h2 id="recent-heading" class="recent__heading">Recently viewed</h2>
+          <span class="recent__heading-zh" lang="zh-Hant">最近查看</span>
+        </header>
+        <nav class="recent__list" id="recent-list" aria-label="Recent entries">
+          <!-- rendered by app.js -->
+        </nav>
+      </section>
+
       <section class="topics" aria-labelledby="topics-heading">
         <header class="topics__header">
           <h2 id="topics-heading" class="topics__heading">Browse by topic</h2>
@@ -51,7 +61,10 @@
         <nav class="topics__grid" id="topics-grid" aria-label="Jump to topic">
           <!-- rendered by app.js -->
         </nav>
+        <p id="hint" class="hint">Tap a topic to explore — or search any word in English or Chinese.</p>
       </section>
+
+      <div id="search-summary" class="search-summary" role="status" aria-live="polite" hidden></div>
 
       <div id="empty-state" class="empty" hidden>
         <p class="empty__title">No matches found.</p>

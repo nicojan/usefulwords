@@ -157,6 +157,11 @@
       section.entries?.length ??
       section.categories.reduce((s, c) => s + c.entries.length, 0);
 
+    const introHTML = section.intro
+      ? `<p class="section__intro">${esc(section.intro.en)}</p>
+         <p class="section__intro section__intro--zh" lang="zh-Hant">${esc(section.intro.zh)}</p>`
+      : "";
+
     return `
       <section class="section" id="${escAttr(section.id)}" data-section="${escAttr(section.id)}" aria-labelledby="sec-h-${escAttr(section.id)}">
         <header class="section__header">
@@ -166,6 +171,7 @@
           </h2>
           <span class="section__count" aria-label="${total} words">${total}&nbsp;words</span>
         </header>
+        ${introHTML}
         <div class="section__body">${body}</div>
       </section>
     `;
@@ -277,35 +283,59 @@
     clearHighlights();
 
     const entries = root.querySelectorAll(".entry");
-    let anyShown = false;
+    let totalShown = 0;
 
     entries.forEach((entry) => {
       if (!q) {
         entry.hidden = false;
-        anyShown = true;
+        totalShown++;
         return;
       }
       const hay = `${entry.dataset.word} ${entry.dataset.def} ${entry.dataset.zh} ${entry.dataset.ex}`;
       const hit = hay.toLowerCase().includes(q);
       entry.hidden = !hit;
       if (hit) {
-        anyShown = true;
+        totalShown++;
         highlightInEntry(entry, q);
       }
     });
 
-    // Hide empty categories/sections
+    // Hide empty categories/sections; count topics with matches
     root.querySelectorAll(".category").forEach((cat) => {
       const visible = cat.querySelectorAll(".entry:not([hidden])").length;
       cat.hidden = visible === 0 && q.length > 0;
     });
+    let topicsWithMatches = 0;
     root.querySelectorAll(".section").forEach((sec) => {
       const visibleEntries = sec.querySelectorAll(".entry:not([hidden])").length;
       sec.hidden = visibleEntries === 0 && q.length > 0;
+      if (q && visibleEntries > 0) topicsWithMatches++;
     });
 
-    if (empty) empty.hidden = !(q && !anyShown);
+    if (empty) empty.hidden = !(q && totalShown === 0);
     if (searchClear) searchClear.hidden = q.length === 0;
+
+    // Landing surfaces (recent + topic grid) get out of the way when
+    // a query is active.
+    const recentSec = document.getElementById("recent-section");
+    const topicsSec = document.querySelector(".topics");
+    if (recentSec) recentSec.hidden = !!q || getRecent().length === 0;
+    if (topicsSec) topicsSec.hidden = !!q;
+
+    // Summary line — total matches and how many topics they span.
+    const summary = document.getElementById("search-summary");
+    if (summary) {
+      if (!q) {
+        summary.hidden = true;
+        summary.innerHTML = "";
+      } else {
+        summary.hidden = false;
+        const plural = topicsWithMatches === 1 ? "topic" : "topics";
+        summary.innerHTML = totalShown
+          ? `<strong>${totalShown}</strong> match${totalShown === 1 ? "" : "es"} across <strong>${topicsWithMatches}</strong> ${plural}`
+          : `No matches for <strong>${esc(query.trim())}</strong>`;
+      }
+    }
   }
 
   function setupSearch() {
@@ -381,6 +411,33 @@
     adjectives: "adj.",
     verbs:      "v.",
   };
+
+  // --- localStorage helpers (safe for private browsing) -----------
+  const LS_RECENT = "uw_recent_v1";
+  const LS_HINT = "uw_hint_dismissed_v1";
+  function lsGet(key, fallback) {
+    try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch { return fallback; }
+  }
+  function lsSet(key, value) {
+    try { localStorage.setItem(key, JSON.stringify(value)); } catch {}
+  }
+
+  // For looking up an entry by id (used by recent rendering).
+  function findEntry(id) {
+    for (const s of DATA.sections) {
+      if (s.entries) {
+        const e = s.entries.find((x) => x.id === id);
+        if (e) return { entry: e, sectionId: s.id, categoryId: null };
+      }
+      if (s.categories) {
+        for (const c of s.categories) {
+          const e = c.entries.find((x) => x.id === id);
+          if (e) return { entry: e, sectionId: s.id, categoryId: c.id };
+        }
+      }
+    }
+    return null;
+  }
 
   function renderChips(section) {
     if (!chipsEl || chipsRenderedFor === section.id) return;
@@ -594,11 +651,90 @@
       e.preventDefault();
       target.scrollIntoView({ behavior: "smooth", block: "start" });
       target.classList.remove("is-target");
-      // Force reflow so the animation restarts.
       void target.offsetWidth;
       target.classList.add("is-target");
       history.replaceState(null, "", `#${id}`);
+      pushRecent(id);
     });
+    // Recent chips also count as a "visit" — bump them to the top
+    // of the recent list so they stay accessible.
+    document.getElementById("recent-list")?.addEventListener("click", (e) => {
+      const link = e.target.closest(".recent-chip");
+      if (!link) return;
+      const id = link.dataset.recent;
+      const target = document.getElementById(id);
+      if (!target) return;
+      e.preventDefault();
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+      target.classList.remove("is-target");
+      void target.offsetWidth;
+      target.classList.add("is-target");
+      history.replaceState(null, "", `#${id}`);
+      pushRecent(id);
+    });
+  }
+
+  // --- Recently viewed entries (top of landing) -------------------
+  const RECENT_MAX = 5;
+  function getRecent() {
+    const arr = lsGet(LS_RECENT, []);
+    return Array.isArray(arr) ? arr.filter((id) => idIndex[id]) : [];
+  }
+  function pushRecent(id) {
+    if (!id || !idIndex[id]) return;
+    let r = getRecent();
+    r = [id, ...r.filter((x) => x !== id)].slice(0, RECENT_MAX);
+    lsSet(LS_RECENT, r);
+    renderRecent();
+  }
+  function renderRecent() {
+    const sec = document.getElementById("recent-section");
+    const list = document.getElementById("recent-list");
+    if (!sec || !list) return;
+    const recent = getRecent();
+    if (!recent.length) {
+      sec.hidden = true;
+      list.innerHTML = "";
+      return;
+    }
+    list.innerHTML = recent
+      .map((id) => {
+        const found = findEntry(id);
+        if (!found) return "";
+        const pos = POS_LABEL_FOR_CATEGORY[found.categoryId];
+        return `
+          <a class="recent-chip" href="#${escAttr(id)}" data-recent="${escAttr(id)}">
+            ${esc(found.entry.word)}
+            ${pos ? `<span class="recent-chip__pos" aria-hidden="true">${esc(pos)}</span>` : ""}
+          </a>`;
+      })
+      .join("");
+    sec.hidden = false;
+  }
+
+  // --- Onboarding hint --------------------------------------------
+  function setupHint() {
+    const hint = document.getElementById("hint");
+    if (!hint) return;
+    if (lsGet(LS_HINT, false)) {
+      hint.classList.add("hint--dismissed");
+      hint.hidden = true;
+      return;
+    }
+    let dismissed = false;
+    function dismiss() {
+      if (dismissed) return;
+      dismissed = true;
+      hint.classList.add("hint--dismissed");
+      lsSet(LS_HINT, true);
+      // Once the transition finishes, remove from layout entirely.
+      setTimeout(() => { hint.hidden = true; }, 400);
+    }
+    document.getElementById("topics-grid")?.addEventListener("click", dismiss, { once: true });
+    searchInput?.addEventListener("focus", dismiss, { once: true });
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 240) dismiss();
+    }, { passive: true });
   }
 
   // --- Horizontal swipe → navigate sections -----------------------
@@ -675,6 +811,8 @@
           target.classList.add("is-target");
         }
       });
+      // If the deep link points at a specific entry, remember it.
+      if (idIndex[hash]) pushRecent(hash);
     }
   }
 
@@ -687,6 +825,8 @@
     setupChips();
     setupSeeAlso();
     setupSwipeNav();
+    renderRecent();
+    setupHint();
     handleInitialHash();
   });
 })();
