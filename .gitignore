@@ -7,6 +7,9 @@ Thumbs.db
 .claude/
 .vscode/
 .idea/
+.remember/
+.screenshots/
+.a11y/
 
 # Node (only if wrangler ever pulls deps locally)
 node_modules/
