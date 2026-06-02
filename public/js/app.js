@@ -171,11 +171,50 @@
     `;
   }
 
+  function topicCardHTML(section) {
+    const total = section.categories
+      ? section.categories.reduce((a, c) => a + c.entries.length, 0)
+      : section.entries.length;
+    const tintVar = SECTION_TINT_VAR[section.id] || SECTION_TINT_VAR["society-culture"];
+    return `
+      <a class="topic-card" data-target="${escAttr(section.id)}" href="#${escAttr(section.id)}"
+         style="--tint: ${tintVar}">
+        <span class="topic-card__dot" aria-hidden="true"></span>
+        <span class="topic-card__text">
+          <span class="topic-card__en">${esc(section.label.en)}</span>
+          <span class="topic-card__zh" lang="zh-Hant">${esc(section.label.zh)}</span>
+        </span>
+        <span class="topic-card__count" aria-label="${total} words">${total}</span>
+      </a>
+    `;
+  }
+
+  function renderTopicGrid() {
+    const grid = document.getElementById("topics-grid");
+    if (!grid) return;
+    grid.innerHTML = DATA.sections.map(topicCardHTML).join("");
+
+    grid.addEventListener("click", (e) => {
+      const card = e.target.closest(".topic-card");
+      if (!card) return;
+      e.preventDefault();
+      const id = card.dataset.target;
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+        history.replaceState(null, "", `#${id}`);
+      }
+    });
+  }
+
   function render() {
     indexEntries();
     root.innerHTML = DATA.sections.map(sectionHTML).join("");
+    renderTopicGrid();
     const total = Object.keys(idIndex).length;
     if (countEl) countEl.textContent = total;
+    const mastheadCount = document.getElementById("masthead-count");
+    if (mastheadCount) mastheadCount.textContent = total;
   }
 
   // --- Search ------------------------------------------------------
@@ -386,10 +425,10 @@
     const sections = Array.from(document.querySelectorAll(".section"));
     if (!sections.length) return;
 
-    function activate(id) {
+    function activate(id, onLanding) {
       let activeTab = null;
       tabs.forEach((t) => {
-        const matches = t.dataset.target === id;
+        const matches = !onLanding && t.dataset.target === id;
         t.setAttribute("aria-current", matches ? "true" : "false");
         if (matches) activeTab = t;
       });
@@ -405,7 +444,7 @@
       if (!chipsEl) return;
 
       const section = DATA.sections.find((s) => s.id === id);
-      const hasCats = !!(section && section.categories && section.categories.length);
+      const hasCats = !onLanding && !!(section && section.categories && section.categories.length);
 
       if (hasCats) {
         if (chipsEl.hasAttribute("hidden")) chipsEl.removeAttribute("hidden");
@@ -431,12 +470,17 @@
 
     function sync() {
       const probe = topbarHeight() + 140;
-      let current = sections[0].id;
+      let current = null;
       for (const s of sections) {
         if (s.hidden) continue;
         if (s.getBoundingClientRect().top <= probe) current = s.id;
       }
-      activate(current);
+      // No section has crossed the probe yet — user is still on the landing.
+      // Default the tab/tint to the first section so the UI doesn't feel blank,
+      // but flag onLanding so activate() can hide the chips overlay.
+      const onLanding = current === null;
+      if (!current) current = sections[0].id;
+      activate(current, onLanding);
     }
 
     let raf = null;

@@ -293,6 +293,112 @@ body.chips-visible {
   color: var(--ink-2);
   max-width: 38ch;
 }
+.masthead__stats {
+  margin-top: 14px;
+  font-size: 12px;
+  font-feature-settings: "tnum";
+  color: var(--label-2);
+  letter-spacing: 0.01em;
+}
+
+/* ============================================================
+   Landing topic grid — visual index of all topics with their tints
+   ============================================================ */
+.topics {
+  margin: 32px 0 12px;
+}
+.topics__header {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0 4px 14px;
+}
+.topics__heading {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--label);
+  font-variation-settings: "opsz" 60, "SOFT" 40;
+}
+.topics__heading-zh {
+  font-family: var(--font-zh-serif);
+  font-size: 14px;
+  color: var(--label-2);
+  letter-spacing: 0.02em;
+}
+
+.topics__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.topic-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 14px 14px 14px;
+  background: var(--bg-tertiary);
+  border: 0.5px solid var(--separator);
+  border-radius: 14px;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s var(--ease), background 0.15s var(--ease);
+  -webkit-tap-highlight-color: transparent;
+}
+.topic-card:hover {
+  background: color-mix(in srgb, var(--bg-tertiary), var(--tint) 4%);
+}
+.topic-card:active {
+  transform: scale(0.985);
+}
+
+.topic-card__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--tint);
+  flex-shrink: 0;
+  /* a small ring so the dot reads even in low-contrast tints */
+  box-shadow: 0 0 0 0.5px color-mix(in srgb, var(--tint), transparent 40%);
+}
+
+.topic-card__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.topic-card__en {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--label);
+}
+.topic-card__zh {
+  font-family: var(--font-zh-sans);
+  font-size: 12px;
+  color: var(--label-2);
+  letter-spacing: 0.02em;
+}
+.topic-card__count {
+  font-family: var(--font-sans);
+  font-feature-settings: "tnum";
+  font-size: 13px;
+  color: var(--label-2);
+  flex-shrink: 0;
+}
+
+/* Wider viewports: 4 columns instead of 2 */
+@media (min-width: 680px) {
+  .topics__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
 
 /* --- Section --- */
 /* --- Topic section (= primary page) --- */
