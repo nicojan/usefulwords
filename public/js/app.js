@@ -458,24 +458,22 @@
     let lastActive = null;
     function sync() {
       if (!chipsEl.classList.contains("is-visible")) return;
-      const cats = Array.from(document.querySelectorAll(".category"));
-      if (!cats.length) return;
+
+      // Filter to the active section's categories — every primary section
+      // can have its own categories now, and the chips list shows only the
+      // ones for whichever section the user is currently in.
+      const activeTab = document.querySelector('.tab[aria-current="true"]')?.dataset.target;
+      if (!activeTab) return;
+      const sectionCats = Array.from(document.querySelectorAll(`#${activeTab} .category`));
+      if (!sectionCats.length) return;
 
       const probe = topbarHeight() + 140;
-      let current = null;
-      for (const c of cats) {
+      // Default to the first category in the active section.
+      let current = sectionCats[0].dataset.cat;
+      for (const c of sectionCats) {
         if (c.hidden) continue;
         if (c.getBoundingClientRect().top <= probe) current = c.dataset.cat;
       }
-      // If the section is current but no category header has crossed
-      // the probe yet, default to the first category in that section.
-      if (!current) {
-        const section = cats[0].closest(".section");
-        if (section && section.getBoundingClientRect().top <= probe) {
-          current = cats[0].dataset.cat;
-        }
-      }
-      if (!current) return;
 
       let activeChip = null;
       chipsEl.querySelectorAll(".chip").forEach((c) => {
