@@ -142,21 +142,7 @@
 
   function sectionHTML(section) {
     let body = "";
-
-    let chips = "";
     if (section.categories) {
-      chips = `
-        <nav class="chips" aria-label="${esc(section.label.en)} categories">
-          ${section.categories
-            .map(
-              (c) => `
-              <a class="chip" href="#cat-${escAttr(c.id)}" data-chip="${escAttr(c.id)}">
-                ${esc(c.label.en)}
-              </a>`
-            )
-            .join("")}
-        </nav>`;
-
       body = section.categories.map(categoryHTML).join("");
     } else {
       body = section.entries.map((e) => entryHTML(e, 3)).join("");
@@ -175,7 +161,6 @@
           </h2>
           <span class="section__count" aria-label="${total} words">${total}&nbsp;words</span>
         </header>
-        ${chips}
         <div class="section__body">${body}</div>
       </section>
     `;
@@ -319,27 +304,102 @@
     return parseInt(v, 10) || 60;
   }
 
+  const chipsEl = document.getElementById("chips");
+  let chipsRenderedFor = null; // section id whose categories are currently in chipsEl
+
+  // Apple HIG section tints — each section has its own systemColor so
+  // active states, the brand glyph, and chip highlights re-tint as the
+  // user moves between sections. CSS holds the actual values.
+  const SECTION_TINT_VAR = {
+    nouns: "var(--tint-nouns)",
+    adjectives: "var(--tint-adjectives)",
+    verbs: "var(--tint-verbs)",
+    transitions: "var(--tint-transitions)",
+  };
+  let lastTintSection = null;
+  function applyTint(sectionId) {
+    if (sectionId === lastTintSection) return;
+    lastTintSection = sectionId;
+    const v = SECTION_TINT_VAR[sectionId] || SECTION_TINT_VAR.transitions;
+    document.body.style.setProperty("--tint", v);
+  }
+
+  function renderChips(section) {
+    if (!chipsEl || chipsRenderedFor === section.id) return;
+    chipsRenderedFor = section.id;
+    const items = section.categories
+      .map(
+        (c) => `
+        <a class="chip" href="#cat-${escAttr(c.id)}" data-chip="${escAttr(c.id)}">${esc(c.label.en)}</a>`
+      )
+      .join("");
+    chipsEl.innerHTML = `<div class="chips__list">${items}</div>`;
+  }
+
+  function sizeChips() {
+    if (!chipsEl) return;
+    // Set width from the visual viewport (excludes scrollbar gutter).
+    const vw = document.documentElement.clientWidth || window.innerWidth;
+    // Wider viewports get a centered, capped column.
+    if (vw >= 760) {
+      const max = 720;
+      const w = Math.min(max, vw - 48);
+      chipsEl.style.width = `${w}px`;
+      chipsEl.style.left = `${(vw - w) / 2}px`;
+    } else {
+      chipsEl.style.width = `${vw - 24}px`;
+      chipsEl.style.left = "12px";
+    }
+  }
+
+  function positionChips(sectionId) {
+    if (!chipsEl) return;
+    sizeChips();
+    const tab = document.querySelector(`.tab[data-target="${sectionId}"]`);
+    if (!tab) return;
+    const tabRect = tab.getBoundingClientRect();
+    const chipsRect = chipsEl.getBoundingClientRect();
+    const chevronX = tabRect.left + tabRect.width / 2 - chipsRect.left;
+    chipsEl.style.setProperty("--chevron-x", `${chevronX}px`);
+  }
+
   function setupTabbar() {
     const sections = Array.from(document.querySelectorAll(".section"));
     if (!sections.length) return;
-
-    const chipsBar = document.querySelector(".chips");
 
     function activate(id) {
       tabs.forEach((t) =>
         t.setAttribute("aria-current", t.dataset.target === id ? "true" : "false")
       );
-      // Show the sub-nav chips only when transitions is the active
-      // section (i.e. dominant in the viewport). The CSS rule for
-      // narrow viewports also adds matching bottom padding to the
-      // body so the last entry clears the floating chip bar.
-      const isTrans = id === "transitions";
-      if (chipsBar) chipsBar.classList.toggle("is-visible", isTrans);
-      document.body.classList.toggle("chips-visible", isTrans);
+      applyTint(id);
+      if (!chipsEl) return;
+
+      const section = DATA.sections.find((s) => s.id === id);
+      const hasCats = !!(section && section.categories && section.categories.length);
+
+      if (hasCats) {
+        if (chipsEl.hasAttribute("hidden")) chipsEl.removeAttribute("hidden");
+        renderChips(section);
+        positionChips(id);
+        chipsEl.inert = false;
+        // Two-frame defer so layout settles before the show transition,
+        // then dispatch a scroll event so the chips' scroll-spy picks
+        // up the current category and highlights its chip.
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            chipsEl.classList.add("is-visible");
+            window.dispatchEvent(new Event("scroll"));
+          });
+        });
+        document.body.classList.add("chips-visible");
+      } else {
+        chipsEl.classList.remove("is-visible");
+        chipsEl.inert = true;
+        document.body.classList.remove("chips-visible");
+      }
     }
 
     function sync() {
-      // Probe deep enough to clear section padding/margins.
       const probe = topbarHeight() + 140;
       let current = sections[0].id;
       for (const s of sections) {
@@ -358,7 +418,11 @@
       });
     }
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", sync);
+    window.addEventListener("resize", () => {
+      sync();
+      const activeTab = document.querySelector('.tab[aria-current="true"]');
+      if (activeTab) positionChips(activeTab.dataset.target);
+    });
     sync();
 
     tabs.forEach((t) => {
@@ -376,44 +440,57 @@
   }
 
   function setupChips() {
-    const chips = Array.from(document.querySelectorAll(".chip"));
-    if (!chips.length) return;
-    const cats = Array.from(document.querySelectorAll(".category"));
+    if (!chipsEl) return;
 
-    function activate(id) {
-      chips.forEach((c) =>
-        c.setAttribute("aria-current", c.dataset.chip === id ? "true" : "false")
-      );
-    }
+    // Event delegation — chips are re-rendered on section change.
+    chipsEl.addEventListener("click", (e) => {
+      const c = e.target.closest(".chip");
+      if (!c) return;
+      e.preventDefault();
+      const id = c.dataset.chip;
+      const el = document.getElementById(`cat-${id}`);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+        history.replaceState(null, "", `#cat-${id}`);
+      }
+    });
 
     let lastActive = null;
     function sync() {
+      if (!chipsEl.classList.contains("is-visible")) return;
+      const cats = Array.from(document.querySelectorAll(".category"));
+      if (!cats.length) return;
+
       const probe = topbarHeight() + 140;
       let current = null;
       for (const c of cats) {
         if (c.hidden) continue;
         if (c.getBoundingClientRect().top <= probe) current = c.dataset.cat;
       }
-      // If we're inside the transitions section but no category top
-      // has crossed the probe yet, default to the first category.
+      // If the section is current but no category header has crossed
+      // the probe yet, default to the first category in that section.
       if (!current) {
-        const trans = document.getElementById("transitions");
-        if (trans && !trans.hidden && trans.getBoundingClientRect().top <= probe && cats.length) {
+        const section = cats[0].closest(".section");
+        if (section && section.getBoundingClientRect().top <= probe) {
           current = cats[0].dataset.cat;
         }
       }
       if (!current) return;
-      activate(current);
-      if (current !== lastActive) {
+
+      let activeChip = null;
+      chipsEl.querySelectorAll(".chip").forEach((c) => {
+        const matches = c.dataset.chip === current;
+        c.setAttribute("aria-current", matches ? "true" : "false");
+        if (matches) activeChip = c;
+      });
+
+      if (activeChip && current !== lastActive) {
         lastActive = current;
-        const activeChip = document.querySelector(`.chip[data-chip="${current}"]`);
-        if (activeChip) {
-          activeChip.scrollIntoView({
-            behavior: "smooth",
-            block: "nearest",
-            inline: "center",
-          });
-        }
+        // Vertical scroll inside the chips column to keep active chip in view.
+        activeChip.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest",
+        });
       }
     }
 
@@ -427,19 +504,8 @@
     }
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", sync);
-    sync();
-
-    chips.forEach((c) => {
-      c.addEventListener("click", (e) => {
-        e.preventDefault();
-        const id = c.dataset.chip;
-        const el = document.getElementById(`cat-${id}`);
-        if (el) {
-          el.scrollIntoView({ behavior: "smooth", block: "start" });
-          history.replaceState(null, "", `#cat-${id}`);
-        }
-      });
-    });
+    // Sync after the tabbar's activate() runs (which calls renderChips).
+    requestAnimationFrame(sync);
   }
 
   // --- "See also" chips: scroll + flash target -------------------
@@ -459,6 +525,67 @@
       target.classList.add("is-target");
       history.replaceState(null, "", `#${id}`);
     });
+  }
+
+  // --- Horizontal swipe → navigate sections -----------------------
+  // The four-tab primary nav implies a pager mental model. A
+  // confident horizontal swipe on the page background moves to the
+  // previous / next section. Vertical-dominant gestures stay as
+  // normal scroll. Interactive surfaces (chips, topbar, tabbar,
+  // links, inputs) opt out so their own gestures aren't hijacked.
+
+  const SWIPE_MIN_DX = 60;        // px: minimum horizontal travel
+  const SWIPE_MAX_DY = 50;        // px: maximum vertical drift
+  const SWIPE_MAX_TIME = 600;     // ms: maximum gesture duration
+
+  function setupSwipeNav() {
+    const sectionIds = DATA.sections.map((s) => s.id);
+    let startX = 0,
+      startY = 0,
+      startT = 0,
+      tracking = false;
+
+    function onStart(e) {
+      const t = e.touches && e.touches[0];
+      if (!t) return;
+      if (e.target.closest(".chips, .topbar, .tabbar, a, button, input, textarea, select, [contenteditable]"))
+        return;
+      startX = t.clientX;
+      startY = t.clientY;
+      startT = Date.now();
+      tracking = true;
+    }
+
+    function onEnd(e) {
+      if (!tracking) return;
+      tracking = false;
+      const t = e.changedTouches && e.changedTouches[0];
+      if (!t) return;
+      const dx = t.clientX - startX;
+      const dy = t.clientY - startY;
+      const dt = Date.now() - startT;
+      if (
+        Math.abs(dx) < SWIPE_MIN_DX ||
+        Math.abs(dy) > SWIPE_MAX_DY ||
+        Math.abs(dx) < Math.abs(dy) * 1.4 ||
+        dt > SWIPE_MAX_TIME
+      )
+        return;
+
+      const currentId = document.querySelector('.tab[aria-current="true"]')?.dataset.target;
+      let idx = sectionIds.indexOf(currentId);
+      if (idx === -1) idx = 0;
+      const dir = dx < 0 ? +1 : -1; // swipe-left → next
+      const nextIdx = idx + dir;
+      if (nextIdx < 0 || nextIdx >= sectionIds.length) return;
+
+      const el = document.getElementById(sectionIds[nextIdx]);
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    document.addEventListener("touchstart", onStart, { passive: true });
+    document.addEventListener("touchend", onEnd, { passive: true });
+    document.addEventListener("touchcancel", () => { tracking = false; }, { passive: true });
   }
 
   // --- Deep-link handling on load --------------------------------
@@ -485,6 +612,7 @@
     setupTabbar();
     setupChips();
     setupSeeAlso();
+    setupSwipeNav();
     handleInitialHash();
   });
 })();

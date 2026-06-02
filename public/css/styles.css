@@ -41,11 +41,19 @@ a { color: inherit; text-decoration: none; }
   --fill-3:           rgba(118, 118, 128, 0.12);
   --fill-4:           rgba(116, 116, 128, 0.08);
 
-  /* Tint / accent — slightly deepened from native systemBlue (#007aff)
-     so that 13px tinted text (active tab) passes 4.5:1 on white. */
-  --tint:             #0a6bd6;
-  --tint-on:          #ffffff;
-  --tint-soft:        rgba(10, 107, 214, 0.15);
+  /* Apple HIG system colors — one per section, deepened from native
+     values so 12–13px tinted text passes 4.5:1 contrast on white.
+     Dark-mode variants are the standard iOS dark-tone colors and
+     pass on black. JS sets `--tint` to the active section's value
+     so the whole UI re-tints as you swipe between sections. */
+  --tint-nouns:        #3634A3;  /* systemIndigo accessible */
+  --tint-adjectives:   #BD4F00;  /* systemOrange accessible (deep amber) */
+  --tint-verbs:        #1F7A36;  /* systemGreen accessible */
+  --tint-transitions:  #0a6bd6;  /* systemBlue accessible */
+
+  --tint:              var(--tint-transitions);  /* default; JS overrides */
+  --tint-on:           #ffffff;
+  --tint-soft:         color-mix(in srgb, var(--tint), transparent 85%);
 
   /* Search match highlight */
   --hl:               rgba(255, 204, 0, 0.42);  /* systemYellow tint */
@@ -74,7 +82,8 @@ a { color: inherit; text-decoration: none; }
   --pad-x:        20px;
   --topbar-h:     52px;
   --tabbar-h:     58px;
-  --chips-h:      54px;
+  --chips-max-h:  148px;  /* 3.25 pills: 3 × 36 + gaps + half a pill + padding */
+  --chips-w:      248px;
   --radius:       14px;
 
   /* Motion */
@@ -101,9 +110,14 @@ a { color: inherit; text-decoration: none; }
     --fill-3:           rgba(118, 118, 128, 0.24);
     --fill-4:           rgba(118, 118, 128, 0.18);
 
-    --tint:             #0a84ff;            /* systemBlue dark */
-    --tint-on:          #ffffff;
-    --tint-soft:        rgba(10, 132, 255, 0.22);
+    --tint-nouns:        #5E5CE6;          /* systemIndigo dark */
+    --tint-adjectives:   #FF9F0A;          /* systemOrange dark */
+    --tint-verbs:        #30D158;          /* systemGreen dark */
+    --tint-transitions:  #0A84FF;          /* systemBlue dark */
+
+    --tint:              var(--tint-transitions);
+    --tint-on:           #ffffff;
+    --tint-soft:         color-mix(in srgb, var(--tint), transparent 78%);
 
     --hl:               rgba(255, 214, 10, 0.36);  /* systemYellow dark */
   }
@@ -116,13 +130,13 @@ body {
   color: var(--label);
   background: var(--bg);
   min-height: 100dvh;
-  padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom));
+  /* Bottom stack on mobile, top→bottom: chips (when visible) → tabbar
+     → topbar (brand + search). All in the thumb zone. */
+  padding-bottom: calc(var(--topbar-h) + var(--tabbar-h) + env(safe-area-inset-bottom));
   transition: padding-bottom 0.2s var(--ease);
 }
-/* On mobile, when the chips bar is showing above the tabbar, the
-   content needs extra room so the last entry isn't hidden behind it. */
 body.chips-visible {
-  padding-bottom: calc(var(--tabbar-h) + var(--chips-h) + env(safe-area-inset-bottom));
+  padding-bottom: calc(var(--topbar-h) + var(--tabbar-h) + var(--chips-max-h) + env(safe-area-inset-bottom) + 32px);
 }
 
 /* --- Skip links --- */
@@ -146,18 +160,20 @@ body.chips-visible {
    Topbar — sticky search
    ============================================================ */
 .topbar {
-  position: sticky;
-  top: 0;
-  z-index: 20;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 28;  /* below tabbar (30) and chips (35) */
   display: flex;
   align-items: center;
   gap: 10px;
-  height: calc(var(--topbar-h) + env(safe-area-inset-top, 0px));
-  padding: env(safe-area-inset-top, 0px) var(--pad-x) 0;
-  background: color-mix(in oklab, var(--bg) 78%, transparent);
+  height: calc(var(--topbar-h) + env(safe-area-inset-bottom));
+  padding: 0 var(--pad-x) env(safe-area-inset-bottom);
+  background: color-mix(in oklab, var(--bg) 86%, transparent);
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
-  border-bottom: 0.5px solid var(--separator);
+  border-top: 0.5px solid var(--separator);
 }
 
 .topbar__brand {
@@ -177,6 +193,7 @@ body.chips-visible {
   line-height: 0;
   position: relative;
   top: 2px;
+  transition: color 0.3s var(--ease);
 }
 .topbar__brand-name { color: var(--label); }
 
@@ -357,86 +374,120 @@ body.chips-visible {
 }
 
 /* --- Category jump chips (sticky under topbar, only inside transitions) --- */
-/* --- Chips bar: a sub-nav that, on mobile, docks above the tab bar
-   only while the transitions section is dominant in the viewport. --- */
+/* --- Chips column: a vertical sub-nav that floats above the active
+   primary-tab and points at it with an integrated tail. Full-width
+   minus side gaps. The outer .chips owns the bubble shape (bg +
+   shadow + tail). The inner .chips__list is the scroll container —
+   keeping the tail outside that container so overflow:auto doesn't
+   clip it. --- */
 .chips {
-  /* Mobile default: fixed above the bottom tab bar */
   position: fixed;
-  left: 0;
-  right: 0;
-  bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom));
-  z-index: 25;
-  display: flex;
-  gap: 8px;
-  height: var(--chips-h);
-  align-items: center;
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  scroll-snap-type: x proximity;
-  scroll-padding-inline: var(--pad-x);
-  padding: 0 var(--pad-x);
-  background: color-mix(in oklab, var(--bg) 76%, transparent);
-  backdrop-filter: saturate(180%) blur(20px);
-  -webkit-backdrop-filter: saturate(180%) blur(20px);
-  border-top: 0.5px solid var(--separator);
-  border-bottom: 0.5px solid var(--separator);
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+  left: 12px;
+  bottom: calc(var(--topbar-h) + var(--tabbar-h) + env(safe-area-inset-bottom) + 12px);
+  z-index: 35;
+  /* Width is set in JS from documentElement.clientWidth so the
+     scrollbar gutter doesn't push the right edge off-screen. */
+
+  /* Solid background (no backdrop-filter) so the column and tail
+     render the same exact color — required for the tail-as-extension
+     visual. filter: drop-shadow envelops both the column and the ::after
+     tail in one continuous shadow path. */
+  background: var(--bg-secondary);
+  border: 0;
+  border-radius: 18px;
+  filter:
+    drop-shadow(0 14px 30px rgba(0, 0, 0, 0.18))
+    drop-shadow(0 4px 10px rgba(0, 0, 0, 0.10));
+
   opacity: 0;
   pointer-events: none;
-  transform: translateY(4px);
-  transition: opacity 0.18s var(--ease), transform 0.18s var(--ease);
+  transform: translateY(6px);
+  transition:
+    opacity 0.2s var(--ease),
+    transform 0.2s var(--ease);
 }
+@media (prefers-color-scheme: dark) {
+  .chips {
+    background: var(--bg-tertiary);  /* one step up from page bg for elevation */
+    filter:
+      drop-shadow(0 14px 30px rgba(0, 0, 0, 0.65))
+      drop-shadow(0 4px 10px rgba(0, 0, 0, 0.45));
+  }
+}
+.chips[hidden] { display: none; }
 .chips.is-visible {
   opacity: 1;
   pointer-events: auto;
   transform: none;
 }
-.chips::-webkit-scrollbar { display: none; }
+
+.chips__list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px;
+  /* ~2.5 pills visible — clear "more below" affordance. */
+  max-height: var(--chips-max-h, 132px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  scroll-padding-block: 8px;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  border-radius: inherit;
+}
+.chips__list::-webkit-scrollbar { display: none; }
+
+/* Bubble tail — CSS triangle with the EXACT same color as the column.
+   Positioned so its top edge sits flush against the column's bottom
+   edge (no overlap, no gap). The shared filter: drop-shadow on .chips
+   already wraps this pseudo, so we don't add another shadow here. */
+.chips::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: var(--chevron-x, 50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid var(--bg-secondary);
+  transform: translateX(-50%);
+  pointer-events: none;
+  transition: left 0.28s var(--ease);
+}
+@media (prefers-color-scheme: dark) {
+  .chips::after {
+    border-top-color: var(--bg-tertiary);
+  }
+}
 
 .chip {
-  flex-shrink: 0;
-  scroll-snap-align: start;
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  height: 30px;
-  padding: 0 12px;
-  border-radius: 999px;
+  width: 100%;
+  min-height: 36px;
+  padding: 7px 12px;
+  border-radius: 10px;
   border: 0;
-  background: var(--fill-3);
+  background: transparent;
   font-family: var(--font-sans);
   font-style: normal;
   font-weight: 500;
   font-size: 13px;
+  line-height: 1.3;
   color: var(--label);
-  white-space: nowrap;
+  white-space: normal;
+  text-align: left;
+  scroll-snap-align: start;
   transition: background 0.15s var(--ease), color 0.15s var(--ease);
   -webkit-tap-highlight-color: transparent;
 }
-.chip:hover { background: var(--fill-2); }
-.chip:active { background: var(--fill); }
+.chip:hover { background: var(--fill-3); }
+.chip:active { background: var(--fill-2); }
 .chip[aria-current="true"] {
   background: var(--tint);
   color: var(--tint-on);
-}
-
-/* Desktop: chips return to a sticky-top secondary rail inside the
-   transitions section. The mobile "is-visible" toggle no longer
-   matters because we override opacity/transform to defaults. */
-@media (min-width: 760px) {
-  .chips {
-    position: sticky;
-    top: calc(var(--topbar-h) + env(safe-area-inset-top, 0px));
-    bottom: auto;
-    left: auto;
-    right: auto;
-    margin: 4px calc(-1 * var(--pad-x)) 14px;
-    border-top: 0;
-    border-bottom: 0.5px solid var(--separator);
-    opacity: 1;
-    pointer-events: auto;
-    transform: none;
-  }
 }
 
 /* ============================================================
@@ -608,40 +659,18 @@ mark.hl {
   position: fixed;
   left: 0;
   right: 0;
-  bottom: 0;
+  bottom: calc(var(--topbar-h) + env(safe-area-inset-bottom));  /* sits above the search/brand bar */
   z-index: 30;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  height: calc(var(--tabbar-h) + env(safe-area-inset-bottom));
-  padding-bottom: env(safe-area-inset-bottom);
-  background: color-mix(in oklab, var(--bg) 80%, transparent);
+  height: var(--tabbar-h);
+  padding-bottom: 0;
+  background: color-mix(in oklab, var(--bg) 86%, transparent);
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
   border-top: 0.5px solid var(--separator);
 }
 
-/* Wider screens: anchor the tab bar to the content column as a
-   deliberate phone-companion pill. */
-@media (min-width: 760px) {
-  .tabbar {
-    left: 50%;
-    right: auto;
-    bottom: 18px;
-    transform: translateX(-50%);
-    width: min(calc(var(--max-w) - 60px), 460px);
-    height: calc(var(--tabbar-h) + 4px);
-    padding-bottom: 0;
-    border: 0.5px solid var(--separator);
-    border-radius: 999px;
-    background: color-mix(in oklab, var(--bg) 92%, transparent);
-    box-shadow:
-      0 10px 30px -10px rgba(0, 0, 0, 0.18),
-      0 4px 12px -6px rgba(0, 0, 0, 0.12);
-  }
-  .tab[aria-current="true"]::before {
-    top: 8px;
-  }
-}
 
 .tab {
   position: relative;
@@ -659,7 +688,7 @@ mark.hl {
   font-family: var(--font-sans);
   font-style: normal;
   font-weight: 500;
-  font-size: 13px;
+  font-size: 12px;
   line-height: 1;
   letter-spacing: -0.005em;
 }

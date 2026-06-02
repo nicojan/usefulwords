@@ -24,7 +24,62 @@
   </head>
   <body>
     <a class="skip" href="#main">Skip to content</a>
-    <a class="skip" href="#sections-nav">Skip to sections nav</a>
+    <a class="skip" href="#sections-nav">Skip to section navigation</a>
+
+    <main id="main" class="content" role="main">
+      <a id="top" tabindex="-1"></a>
+
+      <section class="masthead" aria-labelledby="masthead-title">
+        <h1 id="masthead-title" class="masthead__title">
+          <span class="masthead__title-en">Useful Words</span>
+          <span class="masthead__title-zh" lang="zh-Hant">實用詞彙</span>
+        </h1>
+        <p class="masthead__sub">
+          Nouns, adjectives, verbs, and transitions for writing in English.
+          Held in one hand while the other one writes.
+        </p>
+      </section>
+
+      <div id="empty-state" class="empty" hidden>
+        <p class="empty__title">No matches found.</p>
+        <p class="empty__sub">Try a shorter query, or type in Chinese.</p>
+      </div>
+
+      <div id="entries"><!-- rendered by app.js --></div>
+
+      <footer class="colophon">
+        <p>
+          A
+          <a href="https://forhuman.ca" target="_blank" rel="noopener">Human</a>
+          project, by
+          <a href="https://nicojan.com" target="_blank" rel="noopener">Nico&nbsp;Jan</a>.
+        </p>
+        <p class="colophon__meta">
+          <span id="entry-count">—</span> entries · EN&nbsp;/&nbsp;繁中
+        </p>
+      </footer>
+    </main>
+
+    <nav id="chips" class="chips" aria-label="Categories" hidden></nav>
+
+    <nav id="sections-nav" class="tabbar" aria-label="Sections">
+      <a class="tab" href="#nouns" data-target="nouns">
+        <span class="tab__en">nouns</span>
+        <span class="tab__zh" lang="zh-Hant">名詞</span>
+      </a>
+      <a class="tab" href="#adjectives" data-target="adjectives">
+        <span class="tab__en">adjectives</span>
+        <span class="tab__zh" lang="zh-Hant">形容詞</span>
+      </a>
+      <a class="tab" href="#verbs" data-target="verbs">
+        <span class="tab__en">verbs</span>
+        <span class="tab__zh" lang="zh-Hant">動詞</span>
+      </a>
+      <a class="tab" href="#transitions" data-target="transitions">
+        <span class="tab__en">transitions</span>
+        <span class="tab__zh" lang="zh-Hant">轉換</span>
+      </a>
+    </nav>
 
     <header class="topbar" role="banner">
       <a class="topbar__brand" href="#top" aria-label="Useful Words — back to top">
@@ -52,7 +107,7 @@
           autocorrect="off"
           autocapitalize="off"
           spellcheck="false"
-          placeholder="Search a word, a meaning…"
+          placeholder="Search for a word or meaning…"
           aria-label="Search words, definitions, or examples"
         />
         <button class="search__clear" type="button" aria-label="Clear search" hidden>
@@ -63,59 +118,6 @@
         </button>
       </label>
     </header>
-
-    <main id="main" class="content" role="main">
-      <a id="top" tabindex="-1"></a>
-
-      <section class="masthead" aria-labelledby="masthead-title">
-        <h1 id="masthead-title" class="masthead__title">
-          <span class="masthead__title-en">Useful Words</span>
-          <span class="masthead__title-zh" lang="zh-Hant">實用詞彙</span>
-        </h1>
-        <p class="masthead__sub">
-          Nouns, adjectives, verbs, and transitions for writing in English.
-          Held in one hand while the other one writes.
-        </p>
-      </section>
-
-      <div id="empty-state" class="empty" hidden>
-        <p class="empty__title">No matches.</p>
-        <p class="empty__sub">Try a shorter query, or a Chinese term.</p>
-      </div>
-
-      <div id="entries"><!-- rendered by app.js --></div>
-
-      <footer class="colophon">
-        <p>
-          A
-          <a href="https://forhuman.ca" target="_blank" rel="noopener">Human</a>
-          project, by
-          <a href="https://nicojan.com" target="_blank" rel="noopener">Nico&nbsp;Jan</a>.
-        </p>
-        <p class="colophon__meta">
-          <span id="entry-count">—</span> entries · EN&nbsp;/&nbsp;繁中
-        </p>
-      </footer>
-    </main>
-
-    <nav id="sections-nav" class="tabbar" aria-label="Sections">
-      <a class="tab" href="#nouns" data-target="nouns">
-        <span class="tab__en">Nouns</span>
-        <span class="tab__zh" lang="zh-Hant">名詞</span>
-      </a>
-      <a class="tab" href="#adjectives" data-target="adjectives">
-        <span class="tab__en">Adj.</span>
-        <span class="tab__zh" lang="zh-Hant">形容</span>
-      </a>
-      <a class="tab" href="#verbs" data-target="verbs">
-        <span class="tab__en">Verbs</span>
-        <span class="tab__zh" lang="zh-Hant">動詞</span>
-      </a>
-      <a class="tab" href="#transitions" data-target="transitions">
-        <span class="tab__en">Trans.</span>
-        <span class="tab__zh" lang="zh-Hant">轉換</span>
-      </a>
-    </nav>
 
     <script src="js/data.js"></script>
     <script src="js/app.js"></script>
