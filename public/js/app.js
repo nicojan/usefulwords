@@ -561,7 +561,18 @@
     const sections = Array.from(document.querySelectorAll(".section"));
     if (!sections.length) return;
 
+    // Gate the scroll-spy: re-run only when the active section actually
+    // changes. Without this, every scroll-event RAF during a programmatic
+    // smooth scroll re-fires activeTab.scrollIntoView({behavior:"smooth"}),
+    // which competes with the document's own in-flight smooth scroll and
+    // shows up as a stutter / premature stop on any in-page link click.
+    let lastActivateKey = null;
+    let lastActiveTab = null;
     function activate(id, onLanding) {
+      const key = `${onLanding ? "1" : "0"}|${id}`;
+      if (key === lastActivateKey) return;
+      lastActivateKey = key;
+
       let activeTab = null;
       tabs.forEach((t) => {
         const matches = !onLanding && t.dataset.target === id;
@@ -569,7 +580,8 @@
         if (matches) activeTab = t;
       });
       applyTint(id);
-      if (activeTab) {
+      if (activeTab && activeTab !== lastActiveTab) {
+        lastActiveTab = activeTab;
         activeTab.scrollIntoView({
           behavior: "smooth",
           block: "nearest",
