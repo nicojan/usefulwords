@@ -2433,7 +2433,7 @@ window.UW_DATA = {
                 zh: "框架；架構"
               },
               examples: [
-                { en: "The author builds a framework for thinking about ethics in the age of AI.", zh: "作者建立了一套思考人工智能時代倫理問題的框架。" }
+                { en: "Her thesis lays out a framework for thinking about AI ethics that other researchers have since adopted.", zh: "她的論文提出了一套人工智能倫理的思考框架，後來不少研究者都採用了。" }
               ],
               seeAlso: ["paradigm", "concept"],
               tags: ["technology-media"],
@@ -2870,7 +2870,7 @@ window.UW_DATA = {
                 zh: "其實，實際上"
               },
               examples: [
-                { en: "I don't work. As a matter of fact, I've never had a job.", zh: "我們的老師都是有資格的。此外，他們也都經驗豐富。" }
+                { en: "I don't work. As a matter of fact, I've never had a job.", zh: "我不工作。實際上，我從來沒做過任何工作。" }
               ],
               seeAlso: ["furthermore", "moreover"]
             },
@@ -2918,7 +2918,7 @@ window.UW_DATA = {
                 zh: "相似的；相應的；對等的"
               },
               examples: [
-                { en: "Life in the city is more expensive, but salaries are correspondingly higher.", zh: "在城市裡的生活是比較貴，不過薪水也對等的比較高。" }
+                { en: "Life in the city is more expensive, but salaries are correspondingly higher.", zh: "城市裡的生活開銷比較高，不過薪水也相應地比較高。" }
               ],
               seeAlso: []
             },
@@ -3070,7 +3070,7 @@ window.UW_DATA = {
                 zh: "雖然，儘管"
               },
               examples: [
-                { en: "She walked home by herself, although she knew that it was dangerous.", zh: "她一個人步行回家雖然她知道那樣做很危險。" }
+                { en: "She walked home by herself, although she knew that it was dangerous.", zh: "她一個人步行回家，雖然她知道這樣做很危險。" }
               ],
               seeAlso: ["despite", "even-though", "while"]
             },
@@ -3106,7 +3106,7 @@ window.UW_DATA = {
                 zh: "相反地，反過來地"
               },
               examples: [
-                { en: "High birth-rate is accompanied by high mortality; conversely, when one is low, so is the other.", zh: "高的出生率配有高的死亡率；相反的，當一個是低的，另一個也是。" }
+                { en: "High birth-rate is accompanied by high mortality; conversely, when one is low, so is the other.", zh: "高出生率伴隨著高死亡率；反過來說，當其中一個偏低時，另一個也會偏低。" }
               ],
               seeAlso: []
             },
@@ -3469,7 +3469,7 @@ window.UW_DATA = {
                 zh: "彻底地；激烈地"
               },
               examples: [
-                { en: "And that’s no accident because although this new style of printing comes with many advantages, it is simultaneously drastically transforming the market.", zh: "这并不意外，因为尽管这种新的印刷方式有许多优点，它同时也彻底地改变了整个市场。" }
+                { en: "And that's no accident because although this new style of printing comes with many advantages, it is simultaneously drastically transforming the market.", zh: "這並非偶然，因為儘管這種新的印刷方式有許多優點，它同時也正在徹底改變整個市場。" }
               ],
               seeAlso: []
             },
@@ -3602,7 +3602,7 @@ window.UW_DATA = {
                 zh: "既然這樣，假若這樣"
               },
               examples: [
-                { en: "In this case however, despite the name of the property, it need not and should not be unique.", zh: "尽管该属性的名称如此，但在这种情况下，它不需要也不应该为唯一的。" }
+                { en: "In this case however, despite the name of the property, it need not and should not be unique.", zh: "儘管該屬性的名稱如此，但在這種情況下，它並不需要也不應該是唯一的。" }
               ],
               seeAlso: []
             },
@@ -3663,7 +3663,7 @@ window.UW_DATA = {
                 zh: "特別，尤其，異乎尋常地"
               },
               examples: [
-                { en: "The company is beginning to attract investors, most notably big Japanese banks.", zh: "我們特別希望能收到說兩種或以上歐洲語言的人的來信。" }
+                { en: "We are particularly keen to hear from candidates who speak two or more European languages.", zh: "我們特別希望收到會說兩種或兩種以上歐洲語言的應徵者來信。" }
               ],
               seeAlso: []
             },
@@ -3687,7 +3687,7 @@ window.UW_DATA = {
                 zh: "顯著地；相當數量地"
               },
               examples: [
-                { en: "My piano playing has improved significantly since I started with a new teacher.", zh: "自從換了一位新老師，我的鋼琴水準有了明顯提升。" }
+                { en: "The new rules apply specifically to drivers with less than two years of experience.", zh: "新規定特別針對駕駛經驗不到兩年的駕駛人。" }
               ],
               seeAlso: []
             },
@@ -3729,7 +3729,7 @@ window.UW_DATA = {
                 zh: "結果；因此"
               },
               examples: [
-                { en: "As a result, we have lower rates of recall of the information itself, and enhanced recall of where and how to access it.", zh: "結果，我們降低了對信息本身的記憶能力，而加強了對\"信息在哪裏\"和\"怎麼得到信息\"的回憶能力。" }
+                { en: "As a result, we have lower rates of recall of the information itself, and enhanced recall of where and how to access it.", zh: "結果，我們對資訊本身的記憶力下降了，但對於「在哪裡可以找到資訊」以及「如何取得資訊」的記憶反而增強了。" }
               ],
               seeAlso: ["consequently", "therefore"]
             },
@@ -3978,7 +3978,7 @@ window.UW_DATA = {
               word: "by the time",
               definition: {
                 en: "at the time; when",
-                zh: "等到；到…的时候；在……以前"
+                zh: "等到；到……的時候；在……以前"
               },
               examples: [
                 { en: "By the time she showed up, I was finished eating.", zh: "等到她出現時，我已經吃完了。" }
