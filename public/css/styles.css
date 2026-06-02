@@ -41,17 +41,20 @@ a { color: inherit; text-decoration: none; }
   --fill-3:           rgba(118, 118, 128, 0.12);
   --fill-4:           rgba(116, 116, 128, 0.08);
 
-  /* Apple HIG system colors — one per section, deepened from native
+  /* Apple HIG system colors — one per topic, deepened from native
      values so 12–13px tinted text passes 4.5:1 contrast on white.
-     Dark-mode variants are the standard iOS dark-tone colors and
-     pass on black. JS sets `--tint` to the active section's value
-     so the whole UI re-tints as you swipe between sections. */
-  --tint-nouns:        #3634A3;  /* systemIndigo accessible */
-  --tint-adjectives:   #BD4F00;  /* systemOrange accessible (deep amber) */
-  --tint-verbs:        #1F7A36;  /* systemGreen accessible */
-  --tint-transitions:  #0a6bd6;  /* systemBlue accessible */
+     JS sets `--tint` to the active topic's value so the whole UI
+     re-tints as the user moves between topics. */
+  --tint-society-culture:    #3634A3;  /* systemIndigo */
+  --tint-education-learning: #7D3AA6;  /* systemPurple */
+  --tint-environment:        #1F7A36;  /* systemGreen */
+  --tint-technology-media:   #0a6bd6;  /* systemBlue */
+  --tint-health-lifestyle:   #C4143A;  /* systemPink */
+  --tint-work-economy:       #BD4F00;  /* systemOrange */
+  --tint-concepts:           #006E9A;  /* systemTeal */
+  --tint-transitions:        #5A5A5C;  /* neutral gray for linking */
 
-  --tint:              var(--tint-transitions);  /* default; JS overrides */
+  --tint:              var(--tint-society-culture);  /* default; JS overrides */
   --tint-on:           #ffffff;
   --tint-soft:         color-mix(in srgb, var(--tint), transparent 85%);
 
@@ -110,12 +113,16 @@ a { color: inherit; text-decoration: none; }
     --fill-3:           rgba(118, 118, 128, 0.24);
     --fill-4:           rgba(118, 118, 128, 0.18);
 
-    --tint-nouns:        #5E5CE6;          /* systemIndigo dark */
-    --tint-adjectives:   #FF9F0A;          /* systemOrange dark */
-    --tint-verbs:        #30D158;          /* systemGreen dark */
-    --tint-transitions:  #0A84FF;          /* systemBlue dark */
+    --tint-society-culture:    #5E5CE6;   /* systemIndigo dark */
+    --tint-education-learning: #BF5AF2;   /* systemPurple dark */
+    --tint-environment:        #30D158;   /* systemGreen dark */
+    --tint-technology-media:   #0A84FF;   /* systemBlue dark */
+    --tint-health-lifestyle:   #FF375F;   /* systemPink dark */
+    --tint-work-economy:       #FF9F0A;   /* systemOrange dark */
+    --tint-concepts:           #64D2FF;   /* systemTeal dark */
+    --tint-transitions:        #98989F;   /* gray dark */
 
-    --tint:              var(--tint-transitions);
+    --tint:              var(--tint-society-culture);
     --tint-on:           #ffffff;
     --tint-soft:         color-mix(in srgb, var(--tint), transparent 78%);
 
@@ -124,11 +131,12 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* --- Page --- */
-html { background: var(--bg); }
+/* Grouped iOS-style background so the rounded cards stand out. */
+html { background: var(--bg-grouped); }
 body {
   font-family: var(--font-sans);
   color: var(--label);
-  background: var(--bg);
+  background: var(--bg-grouped);
   min-height: 100dvh;
   /* Bottom stack on mobile, top→bottom: chips (when visible) → tabbar
      → topbar (brand + search). All in the thumb zone. */
@@ -287,31 +295,30 @@ body.chips-visible {
 }
 
 /* --- Section --- */
+/* --- Topic section (= primary page) --- */
 .section {
-  scroll-margin-top: calc(var(--topbar-h) + 16px);
-  padding-top: 22px;
-  margin-top: 24px;
+  scroll-margin-top: 16px;
+  padding-top: 12px;
+  margin-top: 18px;
 }
-.section + .section { border-top: 1px solid var(--rule); }
 
 .section__header {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 18px;
-  padding-bottom: 10px;
+  margin: 8px 4px 16px;
   position: relative;
 }
 .section__title {
   font-family: var(--font-display);
   font-style: italic;
   font-weight: 500;
-  font-size: clamp(34px, 8.5vw, 52px);
+  font-size: clamp(34px, 8.5vw, 50px);
   line-height: 1;
   letter-spacing: -0.015em;
   font-variation-settings: "opsz" 100, "SOFT" 30;
-  color: var(--ink);
+  color: var(--label);
   display: flex;
   align-items: baseline;
   gap: 14px;
@@ -334,41 +341,50 @@ body.chips-visible {
   flex-shrink: 0;
 }
 
-/* --- Category (transitions sub) --- */
+/* --- Category card: a grouped rounded container of entries
+   (iOS-style "Settings"-app feel). One card per POS group within
+   a topic, or one card per transition sub-type. --- */
 .category {
-  scroll-margin-top: calc(var(--topbar-h) + 16px);
-  padding-top: 14px;
-  margin-top: 10px;
+  scroll-margin-top: 16px;
+  background: var(--bg-tertiary);
+  border-radius: 14px;
+  margin: 14px 0 0;
+  overflow: hidden;  /* clips hairline dividers + active highlights */
+  border: 0.5px solid var(--separator);
+}
+@media (prefers-color-scheme: dark) {
+  .category { border-color: color-mix(in srgb, var(--separator), transparent 50%); }
 }
 .category__header {
   display: flex;
   align-items: baseline;
-  gap: 12px;
+  gap: 10px;
   flex-wrap: wrap;
-  padding-bottom: 6px;
-  margin: 18px 0 14px;
-  border-bottom: 1px dashed var(--rule);
+  padding: 14px 16px 10px;
+  border-bottom: 0.5px solid var(--separator);
+  background: transparent;
 }
 .category__name {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-weight: 500;
-  font-size: 22px;
+  font-family: var(--font-sans);
+  font-style: normal;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.04em;
   line-height: 1.1;
-  letter-spacing: -0.01em;
-  color: var(--ink);
-  font-variation-settings: "opsz" 60, "SOFT" 40;
+  color: var(--label-2);
+  text-transform: uppercase;
 }
 .category__name-zh {
-  font-family: var(--font-zh-serif);
+  font-family: var(--font-zh-sans);
   font-style: normal;
   font-weight: 500;
-  font-size: 15px;
-  color: var(--ink-2);
+  font-size: 12px;
+  color: var(--label-2);
+  letter-spacing: 0.02em;
 }
 .category__count {
   margin-left: auto;
-  font-size: 13px;
+  font-size: 12px;
   color: var(--label-2);
   font-feature-settings: "tnum";
 }
@@ -496,18 +512,18 @@ body.chips-visible {
 .entries { display: block; }
 .entry {
   display: block;
-  padding: 18px 0 22px;
-  border-bottom: 1px dotted var(--rule);
-  scroll-margin-top: calc(var(--topbar-h) + 16px);
+  padding: 16px 16px 18px;
+  border-bottom: 0.5px solid var(--separator);
+  scroll-margin-top: 16px;
   position: relative;
 }
-.entry:last-child { border-bottom: none; }
+.entry:last-child { border-bottom: 0; }
 .entry.is-target {
   animation: flash 1.4s var(--ease);
 }
 @keyframes flash {
   0%   { background: transparent; }
-  18%  { background: var(--accent-soft); }
+  18%  { background: var(--tint-soft); }
   100% { background: transparent; }
 }
 
@@ -515,19 +531,29 @@ body.chips-visible {
   display: flex;
   align-items: baseline;
   flex-wrap: wrap;
-  gap: 12px 14px;
-  margin-bottom: 8px;
+  gap: 8px 12px;
+  margin-bottom: 6px;
 }
 .entry__word {
   font-family: var(--font-display);
   font-weight: 500;
-  font-size: clamp(26px, 6.5vw, 34px);
+  font-size: clamp(24px, 6vw, 30px);
   line-height: 1.05;
   letter-spacing: -0.018em;
-  color: var(--ink);
+  color: var(--label);
   font-variation-settings: "opsz" 28, "SOFT" 40;
 }
-.entry__word--mark { color: var(--accent); }
+.entry__pos {
+  font-family: var(--font-sans);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--label-2);
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+  align-self: flex-end;
+  margin-bottom: 4px;
+}
+.entry__word--mark { color: var(--tint); }
 
 .entry__def { margin: 4px 0 6px; }
 .entry__def-en {
@@ -661,24 +687,35 @@ mark.hl {
   right: 0;
   bottom: calc(var(--topbar-h) + env(safe-area-inset-bottom));  /* sits above the search/brand bar */
   z-index: 30;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
+  align-items: stretch;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scroll-padding-inline: 12px;
   height: var(--tabbar-h);
-  padding-bottom: 0;
+  padding: 0;
   background: color-mix(in oklab, var(--bg) 86%, transparent);
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
   border-top: 0.5px solid var(--separator);
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
+.tabbar::-webkit-scrollbar { display: none; }
 
 
 .tab {
   position: relative;
+  flex: 0 0 auto;
+  scroll-snap-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 2px;
+  padding: 0 14px;
+  min-width: 80px;
   color: var(--label-2);
   font-family: var(--font-sans);
   transition: color 0.15s var(--ease);

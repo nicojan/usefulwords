@@ -57,7 +57,7 @@
 
   // --- Render ------------------------------------------------------
 
-  function entryHTML(entry, headingLevel) {
+  function entryHTML(entry, headingLevel, posLabel) {
     const hTag = `h${headingLevel}`;
     const examples = entry.examples
       .map(
@@ -87,6 +87,7 @@
                data-ex="${escAttr(allExampleText(entry).toLowerCase())}">
         <header class="entry__head">
           <${hTag} class="entry__word">${esc(entry.word)}</${hTag}>
+          ${posLabel ? `<span class="entry__pos" aria-hidden="true">${esc(posLabel)}</span>` : ""}
         </header>
         <div class="entry__def">
           ${entry.definition.en ? `<p class="entry__def-en">${esc(entry.definition.en)}</p>` : ""}
@@ -126,16 +127,20 @@
       .join(" ");
   }
 
-  function categoryHTML(cat) {
-    const entries = cat.entries.map((e) => entryHTML(e, 4)).join("");
+  function categoryHTML(cat, sectionId) {
+    // POS marker only applies when this category's id is a part-of-speech
+    // (nouns/adjectives/verbs) — i.e. the section is a topic, not the
+    // transitions section.
+    const posLabel = sectionId !== "transitions" ? POS_LABEL_FOR_CATEGORY[cat.id] : null;
+    const entries = cat.entries.map((e) => entryHTML(e, 4, posLabel)).join("");
     return `
-        <section class="category" id="cat-${escAttr(cat.id)}" data-cat="${escAttr(cat.id)}" aria-labelledby="cat-h-${escAttr(cat.id)}">
+        <section class="category" id="cat-${escAttr(cat.id)}-${escAttr(sectionId)}" data-cat="${escAttr(cat.id)}" aria-labelledby="cat-h-${escAttr(cat.id)}-${escAttr(sectionId)}">
           <header class="category__header">
-            <h3 class="category__name" id="cat-h-${escAttr(cat.id)}">${esc(cat.label.en)}</h3>
+            <h3 class="category__name" id="cat-h-${escAttr(cat.id)}-${escAttr(sectionId)}">${esc(cat.label.en)}</h3>
             <span class="category__name-zh" lang="zh-Hant">${esc(cat.label.zh)}</span>
             <span class="category__count">${cat.entries.length}</span>
           </header>
-          ${entries || `<p style="color:var(--ink-2);font-style:italic;padding:8px 0;">No entries yet.</p>`}
+          ${entries || `<p style="color:var(--label-2);font-style:italic;padding:14px 16px;">No entries yet.</p>`}
         </section>
       `;
   }
@@ -143,9 +148,9 @@
   function sectionHTML(section) {
     let body = "";
     if (section.categories) {
-      body = section.categories.map(categoryHTML).join("");
+      body = section.categories.map((c) => categoryHTML(c, section.id)).join("");
     } else {
-      body = section.entries.map((e) => entryHTML(e, 3)).join("");
+      body = section.entries.map((e) => entryHTML(e, 3, null)).join("");
     }
 
     const total =
@@ -307,22 +312,36 @@
   const chipsEl = document.getElementById("chips");
   let chipsRenderedFor = null; // section id whose categories are currently in chipsEl
 
-  // Apple HIG section tints — each section has its own systemColor so
+  // Apple HIG topic tints — each topic has its own systemColor so
   // active states, the brand glyph, and chip highlights re-tint as the
-  // user moves between sections. CSS holds the actual values.
+  // user moves between topics. CSS holds the actual values.
   const SECTION_TINT_VAR = {
-    nouns: "var(--tint-nouns)",
-    adjectives: "var(--tint-adjectives)",
-    verbs: "var(--tint-verbs)",
-    transitions: "var(--tint-transitions)",
+    "society-culture":     "var(--tint-society-culture)",
+    "education-learning":  "var(--tint-education-learning)",
+    "environment":         "var(--tint-environment)",
+    "technology-media":    "var(--tint-technology-media)",
+    "health-lifestyle":    "var(--tint-health-lifestyle)",
+    "work-economy":        "var(--tint-work-economy)",
+    "concepts":            "var(--tint-concepts)",
+    "transitions":         "var(--tint-transitions)",
   };
   let lastTintSection = null;
   function applyTint(sectionId) {
     if (sectionId === lastTintSection) return;
     lastTintSection = sectionId;
-    const v = SECTION_TINT_VAR[sectionId] || SECTION_TINT_VAR.transitions;
+    const v = SECTION_TINT_VAR[sectionId] || SECTION_TINT_VAR["society-culture"];
     document.body.style.setProperty("--tint", v);
   }
+
+  // POS marker shown next to each entry's headword. Only meaningful
+  // when the entry sits inside a parts-of-speech category. For the
+  // transitions topic the categories are linking-word types, not POS,
+  // so no marker is rendered.
+  const POS_LABEL_FOR_CATEGORY = {
+    nouns:      "n.",
+    adjectives: "adj.",
+    verbs:      "v.",
+  };
 
   function renderChips(section) {
     if (!chipsEl || chipsRenderedFor === section.id) return;
@@ -368,10 +387,21 @@
     if (!sections.length) return;
 
     function activate(id) {
-      tabs.forEach((t) =>
-        t.setAttribute("aria-current", t.dataset.target === id ? "true" : "false")
-      );
+      let activeTab = null;
+      tabs.forEach((t) => {
+        const matches = t.dataset.target === id;
+        t.setAttribute("aria-current", matches ? "true" : "false");
+        if (matches) activeTab = t;
+      });
       applyTint(id);
+      // Keep the active tab visible in the scrollable tabbar.
+      if (activeTab) {
+        activeTab.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest",
+          inline: "center",
+        });
+      }
       if (!chipsEl) return;
 
       const section = DATA.sections.find((s) => s.id === id);
@@ -447,11 +477,13 @@
       const c = e.target.closest(".chip");
       if (!c) return;
       e.preventDefault();
-      const id = c.dataset.chip;
-      const el = document.getElementById(`cat-${id}`);
+      const catId = c.dataset.chip;
+      const sectionId = chipsRenderedFor;
+      if (!sectionId) return;
+      const el = document.getElementById(`cat-${catId}-${sectionId}`);
       if (el) {
         el.scrollIntoView({ behavior: "smooth", block: "start" });
-        history.replaceState(null, "", `#cat-${id}`);
+        history.replaceState(null, "", `#cat-${catId}-${sectionId}`);
       }
     });
 
