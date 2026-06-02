@@ -39,7 +39,7 @@ window.UW_DATA = {
                 zh: "不平等；不均"
               },
               examples: [
-                { en: "Rising income inequality has become one of the defining issues of our generation.", zh: "貧富差距日益擴大，已成為這一代人面臨的核心議題之一。" }
+                { en: "Rising income inequality is now a central political issue in most wealthy democracies.", zh: "在多數富裕民主國家，貧富差距擴大如今已成為核心的政治議題。" }
               ],
               seeAlso: ["marginalized", "prejudice"],
               tags: ["education-learning", "work-economy"],
@@ -84,7 +84,7 @@ window.UW_DATA = {
                 zh: "傳統；習俗"
               },
               examples: [
-                { en: "Many young people feel torn between honouring tradition and pursuing a modern lifestyle.", zh: "許多年輕人在尊重傳統與追求現代生活方式之間左右為難。" }
+                { en: "My grandmother still insists on the Lunar New Year tradition of cleaning the house from top to bottom.", zh: "奶奶到現在還是堅持農曆新年那套從上到下大掃除的傳統。" }
               ],
               seeAlso: ["conservative", "generation"],
               collocations: ["long-standing tradition", "uphold tradition", "break with tradition", "honour tradition"]
@@ -98,7 +98,7 @@ window.UW_DATA = {
                 zh: "偏見；成見"
               },
               examples: [
-                { en: "Education remains one of the most effective ways to dismantle long-standing prejudice.", zh: "教育仍是消除長期積累的偏見最有效的途徑之一。" }
+                { en: "Education is still the most reliable way to break down long-standing prejudice.", zh: "教育仍是消除長期偏見最可靠的方式。" }
               ],
               seeAlso: ["discriminatory", "marginalized"],
               tags: ["education-learning"],
@@ -147,7 +147,7 @@ window.UW_DATA = {
                 zh: "團結的；有凝聚力的"
               },
               examples: [
-                { en: "A cohesive society depends on shared values rather than enforced uniformity.", zh: "一個有凝聚力的社會仰賴的是共同的價值觀，而非強制的一致性。" }
+                { en: "A cohesive society needs shared values that people actually believe in.", zh: "有凝聚力的社會仰賴的是人們真心認同的共同價值觀。" }
               ],
               seeAlso: ["integration", "multicultural"],
               collocations: ["a cohesive society", "cohesive community", "socially cohesive", "cohesive whole"]
@@ -161,7 +161,7 @@ window.UW_DATA = {
                 zh: "多元文化的"
               },
               examples: [
-                { en: "Toronto is often cited as one of the most successful multicultural cities in the world.", zh: "多倫多常被視為全球最成功的多元文化城市之一。" }
+                { en: "Toronto is one of the few genuinely multicultural cities where over half the residents were born abroad.", zh: "多倫多是全球少數真正多元文化的城市之一，超過一半居民在海外出生。" }
               ],
               seeAlso: ["diversity", "cohesive"],
               collocations: ["multicultural society", "multicultural city", "deeply multicultural", "multicultural background"]
@@ -294,7 +294,7 @@ window.UW_DATA = {
                 zh: "使兩極化；使對立"
               },
               examples: [
-                { en: "Social media tends to polarize public opinion rather than encourage genuine debate.", zh: "社群媒體往往使輿論兩極化，而非促進真正的討論。" }
+                { en: "Most social media platforms polarize public opinion long before they encourage real debate.", zh: "多數社群媒體在促進真正討論之前，早就讓輿論兩極化了。" }
               ],
               seeAlso: ["dichotomy", "platform"],
               collocations: ["polarize opinion", "polarize society", "polarize debate", "deeply polarize"]
@@ -323,7 +323,7 @@ window.UW_DATA = {
                 zh: "欣然接受；擁抱（理念）"
               },
               examples: [
-                { en: "Communities that embrace change tend to recover from crises more quickly.", zh: "願意擁抱改變的社群通常能更快地從危機中復原。" }
+                { en: "She has finally learned to embrace the awkwardness of speaking a new language in public.", zh: "她終於學會坦然面對在公開場合說新語言時的尷尬。" }
               ],
               seeAlso: ["diversity", "progressive"],
               collocations: ["embrace change", "embrace diversity", "wholeheartedly embrace", "embrace new ideas"]
@@ -424,7 +424,7 @@ window.UW_DATA = {
                 zh: "專業知識；專長"
               },
               examples: [
-                { en: "Real expertise is built through years of deliberate practice, not weekend workshops.", zh: "真正的專業是靠多年的刻意練習累積而來，而非靠週末的工作坊。" }
+                { en: "She has spent over a decade building her expertise in cancer immunotherapy.", zh: "她花了超過十年累積在癌症免疫療法方面的專業。" }
               ],
               seeAlso: ["qualification", "scholarly"],
               tags: ["work-economy"],
@@ -558,7 +558,7 @@ window.UW_DATA = {
                 zh: "包容的；不排斥的"
               },
               examples: [
-                { en: "An inclusive classroom benefits every student, not only those with special needs.", zh: "包容性的課堂讓每一位學生受益，而不僅是有特殊需求的學生。" }
+                { en: "An inclusive classroom benefits every student in it, from the quiet kids to the ones with special needs.", zh: "包容性的課堂讓每一位學生都能受益，從安靜內向的孩子到有特殊需求的學生都不例外。" }
               ],
               seeAlso: ["accessible", "integration"],
               tags: ["society-culture"],
@@ -636,7 +636,7 @@ window.UW_DATA = {
                 zh: "教育；教導"
               },
               examples: [
-                { en: "Schools should educate students not just for examinations but for life beyond them.", zh: "學校教育學生時，不應只為應付考試，更應為他們日後的人生做準備。" }
+                { en: "Schools that only educate students to pass exams send graduates into the world half-prepared.", zh: "只為了應付考試而教學的學校，培養出來的畢業生只能說是準備了一半。" }
               ],
               seeAlso: ["pedagogy", "cultivate"],
               collocations: ["educate the public", "educate children", "educate yourself about", "well-educated"]
@@ -650,7 +650,7 @@ window.UW_DATA = {
                 zh: "培養；陶冶"
               },
               examples: [
-                { en: "Reading widely helps cultivate the kind of curiosity that no curriculum can teach.", zh: "廣泛的閱讀有助於培養出任何課程都無法傳授的好奇心。" }
+                { en: "He spent the summer cultivating a small vegetable garden behind the school.", zh: "他整個夏天都在學校後面打理一塊小小的菜園。" }
               ],
               seeAlso: ["foster", "discipline"],
               collocations: ["cultivate a habit", "cultivate relationships", "cultivate curiosity", "carefully cultivate"]
@@ -721,7 +721,7 @@ window.UW_DATA = {
                 zh: "內化；將…內化於心"
               },
               examples: [
-                { en: "Real learning happens when students internalize concepts rather than merely memorise them.", zh: "真正的學習，是學生將概念內化於心，而非僅僅死記硬背。" }
+                { en: "Students who only memorise formulas often fail to internalize what those formulas actually mean.", zh: "只死記公式的學生往往無法真正內化那些公式所代表的意義。" }
               ],
               seeAlso: ["instil", "concept"],
               collocations: ["internalize values", "internalize ideas", "fully internalize", "internalize a concept"]
@@ -765,7 +765,7 @@ window.UW_DATA = {
                 zh: "生物多樣性"
               },
               examples: [
-                { en: "Protecting biodiversity is not merely an ecological concern but an economic one.", zh: "保護生物多樣性不僅是生態議題，更是一項經濟議題。" }
+                { en: "Pollinators, soil microbes, and coral reefs are all part of the biodiversity that keeps food systems running.", zh: "授粉者、土壤微生物和珊瑚礁都屬於維繫糧食系統運作的生物多樣性的一部分。" }
               ],
               seeAlso: ["ecosystem", "conservation"],
               collocations: ["protect biodiversity", "loss of biodiversity", "rich in biodiversity", "biodiversity hotspot"]
@@ -808,7 +808,7 @@ window.UW_DATA = {
                 zh: "永續性；可持續性"
               },
               examples: [
-                { en: "Sustainability should be designed into a product, not bolted on as an afterthought.", zh: "永續應在產品設計之初就納入考量，而非事後才匆忙補上。" }
+                { en: "The company is starting to take sustainability seriously, though their packaging still uses single-use plastic.", zh: "這家公司開始認真看待永續議題，雖然包裝上仍然在使用一次性塑膠。" }
               ],
               seeAlso: ["sustainable", "conservation"],
               tags: ["work-economy"],
@@ -1051,7 +1051,7 @@ window.UW_DATA = {
                 zh: "加劇；惡化"
               },
               examples: [
-                { en: "Cutting public transport funding tends to exacerbate congestion rather than ease it.", zh: "削減公共運輸的經費往往會加劇交通擁堵，而非緩解問題。" }
+                { en: "Cutting bus routes usually exacerbates congestion as more commuters end up driving.", zh: "削減公車路線通常會加劇塞車情況，因為更多通勤者只能改開車。" }
               ],
               seeAlso: ["mitigate", "pollution"],
               collocations: ["exacerbate the problem", "exacerbate tensions", "only exacerbate", "exacerbate inequality"]
@@ -1138,7 +1138,7 @@ window.UW_DATA = {
                 zh: "自動化"
               },
               examples: [
-                { en: "Automation has reshaped the labour market, eliminating some jobs while creating others.", zh: "自動化重新塑造了勞動市場，淘汰了某些工作，也催生出新的職位。" }
+                { en: "Automation has wiped out a lot of warehouse jobs over the past five years.", zh: "過去五年間，自動化已經淘汰了大量倉儲工作。" }
               ],
               seeAlso: ["automate", "workforce"],
               tags: ["work-economy"],
@@ -1168,7 +1168,7 @@ window.UW_DATA = {
                 zh: "創新；革新"
               },
               examples: [
-                { en: "Genuine innovation rarely happens in isolation; it builds on what came before.", zh: "真正的創新很少是憑空出現的；它總是建立在前人的成果之上。" }
+                { en: "Most so-called innovation is just rebranding; actual innovation usually builds on something older.", zh: "許多所謂的創新其實只是重新包裝，真正的創新通常都建立在更早的事物之上。" }
               ],
               seeAlso: ["innovate", "disruptive"],
               tags: ["work-economy"],
@@ -1183,7 +1183,7 @@ window.UW_DATA = {
                 zh: "平台（尤指網路平台）"
               },
               examples: [
-                { en: "Social media platforms wield enormous influence over public discourse.", zh: "社群平台對公共輿論發揮著巨大的影響力。" }
+                { en: "A handful of social media platforms now shape what most people read and watch each day.", zh: "如今，少數幾個社群平台已經左右了大多數人每天閱讀與觀看的內容。" }
               ],
               seeAlso: ["algorithm", "misinformation"],
               tags: ["society-culture"],
@@ -1263,7 +1263,7 @@ window.UW_DATA = {
                 zh: "數位的；數碼的"
               },
               examples: [
-                { en: "Children today grow up entirely within a digital environment from their earliest years.", zh: "如今的兒童從最早的年歲起就完全在數位環境中長大。" }
+                { en: "Most of our school records are now stored in a digital format rather than on paper.", zh: "我們學校大部分紀錄如今都以數位形式保存，而不是用紙本。" }
               ],
               seeAlso: ["digitize", "infrastructure"],
               collocations: ["digital age", "digital technology", "the digital divide", "go digital"]
@@ -1306,7 +1306,7 @@ window.UW_DATA = {
                 zh: "精密的；複雜先進的"
               },
               examples: [
-                { en: "Increasingly sophisticated cyber-attacks now target small businesses as well as governments.", zh: "日益精密的網路攻擊如今不僅針對政府，也將矛頭指向中小企業。" }
+                { en: "The phishing email looked sophisticated enough to fool half the staff in our IT department.", zh: "那封釣魚郵件做得非常精密，連我們資訊部門一半的同事都被騙了。" }
               ],
               seeAlso: ["innovation", "infrastructure"],
               collocations: ["highly sophisticated", "sophisticated equipment", "sophisticated techniques", "increasingly sophisticated"]
@@ -1385,7 +1385,7 @@ window.UW_DATA = {
                 zh: "使自動化"
               },
               examples: [
-                { en: "Companies are racing to automate routine tasks in order to free staff for more creative work.", zh: "企業競相將例行工作自動化，以便讓員工得以投入更具創造性的工作。" }
+                { en: "Banks were the first big industry to automate basic clerical work back in the 1980s.", zh: "銀行業在一九八〇年代率先將基層文書工作自動化。" }
               ],
               seeAlso: ["automation", "automated"],
               tags: ["work-economy"],
@@ -1400,7 +1400,7 @@ window.UW_DATA = {
                 zh: "增強；擴增"
               },
               examples: [
-                { en: "The best AI tools augment human judgement rather than attempt to replace it.", zh: "最好的 AI 工具是用來增強人類判斷，而非試圖取而代之。" }
+                { en: "Doctors increasingly use AI to augment their reading of medical scans, especially for early-stage cancers.", zh: "醫師越來越常用 AI 來輔助判讀醫學影像，尤其是針對早期癌症。" }
               ],
               seeAlso: ["innovate", "sophisticated"],
               collocations: ["augment human ability", "augment income", "significantly augment", "augment reality"]
@@ -1948,7 +1948,7 @@ window.UW_DATA = {
                 zh: "創業者；企業家"
               },
               examples: [
-                { en: "Successful entrepreneurs rarely follow a single template; they adapt to the moment.", zh: "成功的創業者很少遵循單一模式，他們會因時制宜。" }
+                { en: "My cousin became an entrepreneur after losing his job during the 2008 crash.", zh: "我表哥在二〇〇八年金融海嘯失業之後成了創業者。" }
               ],
               seeAlso: ["innovation", "lucrative"],
               collocations: ["a successful entrepreneur", "young entrepreneur", "serial entrepreneur", "social entrepreneur"]
@@ -2277,7 +2277,7 @@ window.UW_DATA = {
                 zh: "忠誠；投入；奉獻；承諾，保證，諾言"
               },
               examples: [
-                { en: "Real change requires a long-term commitment, not just a few months of public attention.", zh: "真正的改變需要長期的投入，而非只靠幾個月的大眾關注。" }
+                { en: "Quitting smoking is a serious commitment that most people underestimate the first time around.", zh: "戒菸是個嚴肅的承諾，多數人第一次嘗試時都低估了它的難度。" }
               ],
               seeAlso: [],
               collocations: ["make a commitment", "a firm commitment", "long-term commitment", "commitment to"]
@@ -2717,7 +2717,7 @@ window.UW_DATA = {
                 zh: "主張；論證；辯論"
               },
               examples: [
-                { en: "The author argues that empathy can be taught, not just inherited.", zh: "作者主張同理心是可以教會的，並非僅靠遺傳。" }
+                { en: "The author argues that empathy is a skill children learn from how adults around them behave.", zh: "作者主張同理心是孩子從身邊大人行為中學來的一種能力。" }
               ],
               seeAlso: ["contend", "refute"],
               collocations: ["argue that", "argue in favour of", "convincingly argue", "argue against"]

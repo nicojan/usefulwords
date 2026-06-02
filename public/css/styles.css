@@ -75,15 +75,17 @@ a { color: inherit; text-decoration: none; }
   --tint-health-lifestyle:   #C4143A;  /* systemPink */
   --tint-work-economy:       #BD4F00;  /* systemOrange */
   --tint-concepts:           #006E9A;  /* systemTeal */
-  --tint-transitions:        #5A5A5C;  /* neutral gray for linking */
+  --tint-transitions:        #7F6545;  /* systemBrown accessible — calm, connecting */
 
   --tint:              var(--tint-society-culture);  /* default; JS overrides */
   --tint-on:           #ffffff;
   --tint-soft:         color-mix(in srgb, var(--tint), transparent 85%);
 
   /* Human (forhuman.ca) brand terracotta — used as a stable accent
-     for the brand glyph so it doesn't re-tint with the active topic. */
-  --brand-terracotta:  #B86F4A;
+     for the wordmark in both the masthead and the topbar. Picked the
+     deeper of forhuman.ca's two terracotta shades so it clears
+     WCAG AA (4.5:1) on white when used as small text. */
+  --brand-terracotta:  #A0603F;
 
   /* Search match highlight */
   --hl:               rgba(255, 204, 0, 0.42);  /* systemYellow tint */
@@ -139,14 +141,18 @@ a { color: inherit; text-decoration: none; }
     --fill-3:           rgba(118, 118, 128, 0.24);
     --fill-4:           rgba(118, 118, 128, 0.18);
 
-    --tint-society-culture:    #5E5CE6;   /* systemIndigo dark */
-    --tint-education-learning: #BF5AF2;   /* systemPurple dark */
+    /* Dark-mode tints — brightened from Apple's standard system
+       colours so each clears 4.5:1 contrast on bg-tertiary (the card
+       surface category headings sit on). Still recognisable as their
+       systemColor cousins. */
+    --tint-society-culture:    #9D9CFF;   /* brighter indigo */
+    --tint-education-learning: #D78EFF;   /* brighter purple */
     --tint-environment:        #30D158;   /* systemGreen dark */
-    --tint-technology-media:   #0A84FF;   /* systemBlue dark */
-    --tint-health-lifestyle:   #FF375F;   /* systemPink dark */
+    --tint-technology-media:   #5BA8FF;   /* brighter blue */
+    --tint-health-lifestyle:   #FF6080;   /* brighter pink */
     --tint-work-economy:       #FF9F0A;   /* systemOrange dark */
     --tint-concepts:           #64D2FF;   /* systemTeal dark */
-    --tint-transitions:        #98989F;   /* gray dark */
+    --tint-transitions:        #CFA37A;   /* brown — replaces gray */
 
     --tint:              var(--tint-society-culture);
     --tint-on:           #ffffff;
@@ -169,6 +175,9 @@ body {
      → topbar (brand + search). All in the thumb zone. */
   padding-bottom: calc(var(--topbar-h) + var(--tabbar-h) + env(safe-area-inset-bottom));
   transition: padding-bottom 0.2s var(--ease);
+}
+body.chips-visible {
+  padding-bottom: calc(var(--topbar-h) + var(--tabbar-h) + 148px + env(safe-area-inset-bottom) + 32px);
 }
 
 /* --- Skip links --- */
@@ -219,7 +228,7 @@ body {
   letter-spacing: -0.01em;
   font-variation-settings: "opsz" 14, "SOFT" 50;
 }
-.topbar__brand-name { color: var(--label); }
+.topbar__brand-name { color: var(--brand-terracotta); }
 
 /* Search — iOS rounded field on systemFill background */
 .search {
@@ -289,7 +298,7 @@ body {
   line-height: 0.92;
   letter-spacing: -0.02em;
   font-variation-settings: "opsz" 100, "SOFT" 30;
-  color: var(--ink);
+  color: var(--brand-terracotta);
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -662,18 +671,16 @@ body {
 }
 
 /* --- Category card: a grouped rounded container of entries
-   (iOS-style "Settings"-app feel). One card per POS group within
-   a topic, or one card per transition sub-type. --- */
+   (iOS-style "Settings"-app feel). Border + heading colour pick up
+   the parent topic's tint so each card carries its topic identity
+   even when looked at in isolation. --- */
 .category {
   scroll-margin-top: 16px;
   background: var(--bg-tertiary);
   border-radius: 14px;
   margin: 14px 0 0;
   overflow: hidden;  /* clips hairline dividers + active highlights */
-  border: 0.5px solid var(--separator);
-}
-@media (prefers-color-scheme: dark) {
-  .category { border-color: color-mix(in srgb, var(--separator), transparent 50%); }
+  border: 1px solid var(--cat-tint, var(--separator));
 }
 .category__header {
   display: flex;
@@ -691,7 +698,7 @@ body {
   font-size: 13px;
   letter-spacing: 0.04em;
   line-height: 1.1;
-  color: var(--label-2);
+  color: var(--cat-tint, var(--label-2));
   text-transform: uppercase;
 }
 .category__name-zh {
@@ -709,57 +716,108 @@ body {
   font-feature-settings: "tnum";
 }
 
-/* --- Inline section chip nav — rendered only inside sections that
-   have 4+ categories (currently just transitions). A horizontal
-   scrollable strip below the section title; scroll-snaps to chips
-   and sticky-pins below the section header while scrolling within
-   the section. --- */
-.section-chips {
-  position: sticky;
-  top: 0;
-  z-index: 4;
+/* --- Chips column: a vertical bubble that floats above the
+   transitions tab when the transitions section is dominant. Shows
+   ~2.5 pills so the user knows there are more categories to scroll.
+   Tail points at the active primary tab. Bubble + tail share one
+   filter:drop-shadow so they read as a single shape. --- */
+.chips {
+  position: fixed;
+  left: 12px;
+  bottom: calc(var(--topbar-h) + var(--tabbar-h) + env(safe-area-inset-bottom) + 12px);
+  z-index: 35;
+
+  background: var(--bg-secondary);
+  border: 0;
+  border-radius: 18px;
+  filter:
+    drop-shadow(0 14px 30px rgba(0, 0, 0, 0.18))
+    drop-shadow(0 4px 10px rgba(0, 0, 0, 0.10));
+
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(6px);
+  transition:
+    opacity 0.2s var(--ease),
+    transform 0.2s var(--ease);
+}
+@media (prefers-color-scheme: dark) {
+  .chips {
+    background: var(--bg-tertiary);
+    filter:
+      drop-shadow(0 14px 30px rgba(0, 0, 0, 0.65))
+      drop-shadow(0 4px 10px rgba(0, 0, 0, 0.45));
+  }
+}
+.chips[hidden] { display: none; }
+.chips.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: none;
+}
+
+.chips__list {
   display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  scroll-snap-type: x proximity;
-  scroll-padding-inline: 4px;
-  padding: 10px 4px 12px;
-  margin: 0 -4px 8px;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px;
+  /* ~2.5 pills visible — clear "more below" affordance. */
+  max-height: 148px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  scroll-padding-block: 8px;
   -ms-overflow-style: none;
   scrollbar-width: none;
-  background: linear-gradient(
-    to bottom,
-    var(--bg-grouped) 70%,
-    color-mix(in oklab, var(--bg-grouped) 60%, transparent)
-  );
+  border-radius: inherit;
 }
-.section-chips::-webkit-scrollbar { display: none; }
+.chips__list::-webkit-scrollbar { display: none; }
 
-.section-chip {
-  flex-shrink: 0;
-  scroll-snap-align: start;
-  display: inline-flex;
+/* Bubble tail — clean CSS triangle, same color as the bubble. */
+.chips::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: var(--chevron-x, 50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid var(--bg-secondary);
+  transform: translateX(-50%);
+  pointer-events: none;
+  transition: left 0.28s var(--ease);
+}
+@media (prefers-color-scheme: dark) {
+  .chips::after { border-top-color: var(--bg-tertiary); }
+}
+
+.chip {
+  display: flex;
   align-items: center;
-  height: 30px;
-  padding: 0 12px;
-  border-radius: 999px;
-  background: var(--bg-tertiary);
-  border: 0.5px solid var(--separator);
+  width: 100%;
+  min-height: 36px;
+  padding: 7px 12px;
+  border-radius: 10px;
+  border: 0;
+  background: transparent;
   font-family: var(--font-sans);
   font-style: normal;
   font-weight: 500;
-  font-size: 12px;
+  font-size: 13px;
+  line-height: 1.3;
   color: var(--label);
-  text-decoration: none;
-  white-space: nowrap;
-  transition: background 0.15s var(--ease), color 0.15s var(--ease), border-color 0.15s var(--ease);
+  white-space: normal;
+  text-align: left;
+  scroll-snap-align: start;
+  transition: background 0.15s var(--ease), color 0.15s var(--ease);
   -webkit-tap-highlight-color: transparent;
+  text-decoration: none;
 }
-.section-chip:hover { background: var(--fill-3); }
-.section-chip[aria-current="true"] {
+.chip:hover { background: var(--fill-3); }
+.chip:active { background: var(--fill-2); }
+.chip[aria-current="true"] {
   background: var(--label);
-  border-color: var(--label);
   color: var(--bg);
 }
 
@@ -1041,11 +1099,14 @@ mark.hl {
 /* ============================================================
    Bottom tab bar — the thumb-zone nav (iOS UITabBar feel)
    ============================================================ */
+/* The bottom primary nav holds 8 tabs but on a 390-wide viewport
+   only 4-5 fit. The scrollable area + edge fade gradient + the
+   half-cut next tab together signal "scroll for more". */
 .tabbar {
   position: fixed;
   left: 0;
   right: 0;
-  bottom: calc(var(--topbar-h) + env(safe-area-inset-bottom));  /* sits above the search/brand bar */
+  bottom: calc(var(--topbar-h) + env(safe-area-inset-bottom));
   z-index: 30;
   display: flex;
   align-items: stretch;
@@ -1061,6 +1122,10 @@ mark.hl {
   border-top: 0.5px solid var(--separator);
   -ms-overflow-style: none;
   scrollbar-width: none;
+  /* Mask the leading/trailing edges so the next tab fades in/out
+     rather than being chopped off — clearer scroll affordance. */
+  mask-image: linear-gradient(to right, transparent 0, black 16px, black calc(100% - 16px), transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0, black 16px, black calc(100% - 16px), transparent 100%);
 }
 .tabbar::-webkit-scrollbar { display: none; }
 
@@ -1074,8 +1139,8 @@ mark.hl {
   align-items: center;
   justify-content: center;
   gap: 2px;
-  padding: 0 14px;
-  min-width: 80px;
+  padding: 0 12px;
+  min-width: 74px;  /* lets 5 tabs peek into a 390-wide viewport */
   color: var(--label-2);
   font-family: var(--font-sans);
   transition: color 0.15s var(--ease);
