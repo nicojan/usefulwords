@@ -18,6 +18,7 @@ window.UW_DATA = {
             {
               id: "diversity",
               word: "diversity",
+              pronunciation: "/daɪˈvɜːsəti/",
               definition: {
                 en: "the presence of a wide range of different people, ideas, or things within a group",
                 zh: "多樣性；多元化"
@@ -26,11 +27,13 @@ window.UW_DATA = {
                 { en: "Cities tend to flourish when they embrace cultural and linguistic diversity.", zh: "當城市擁抱文化與語言上的多元時，往往能蓬勃發展。" }
               ],
               seeAlso: ["multicultural", "integration"],
-              tags: ["education-learning", "work-economy"]
+              tags: ["education-learning", "work-economy"],
+              collocations: ["cultural diversity", "embrace diversity", "promote diversity", "a wealth of diversity"]
             },
             {
               id: "inequality",
               word: "inequality",
+              pronunciation: "/ˌɪnɪˈkwɒləti/",
               definition: {
                 en: "an unfair difference between groups of people in society",
                 zh: "不平等；不均"
@@ -39,11 +42,13 @@ window.UW_DATA = {
                 { en: "Rising income inequality has become one of the defining issues of our generation.", zh: "貧富差距日益擴大，已成為這一代人面臨的核心議題之一。" }
               ],
               seeAlso: ["marginalized", "prejudice"],
-              tags: ["education-learning", "work-economy"]
+              tags: ["education-learning", "work-economy"],
+              collocations: ["income inequality", "tackle inequality", "growing inequality", "address inequality"]
             },
             {
               id: "demographic",
               word: "demographic",
+              pronunciation: "/ˌdeməˈɡrafɪk/",
               definition: {
                 en: "a particular group within a population, often defined by age, income, or background",
                 zh: "人口群體；人口結構"
@@ -52,11 +57,13 @@ window.UW_DATA = {
                 { en: "Japan's ageing demographic poses serious challenges for its pension system.", zh: "日本日益高齡化的人口結構對其退休金制度構成嚴峻挑戰。" }
               ],
               seeAlso: ["generation", "workforce"],
-              tags: ["work-economy"]
+              tags: ["work-economy"],
+              collocations: ["ageing demographic", "target demographic", "demographic shift", "key demographic"]
             },
             {
               id: "hierarchy",
               word: "hierarchy",
+              pronunciation: "/ˈhaɪərɑːki/",
               definition: {
                 en: "a system in which people or things are ranked according to status or authority",
                 zh: "階級制度；等級體系"
@@ -65,11 +72,13 @@ window.UW_DATA = {
                 { en: "Traditional workplace hierarchies are gradually giving way to flatter, more collaborative structures.", zh: "傳統的職場階級制度正逐漸讓位於更扁平、更具協作性的組織結構。" }
               ],
               seeAlso: ["tradition", "workforce"],
-              tags: ["work-economy"]
+              tags: ["work-economy"],
+              collocations: ["social hierarchy", "rigid hierarchy", "at the top of the hierarchy", "flatten the hierarchy"]
             },
             {
               id: "tradition",
               word: "tradition",
+              pronunciation: "/trəˈdɪʃən/",
               definition: {
                 en: "a long-established custom or belief passed down within a society",
                 zh: "傳統；習俗"
@@ -77,11 +86,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Many young people feel torn between honouring tradition and pursuing a modern lifestyle.", zh: "許多年輕人在尊重傳統與追求現代生活方式之間左右為難。" }
               ],
-              seeAlso: ["conservative", "generation"]
+              seeAlso: ["conservative", "generation"],
+              collocations: ["long-standing tradition", "uphold tradition", "break with tradition", "honour tradition"]
             },
             {
               id: "prejudice",
               word: "prejudice",
+              pronunciation: "/ˈpredʒədɪs/",
               definition: {
                 en: "an unfair opinion or feeling formed about someone without sufficient knowledge",
                 zh: "偏見；成見"
@@ -90,11 +101,13 @@ window.UW_DATA = {
                 { en: "Education remains one of the most effective ways to dismantle long-standing prejudice.", zh: "教育仍是消除長期積累的偏見最有效的途徑之一。" }
               ],
               seeAlso: ["discriminatory", "marginalized"],
-              tags: ["education-learning"]
+              tags: ["education-learning"],
+              collocations: ["racial prejudice", "deep-rooted prejudice", "confront prejudice", "without prejudice"]
             },
             {
               id: "integration",
               word: "integration",
+              pronunciation: "/ˌɪntɪˈɡreɪʃən/",
               definition: {
                 en: "the process of bringing people of different backgrounds into equal participation in society",
                 zh: "融合；整合"
@@ -102,11 +115,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Successful integration depends on language support, fair housing, and access to employment.", zh: "成功的社會融合有賴於語言支援、公平的住房政策以及就業機會。" }
               ],
-              seeAlso: ["assimilate", "multicultural"]
+              seeAlso: ["assimilate", "multicultural"],
+              collocations: ["social integration", "successful integration", "promote integration", "economic integration"]
             },
             {
               id: "generation",
               word: "generation",
+              pronunciation: "/ˌdʒenəˈreɪʃən/",
               definition: {
                 en: "all the people of roughly the same age within a society or family",
                 zh: "世代；一代人"
@@ -114,7 +129,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Each generation tends to define progress on its own terms.", zh: "每一個世代往往會以自己的方式定義何謂進步。" }
               ],
-              seeAlso: ["demographic", "tradition"]
+              seeAlso: ["demographic", "tradition"],
+              collocations: ["the younger generation", "future generations", "generation gap", "for generations to come"]
             }
           ]
         },
@@ -125,6 +141,7 @@ window.UW_DATA = {
             {
               id: "cohesive",
               word: "cohesive",
+              pronunciation: "/kəʊˈhiːsɪv/",
               definition: {
                 en: "united and working well together as a group",
                 zh: "團結的；有凝聚力的"
@@ -132,11 +149,13 @@ window.UW_DATA = {
               examples: [
                 { en: "A cohesive society depends on shared values rather than enforced uniformity.", zh: "一個有凝聚力的社會仰賴的是共同的價值觀，而非強制的一致性。" }
               ],
-              seeAlso: ["integration", "multicultural"]
+              seeAlso: ["integration", "multicultural"],
+              collocations: ["a cohesive society", "cohesive community", "socially cohesive", "cohesive whole"]
             },
             {
               id: "multicultural",
               word: "multicultural",
+              pronunciation: "/ˌmʌltiˈkʌltʃərəl/",
               definition: {
                 en: "including or relating to people of several different cultures",
                 zh: "多元文化的"
@@ -144,11 +163,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Toronto is often cited as one of the most successful multicultural cities in the world.", zh: "多倫多常被視為全球最成功的多元文化城市之一。" }
               ],
-              seeAlso: ["diversity", "cohesive"]
+              seeAlso: ["diversity", "cohesive"],
+              collocations: ["multicultural society", "multicultural city", "deeply multicultural", "multicultural background"]
             },
             {
               id: "marginalized",
               word: "marginalized",
+              pronunciation: "/ˈmɑːdʒɪnəlaɪzd/",
               definition: {
                 en: "treated as unimportant or pushed to the edge of mainstream society",
                 zh: "被邊緣化的；受冷落的"
@@ -156,11 +177,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Public policy must do more to support communities that have long been marginalized.", zh: "公共政策必須採取更多措施，以支援長期遭到邊緣化的群體。" }
               ],
-              seeAlso: ["inequality", "marginalize"]
+              seeAlso: ["inequality", "marginalize"],
+              collocations: ["marginalized groups", "marginalized communities", "feel marginalized", "historically marginalized"]
             },
             {
               id: "urbanized",
               word: "urbanized",
+              pronunciation: "/ˈɜːbənaɪzd/",
               definition: {
                 en: "made more like a city in character or population",
                 zh: "都市化的"
@@ -168,11 +191,13 @@ window.UW_DATA = {
               examples: [
                 { en: "More than half of the world's population now lives in heavily urbanized areas.", zh: "全球超過一半的人口如今居住在高度都市化的地區。" }
               ],
-              seeAlso: ["urbanize", "demographic"]
+              seeAlso: ["urbanize", "demographic"],
+              collocations: ["heavily urbanized", "increasingly urbanized", "urbanized areas", "rapidly urbanized"]
             },
             {
               id: "conservative",
               word: "conservative",
+              pronunciation: "/kənˈsɜːvətɪv/",
               definition: {
                 en: "favouring traditional views and values; cautious about change",
                 zh: "保守的；守舊的"
@@ -180,11 +205,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Smaller towns tend to hold more conservative attitudes towards social change.", zh: "較小的城鎮對於社會變遷往往抱持較為保守的態度。" }
               ],
-              seeAlso: ["tradition", "progressive"]
+              seeAlso: ["tradition", "progressive"],
+              collocations: ["conservative views", "deeply conservative", "socially conservative", "conservative estimate"]
             },
             {
               id: "progressive",
               word: "progressive",
+              pronunciation: "/prəˈɡresɪv/",
               definition: {
                 en: "favouring social reform and the use of new ideas",
                 zh: "進步的；改革的"
@@ -192,11 +219,13 @@ window.UW_DATA = {
               examples: [
                 { en: "The country has adopted increasingly progressive policies on parental leave.", zh: "該國在育嬰假政策方面採取了日益進步的立場。" }
               ],
-              seeAlso: ["conservative", "innovation"]
+              seeAlso: ["conservative", "innovation"],
+              collocations: ["progressive policies", "progressive reform", "increasingly progressive", "progressive thinking"]
             },
             {
               id: "prevalent",
               word: "prevalent",
+              pronunciation: "/ˈprevələnt/",
               definition: {
                 en: "widespread; common in a particular area or at a particular time",
                 zh: "普遍的；盛行的"
@@ -205,11 +234,13 @@ window.UW_DATA = {
                 { en: "Mental health issues are far more prevalent among adolescents than they were a decade ago.", zh: "青少年的心理健康問題比十年前要普遍得多。" }
               ],
               seeAlso: ["ubiquitous", "pervasive"],
-              tags: ["health-lifestyle"]
+              tags: ["health-lifestyle"],
+              collocations: ["widely prevalent", "increasingly prevalent", "prevalent among", "remain prevalent"]
             },
             {
               id: "discriminatory",
               word: "discriminatory",
+              pronunciation: "/dɪˈskrɪmɪnətəri/",
               definition: {
                 en: "treating a person or group unfairly because of who they are",
                 zh: "歧視性的；不公平待遇的"
@@ -217,7 +248,8 @@ window.UW_DATA = {
               examples: [
                 { en: "The court ruled that the hiring practice was discriminatory and ordered immediate reform.", zh: "法院裁定該僱用做法具有歧視性，並要求立即改革。" }
               ],
-              seeAlso: ["prejudice", "discriminate"]
+              seeAlso: ["prejudice", "discriminate"],
+              collocations: ["discriminatory practices", "racially discriminatory", "discriminatory policy", "blatantly discriminatory"]
             }
           ]
         },
@@ -228,6 +260,7 @@ window.UW_DATA = {
             {
               id: "integrate",
               word: "integrate",
+              pronunciation: "/ˈɪntɪɡreɪt/",
               definition: {
                 en: "to bring people or things together so they work as a whole",
                 zh: "融入；整合"
@@ -235,11 +268,13 @@ window.UW_DATA = {
               examples: [
                 { en: "It often takes a full generation for newcomers to fully integrate into a host society.", zh: "新移民通常需要整整一個世代才能真正融入接收國的社會。" }
               ],
-              seeAlso: ["integration", "assimilate"]
+              seeAlso: ["integration", "assimilate"],
+              collocations: ["integrate into society", "fully integrate", "integrate with", "successfully integrate"]
             },
             {
               id: "marginalize",
               word: "marginalize",
+              pronunciation: "/ˈmɑːdʒɪnəlaɪz/",
               definition: {
                 en: "to treat a person or group as unimportant or push them to the edge of society",
                 zh: "邊緣化；使處於不重要的地位"
@@ -247,11 +282,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Policies that ignore minority languages can quietly marginalize entire communities.", zh: "忽視少數語言的政策可能在不知不覺中邊緣化整個族群。" }
               ],
-              seeAlso: ["marginalized", "discriminate"]
+              seeAlso: ["marginalized", "discriminate"],
+              collocations: ["marginalize minorities", "marginalize communities", "further marginalize", "marginalize voices"]
             },
             {
               id: "polarize",
               word: "polarize",
+              pronunciation: "/ˈpəʊləraɪz/",
               definition: {
                 en: "to divide people sharply into two opposing groups",
                 zh: "使兩極化；使對立"
@@ -259,11 +296,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Social media tends to polarize public opinion rather than encourage genuine debate.", zh: "社群媒體往往使輿論兩極化，而非促進真正的討論。" }
               ],
-              seeAlso: ["dichotomy", "platform"]
+              seeAlso: ["dichotomy", "platform"],
+              collocations: ["polarize opinion", "polarize society", "polarize debate", "deeply polarize"]
             },
             {
               id: "urbanize",
               word: "urbanize",
+              pronunciation: "/ˈɜːbənaɪz/",
               definition: {
                 en: "to make an area more like a city, especially through development and migration",
                 zh: "都市化；使城市化"
@@ -272,11 +311,13 @@ window.UW_DATA = {
                 { en: "Rural regions continue to urbanize as young people move to cities in search of work.", zh: "隨著年輕人為了工作機會而遷往城市，鄉村地區持續走向都市化。" }
               ],
               seeAlso: ["urbanized", "demographic"],
-              tags: ["environment", "work-economy"]
+              tags: ["environment", "work-economy"],
+              collocations: ["rapidly urbanize", "continue to urbanize", "urbanize the countryside"]
             },
             {
               id: "embrace",
               word: "embrace",
+              pronunciation: "/ɪmˈbreɪs/",
               definition: {
                 en: "to accept something willingly and with enthusiasm",
                 zh: "欣然接受；擁抱（理念）"
@@ -284,11 +325,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Communities that embrace change tend to recover from crises more quickly.", zh: "願意擁抱改變的社群通常能更快地從危機中復原。" }
               ],
-              seeAlso: ["diversity", "progressive"]
+              seeAlso: ["diversity", "progressive"],
+              collocations: ["embrace change", "embrace diversity", "wholeheartedly embrace", "embrace new ideas"]
             },
             {
               id: "discriminate",
               word: "discriminate",
+              pronunciation: "/dɪˈskrɪmɪneɪt/",
               definition: {
                 en: "to treat someone unfairly because of who they are",
                 zh: "歧視；差別對待"
@@ -296,11 +339,13 @@ window.UW_DATA = {
               examples: [
                 { en: "It is illegal to discriminate against employees on the grounds of age or disability.", zh: "基於年齡或殘疾歧視員工是違法的。" }
               ],
-              seeAlso: ["discriminatory", "prejudice"]
+              seeAlso: ["discriminatory", "prejudice"],
+              collocations: ["discriminate against", "discriminate on the grounds of", "unlawfully discriminate", "discriminate between"]
             },
             {
               id: "assimilate",
               word: "assimilate",
+              pronunciation: "/əˈsɪməleɪt/",
               definition: {
                 en: "to absorb people into a larger group or culture so that they become similar",
                 zh: "同化；融入"
@@ -308,11 +353,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Second-generation immigrants often assimilate so thoroughly that they lose their parents' language.", zh: "第二代移民往往同化得如此徹底，以至於失去了父母的語言。" }
               ],
-              seeAlso: ["integrate", "integration"]
+              seeAlso: ["integrate", "integration"],
+              collocations: ["assimilate into", "fully assimilate", "assimilate immigrants", "assimilate information"]
             },
             {
               id: "gentrify",
               word: "gentrify",
+              pronunciation: "/ˈdʒentrɪfaɪ/",
               definition: {
                 en: "to change a neighbourhood so that wealthier residents move in and prices rise",
                 zh: "使（地區）士紳化；使（社區）高檔化"
@@ -320,7 +367,8 @@ window.UW_DATA = {
               examples: [
                 { en: "As cafés and boutiques arrive, working-class districts gentrify and original residents are pushed out.", zh: "隨著咖啡館與精品店進駐，勞工階層的社區逐漸士紳化，原本的居民也因而被迫遷離。" }
               ],
-              seeAlso: ["urbanize", "marginalize"]
+              seeAlso: ["urbanize", "marginalize"],
+              collocations: ["gentrify a neighbourhood", "rapidly gentrify", "gentrify the area", "begin to gentrify"]
             }
           ]
         }
@@ -341,6 +389,7 @@ window.UW_DATA = {
             {
               id: "curriculum",
               word: "curriculum",
+              pronunciation: "/kəˈrɪkjələm/",
               definition: {
                 en: "the subjects and content that make up a course of study at a school or university",
                 zh: "課程；課程綱要"
@@ -348,11 +397,13 @@ window.UW_DATA = {
               examples: [
                 { en: "A well-designed curriculum should balance academic rigour with creativity.", zh: "一份設計良好的課程應在學術嚴謹與創造力之間取得平衡。" }
               ],
-              seeAlso: ["pedagogy", "rigorous"]
+              seeAlso: ["pedagogy", "rigorous"],
+              collocations: ["the national curriculum", "design a curriculum", "core curriculum", "broad curriculum"]
             },
             {
               id: "literacy",
               word: "literacy",
+              pronunciation: "/ˈlɪtərəsi/",
               definition: {
                 en: "the ability to read and write, or competence in a particular area",
                 zh: "讀寫能力；素養"
@@ -361,11 +412,13 @@ window.UW_DATA = {
                 { en: "Digital literacy is now considered as essential as reading and writing.", zh: "數位素養如今被視為與讀寫能力同等重要。" }
               ],
               seeAlso: ["accessible", "educate"],
-              tags: ["society-culture", "technology-media"]
+              tags: ["society-culture", "technology-media"],
+              collocations: ["digital literacy", "improve literacy", "literacy rates", "financial literacy"]
             },
             {
               id: "expertise",
               word: "expertise",
+              pronunciation: "/ˌekspɜːˈtiːz/",
               definition: {
                 en: "specialist knowledge or skill in a particular field",
                 zh: "專業知識；專長"
@@ -374,11 +427,13 @@ window.UW_DATA = {
                 { en: "Real expertise is built through years of deliberate practice, not weekend workshops.", zh: "真正的專業是靠多年的刻意練習累積而來，而非靠週末的工作坊。" }
               ],
               seeAlso: ["qualification", "scholarly"],
-              tags: ["work-economy"]
+              tags: ["work-economy"],
+              collocations: ["technical expertise", "draw on expertise", "lack the expertise", "areas of expertise"]
             },
             {
               id: "qualification",
               word: "qualification",
+              pronunciation: "/ˌkwɒlɪfɪˈkeɪʃən/",
               definition: {
                 en: "an official record showing that a person has completed a course or reached a standard",
                 zh: "資格；學歷"
@@ -387,11 +442,13 @@ window.UW_DATA = {
                 { en: "Employers increasingly value practical experience alongside formal qualifications.", zh: "雇主越來越重視實務經驗，而不只是看重正式學歷。" }
               ],
               seeAlso: ["expertise", "vocational"],
-              tags: ["work-economy"]
+              tags: ["work-economy"],
+              collocations: ["formal qualifications", "professional qualification", "gain a qualification", "recognised qualification"]
             },
             {
               id: "discipline",
               word: "discipline",
+              pronunciation: "/ˈdɪsəplɪn/",
               definition: {
                 en: "the practice of training people to obey rules; a branch of knowledge",
                 zh: "紀律；學科"
@@ -399,11 +456,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Self-discipline matters more than raw talent when it comes to long-term learning.", zh: "在長期學習中，自律比天賦更為重要。" }
               ],
-              seeAlso: ["rigorous", "cultivate"]
+              seeAlso: ["rigorous", "cultivate"],
+              collocations: ["self-discipline", "academic discipline", "strict discipline", "instil discipline"]
             },
             {
               id: "pedagogy",
               word: "pedagogy",
+              pronunciation: "/ˈpedəɡɒdʒi/",
               definition: {
                 en: "the methods and theory of teaching",
                 zh: "教學法；教育學"
@@ -411,11 +470,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Modern pedagogy emphasises critical thinking over rote memorisation.", zh: "現代教學法強調批判思考，而非死記硬背。" }
               ],
-              seeAlso: ["curriculum", "educate"]
+              seeAlso: ["curriculum", "educate"],
+              collocations: ["modern pedagogy", "progressive pedagogy", "teaching pedagogy", "pedagogy and practice"]
             },
             {
               id: "aptitude",
               word: "aptitude",
+              pronunciation: "/ˈaptɪtjuːd/",
               definition: {
                 en: "a natural ability to do something well or to learn it quickly",
                 zh: "天賦；潛能；性向"
@@ -423,11 +484,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Schools should help students discover their aptitudes rather than rank them by a single score.", zh: "學校應協助學生發掘自己的潛能，而非以單一分數將他們分等級。" }
               ],
-              seeAlso: ["cultivate", "formative"]
+              seeAlso: ["cultivate", "formative"],
+              collocations: ["a natural aptitude", "aptitude for", "aptitude test", "show aptitude"]
             },
             {
               id: "mentor",
               word: "mentor",
+              pronunciation: "/ˈmentɔː/",
               definition: {
                 en: "an experienced person who gives guidance and support to someone less experienced",
                 zh: "導師；指導者"
@@ -435,7 +498,8 @@ window.UW_DATA = {
               examples: [
                 { en: "A good mentor offers honest feedback without dictating every decision.", zh: "好的導師會給予誠實的回饋，而不會主導每一個決定。" }
               ],
-              seeAlso: ["mentor-v", "cultivate"]
+              seeAlso: ["mentor-v", "cultivate"],
+              collocations: ["a trusted mentor", "act as a mentor", "find a mentor", "mentor and role model"]
             }
           ]
         },
@@ -446,6 +510,7 @@ window.UW_DATA = {
             {
               id: "accessible",
               word: "accessible",
+              pronunciation: "/əkˈsesəbəl/",
               definition: {
                 en: "able to be reached, used, or understood by many people",
                 zh: "可使用的；易於理解的；無障礙的"
@@ -453,11 +518,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Online courses have made higher education far more accessible to working adults.", zh: "線上課程讓在職成年人能更容易地獲得高等教育。" }
               ],
-              seeAlso: ["inclusive", "literacy"]
+              seeAlso: ["inclusive", "literacy"],
+              collocations: ["widely accessible", "easily accessible", "make accessible to", "accessible to all"]
             },
             {
               id: "comprehensive",
               word: "comprehensive",
+              pronunciation: "/ˌkɒmprɪˈhensɪv/",
               definition: {
                 en: "complete and including all important parts or details",
                 zh: "全面的；廣泛的"
@@ -465,11 +532,13 @@ window.UW_DATA = {
               examples: [
                 { en: "A comprehensive sex education curriculum has been shown to reduce teenage pregnancy.", zh: "全面的性教育課程已被證實能降低青少年懷孕率。" }
               ],
-              seeAlso: ["holistic", "curriculum"]
+              seeAlso: ["holistic", "curriculum"],
+              collocations: ["a comprehensive review", "comprehensive approach", "comprehensive understanding", "comprehensive coverage"]
             },
             {
               id: "rigorous",
               word: "rigorous",
+              pronunciation: "/ˈrɪɡərəs/",
               definition: {
                 en: "very thorough and careful; demanding high standards",
                 zh: "嚴謹的；嚴格的"
@@ -477,11 +546,13 @@ window.UW_DATA = {
               examples: [
                 { en: "The findings have been subjected to rigorous peer review before publication.", zh: "這些發現在發表前已經過嚴謹的同儕審查。" }
               ],
-              seeAlso: ["scholarly", "discipline"]
+              seeAlso: ["scholarly", "discipline"],
+              collocations: ["rigorous testing", "rigorous analysis", "academically rigorous", "rigorous standards"]
             },
             {
               id: "inclusive",
               word: "inclusive",
+              pronunciation: "/ɪnˈkluːsɪv/",
               definition: {
                 en: "open to everyone; not excluding any group",
                 zh: "包容的；不排斥的"
@@ -490,11 +561,13 @@ window.UW_DATA = {
                 { en: "An inclusive classroom benefits every student, not only those with special needs.", zh: "包容性的課堂讓每一位學生受益，而不僅是有特殊需求的學生。" }
               ],
               seeAlso: ["accessible", "integration"],
-              tags: ["society-culture"]
+              tags: ["society-culture"],
+              collocations: ["inclusive education", "more inclusive", "inclusive environment", "socially inclusive"]
             },
             {
               id: "competitive",
               word: "competitive",
+              pronunciation: "/kəmˈpetətɪv/",
               definition: {
                 en: "involving rivalry; aiming to be more successful than others",
                 zh: "競爭性的；競爭激烈的"
@@ -502,11 +575,13 @@ window.UW_DATA = {
               examples: [
                 { en: "University entrance has become so competitive that students spend years preparing.", zh: "大學入學變得競爭如此激烈，學生們往往要花上多年時間做準備。" }
               ],
-              seeAlso: ["rigorous", "discipline"]
+              seeAlso: ["rigorous", "discipline"],
+              collocations: ["fiercely competitive", "highly competitive", "competitive advantage", "remain competitive"]
             },
             {
               id: "vocational",
               word: "vocational",
+              pronunciation: "/vəʊˈkeɪʃənəl/",
               definition: {
                 en: "providing skills and training for a particular job or trade",
                 zh: "職業的；職業技能的"
@@ -515,11 +590,13 @@ window.UW_DATA = {
                 { en: "Germany's vocational training system is widely admired for its links to industry.", zh: "德國的職業訓練體系因其與產業界的緊密連結而廣受推崇。" }
               ],
               seeAlso: ["qualification", "skilled"],
-              tags: ["work-economy"]
+              tags: ["work-economy"],
+              collocations: ["vocational training", "vocational education", "vocational qualifications", "vocational courses"]
             },
             {
               id: "formative",
               word: "formative",
+              pronunciation: "/ˈfɔːmətɪv/",
               definition: {
                 en: "having a strong influence on the development of someone or something",
                 zh: "影響深遠的；具形塑作用的"
@@ -527,11 +604,13 @@ window.UW_DATA = {
               examples: [
                 { en: "The first five years of life are the most formative for a child's emotional growth.", zh: "人生最初的五年對孩子的情感發展最具形塑作用。" }
               ],
-              seeAlso: ["aptitude", "cultivate"]
+              seeAlso: ["aptitude", "cultivate"],
+              collocations: ["formative years", "formative experience", "formative influence", "formative period"]
             },
             {
               id: "scholarly",
               word: "scholarly",
+              pronunciation: "/ˈskɒləli/",
               definition: {
                 en: "concerned with serious academic study",
                 zh: "學術的；治學嚴謹的"
@@ -539,7 +618,8 @@ window.UW_DATA = {
               examples: [
                 { en: "The book strikes a fine balance between scholarly depth and general readability.", zh: "這本書在學術深度與大眾可讀性之間取得了精妙的平衡。" }
               ],
-              seeAlso: ["rigorous", "expertise"]
+              seeAlso: ["rigorous", "expertise"],
+              collocations: ["scholarly work", "scholarly research", "scholarly article", "scholarly debate"]
             }
           ]
         },
@@ -550,6 +630,7 @@ window.UW_DATA = {
             {
               id: "educate",
               word: "educate",
+              pronunciation: "/ˈedjʊkeɪt/",
               definition: {
                 en: "to teach someone, especially in a school or college",
                 zh: "教育；教導"
@@ -557,11 +638,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Schools should educate students not just for examinations but for life beyond them.", zh: "學校教育學生時，不應只為應付考試，更應為他們日後的人生做準備。" }
               ],
-              seeAlso: ["pedagogy", "cultivate"]
+              seeAlso: ["pedagogy", "cultivate"],
+              collocations: ["educate the public", "educate children", "educate yourself about", "well-educated"]
             },
             {
               id: "cultivate",
               word: "cultivate",
+              pronunciation: "/ˈkʌltɪveɪt/",
               definition: {
                 en: "to develop a quality, skill, or relationship over time through care and effort",
                 zh: "培養；陶冶"
@@ -569,11 +652,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Reading widely helps cultivate the kind of curiosity that no curriculum can teach.", zh: "廣泛的閱讀有助於培養出任何課程都無法傳授的好奇心。" }
               ],
-              seeAlso: ["foster", "discipline"]
+              seeAlso: ["foster", "discipline"],
+              collocations: ["cultivate a habit", "cultivate relationships", "cultivate curiosity", "carefully cultivate"]
             },
             {
               id: "instil",
               word: "instil",
+              pronunciation: "/ɪnˈstɪl/",
               definition: {
                 en: "to gradually establish an idea or attitude in someone's mind",
                 zh: "灌輸；逐漸植入"
@@ -581,11 +666,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Good parents try to instil a sense of responsibility from a very early age.", zh: "稱職的父母會盡早將責任感逐步灌輸給孩子。" }
               ],
-              seeAlso: ["cultivate", "foster"]
+              seeAlso: ["cultivate", "foster"],
+              collocations: ["instil confidence", "instil values", "instil discipline", "instil a sense of"]
             },
             {
               id: "equip",
               word: "equip",
+              pronunciation: "/ɪˈkwɪp/",
               definition: {
                 en: "to give someone the skills or knowledge needed for a particular purpose",
                 zh: "使具備；裝備"
@@ -594,11 +681,13 @@ window.UW_DATA = {
                 { en: "Universities must equip graduates with skills that machines cannot easily replicate.", zh: "大學必須讓畢業生具備機器難以輕易取代的能力。" }
               ],
               seeAlso: ["educate", "skilled"],
-              tags: ["work-economy", "technology-media"]
+              tags: ["work-economy", "technology-media"],
+              collocations: ["equip students with", "equip someone for", "well-equipped", "equip with skills"]
             },
             {
               id: "mentor-v",
               word: "mentor",
+              pronunciation: "/ˈmentɔː/",
               definition: {
                 en: "to advise and guide a less experienced person over time",
                 zh: "指導；當…的導師"
@@ -606,11 +695,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Senior engineers are encouraged to mentor newer staff during their first year on the team.", zh: "資深工程師被鼓勵在新進同事入職的第一年予以指導。" }
               ],
-              seeAlso: ["mentor", "cultivate"]
+              seeAlso: ["mentor", "cultivate"],
+              collocations: ["mentor junior staff", "actively mentor", "mentor newcomers", "mentor and coach"]
             },
             {
               id: "broaden",
               word: "broaden",
+              pronunciation: "/ˈbrɔːdən/",
               definition: {
                 en: "to make wider in range, scope, or experience",
                 zh: "拓寬；擴大"
@@ -618,11 +709,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Living abroad does more to broaden one's outlook than any classroom ever could.", zh: "在國外生活對於開拓眼界的幫助，遠超任何課堂所能給予的。" }
               ],
-              seeAlso: ["perspective", "cultivate"]
+              seeAlso: ["perspective", "cultivate"],
+              collocations: ["broaden the mind", "broaden horizons", "broaden your outlook", "broaden knowledge"]
             },
             {
               id: "internalize",
               word: "internalize",
+              pronunciation: "/ɪnˈtɜːnəlaɪz/",
               definition: {
                 en: "to make an idea, attitude, or value part of one's own thinking",
                 zh: "內化；將…內化於心"
@@ -630,11 +723,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Real learning happens when students internalize concepts rather than merely memorise them.", zh: "真正的學習，是學生將概念內化於心，而非僅僅死記硬背。" }
               ],
-              seeAlso: ["instil", "concept"]
+              seeAlso: ["instil", "concept"],
+              collocations: ["internalize values", "internalize ideas", "fully internalize", "internalize a concept"]
             },
             {
               id: "foster",
               word: "foster",
+              pronunciation: "/ˈfɒstə/",
               definition: {
                 en: "to encourage the development of something, especially something desirable",
                 zh: "培養；促進"
@@ -642,7 +737,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Group projects can foster collaboration when they are structured thoughtfully.", zh: "若能審慎設計，小組專題可以有效培養學生的合作能力。" }
               ],
-              seeAlso: ["cultivate", "instil"]
+              seeAlso: ["cultivate", "instil"],
+              collocations: ["foster creativity", "foster cooperation", "foster a sense of", "foster understanding"]
             }
           ]
         }
@@ -663,6 +759,7 @@ window.UW_DATA = {
             {
               id: "biodiversity",
               word: "biodiversity",
+              pronunciation: "/ˌbaɪəʊdaɪˈvɜːsəti/",
               definition: {
                 en: "the variety of plant and animal life in a particular habitat or on Earth as a whole",
                 zh: "生物多樣性"
@@ -670,11 +767,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Protecting biodiversity is not merely an ecological concern but an economic one.", zh: "保護生物多樣性不僅是生態議題，更是一項經濟議題。" }
               ],
-              seeAlso: ["ecosystem", "conservation"]
+              seeAlso: ["ecosystem", "conservation"],
+              collocations: ["protect biodiversity", "loss of biodiversity", "rich in biodiversity", "biodiversity hotspot"]
             },
             {
               id: "ecosystem",
               word: "ecosystem",
+              pronunciation: "/ˈiːkəʊsɪstəm/",
               definition: {
                 en: "a community of living organisms interacting with their physical environment",
                 zh: "生態系統"
@@ -682,11 +781,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Coral reefs are among the most fragile ecosystems on the planet.", zh: "珊瑚礁是地球上最脆弱的生態系統之一。" }
               ],
-              seeAlso: ["biodiversity", "habitat"]
+              seeAlso: ["biodiversity", "habitat"],
+              collocations: ["fragile ecosystem", "marine ecosystem", "balance of the ecosystem", "healthy ecosystem"]
             },
             {
               id: "emissions",
               word: "emissions",
+              pronunciation: "/ɪˈmɪʃənz/",
               definition: {
                 en: "gases or other substances released into the air, especially harmful ones",
                 zh: "排放；排放物（尤指有害氣體）"
@@ -695,11 +796,13 @@ window.UW_DATA = {
                 { en: "Cutting transport emissions is critical to meeting national climate targets.", zh: "削減交通運輸的排放對於達成國家氣候目標至關重要。" }
               ],
               seeAlso: ["pollution", "mitigate"],
-              tags: ["work-economy"]
+              tags: ["work-economy"],
+              collocations: ["carbon emissions", "reduce emissions", "greenhouse gas emissions", "cut emissions"]
             },
             {
               id: "sustainability",
               word: "sustainability",
+              pronunciation: "/səˌsteɪnəˈbɪləti/",
               definition: {
                 en: "the ability to be maintained over the long term without depleting resources",
                 zh: "永續性；可持續性"
@@ -708,11 +811,13 @@ window.UW_DATA = {
                 { en: "Sustainability should be designed into a product, not bolted on as an afterthought.", zh: "永續應在產品設計之初就納入考量，而非事後才匆忙補上。" }
               ],
               seeAlso: ["sustainable", "conservation"],
-              tags: ["work-economy"]
+              tags: ["work-economy"],
+              collocations: ["long-term sustainability", "environmental sustainability", "promote sustainability", "ensure sustainability"]
             },
             {
               id: "conservation",
               word: "conservation",
+              pronunciation: "/ˌkɒnsəˈveɪʃən/",
               definition: {
                 en: "the protection of plants, animals, and natural areas from harm or destruction",
                 zh: "保育；自然保護"
@@ -720,11 +825,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Conservation efforts have helped several endangered species recover over the past decade.", zh: "過去十年間，保育工作已協助數種瀕危物種逐漸恢復族群。" }
               ],
-              seeAlso: ["conserve", "preserve"]
+              seeAlso: ["conserve", "preserve"],
+              collocations: ["wildlife conservation", "conservation efforts", "energy conservation", "habitat conservation"]
             },
             {
               id: "deforestation",
               word: "deforestation",
+              pronunciation: "/ˌdiːfɒrɪˈsteɪʃən/",
               definition: {
                 en: "the clearing or cutting down of forests on a large scale",
                 zh: "森林砍伐；毀林"
@@ -732,11 +839,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Deforestation in the Amazon has accelerated despite international pressure.", zh: "儘管國際壓力不斷，亞馬遜雨林的砍伐速度仍持續加快。" }
               ],
-              seeAlso: ["depleted", "habitat"]
+              seeAlso: ["depleted", "habitat"],
+              collocations: ["large-scale deforestation", "halt deforestation", "tropical deforestation", "rate of deforestation"]
             },
             {
               id: "pollution",
               word: "pollution",
+              pronunciation: "/pəˈluːʃən/",
               definition: {
                 en: "the presence of harmful substances in the environment",
                 zh: "污染"
@@ -745,11 +854,13 @@ window.UW_DATA = {
                 { en: "Air pollution shortens life expectancy in many of the world's largest cities.", zh: "空氣污染縮短了世界上許多大城市居民的預期壽命。" }
               ],
               seeAlso: ["emissions", "toxic"],
-              tags: ["health-lifestyle"]
+              tags: ["health-lifestyle"],
+              collocations: ["air pollution", "reduce pollution", "industrial pollution", "levels of pollution"]
             },
             {
               id: "habitat",
               word: "habitat",
+              pronunciation: "/ˈhabɪtat/",
               definition: {
                 en: "the natural environment in which an animal or plant normally lives",
                 zh: "棲息地；生境"
@@ -757,7 +868,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Urban expansion continues to encroach on the habitats of many native species.", zh: "城市的擴張持續侵佔許多本土物種的棲息地。" }
               ],
-              seeAlso: ["ecosystem", "biodiversity"]
+              seeAlso: ["ecosystem", "biodiversity"],
+              collocations: ["natural habitat", "habitat loss", "destroy habitats", "preserve the habitat"]
             }
           ]
         },
@@ -768,6 +880,7 @@ window.UW_DATA = {
             {
               id: "sustainable",
               word: "sustainable",
+              pronunciation: "/səˈsteɪnəbəl/",
               definition: {
                 en: "able to be continued over a long period without harming the environment",
                 zh: "可持續的；永續的"
@@ -776,11 +889,13 @@ window.UW_DATA = {
                 { en: "Sustainable farming practices can restore soil that intensive agriculture has depleted.", zh: "永續的農耕方式能夠修復被集約農業所耗盡的土壤。" }
               ],
               seeAlso: ["sustainability", "renewable"],
-              tags: ["work-economy"]
+              tags: ["work-economy"],
+              collocations: ["sustainable development", "environmentally sustainable", "sustainable practices", "economically sustainable"]
             },
             {
               id: "renewable",
               word: "renewable",
+              pronunciation: "/rɪˈnjuːəbəl/",
               definition: {
                 en: "able to be replaced naturally, especially of energy sources like wind or solar",
                 zh: "可再生的"
@@ -789,11 +904,13 @@ window.UW_DATA = {
                 { en: "Renewable energy now accounts for nearly a third of the country's electricity supply.", zh: "再生能源目前已佔該國電力供應的近三分之一。" }
               ],
               seeAlso: ["sustainable", "finite"],
-              tags: ["work-economy"]
+              tags: ["work-economy"],
+              collocations: ["renewable energy", "renewable sources", "invest in renewables", "renewable resources"]
             },
             {
               id: "finite",
               word: "finite",
+              pronunciation: "/ˈfaɪnaɪt/",
               definition: {
                 en: "having limits or an end; not infinite",
                 zh: "有限的"
@@ -802,11 +919,13 @@ window.UW_DATA = {
                 { en: "Fossil fuels are a finite resource, and the world has known this for decades.", zh: "化石燃料是有限的資源，全世界對此已知曉數十年。" }
               ],
               seeAlso: ["depleted", "renewable"],
-              tags: ["work-economy"]
+              tags: ["work-economy"],
+              collocations: ["finite resources", "finite supply", "strictly finite", "finite number"]
             },
             {
               id: "biodegradable",
               word: "biodegradable",
+              pronunciation: "/ˌbaɪəʊdɪˈɡreɪdəbəl/",
               definition: {
                 en: "able to be broken down naturally by living organisms",
                 zh: "可生物降解的；可自然分解的"
@@ -814,11 +933,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Truly biodegradable packaging is still rare, despite what many product labels suggest.", zh: "儘管許多產品標籤如此宣稱，真正可生物降解的包裝其實仍相當罕見。" }
               ],
-              seeAlso: ["sustainable", "pollution"]
+              seeAlso: ["sustainable", "pollution"],
+              collocations: ["biodegradable packaging", "biodegradable materials", "fully biodegradable", "biodegradable plastic"]
             },
             {
               id: "hazardous",
               word: "hazardous",
+              pronunciation: "/ˈhazədəs/",
               definition: {
                 en: "dangerous, especially to health or safety",
                 zh: "危險的；有害的"
@@ -827,11 +948,13 @@ window.UW_DATA = {
                 { en: "Hazardous waste must be transported and disposed of under strict regulation.", zh: "有害廢棄物的運輸與處置必須受到嚴格規範。" }
               ],
               seeAlso: ["toxic", "pollution"],
-              tags: ["health-lifestyle"]
+              tags: ["health-lifestyle"],
+              collocations: ["hazardous waste", "hazardous chemicals", "potentially hazardous", "hazardous conditions"]
             },
             {
               id: "pristine",
               word: "pristine",
+              pronunciation: "/ˈprɪstiːn/",
               definition: {
                 en: "in its original, pure condition; unspoiled",
                 zh: "原始的；未受污染的"
@@ -839,11 +962,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Few truly pristine wildernesses remain anywhere on Earth.", zh: "地球上真正未受人類干擾的原始荒野已所剩無幾。" }
               ],
-              seeAlso: ["conservation", "habitat"]
+              seeAlso: ["conservation", "habitat"],
+              collocations: ["pristine wilderness", "pristine condition", "pristine environment", "almost pristine"]
             },
             {
               id: "depleted",
               word: "depleted",
+              pronunciation: "/dɪˈpliːtɪd/",
               definition: {
                 en: "greatly reduced in quantity, especially of natural resources",
                 zh: "枯竭的；耗盡的"
@@ -851,11 +976,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Fish stocks in the region have been so depleted that several fisheries have closed.", zh: "該地區的魚類資源已嚴重枯竭，多處漁場因而關閉。" }
               ],
-              seeAlso: ["finite", "deplete"]
+              seeAlso: ["finite", "deplete"],
+              collocations: ["severely depleted", "depleted resources", "depleted reserves", "rapidly depleted"]
             },
             {
               id: "toxic",
               word: "toxic",
+              pronunciation: "/ˈtɒksɪk/",
               definition: {
                 en: "poisonous; able to cause harm to living things",
                 zh: "有毒的；毒性的"
@@ -864,7 +991,8 @@ window.UW_DATA = {
                 { en: "Toxic chemicals from the factory have seeped into the local groundwater.", zh: "工廠排放的有毒化學物質已滲入當地的地下水。" }
               ],
               seeAlso: ["hazardous", "pollution"],
-              tags: ["health-lifestyle"]
+              tags: ["health-lifestyle"],
+              collocations: ["toxic chemicals", "highly toxic", "toxic waste", "toxic substances"]
             }
           ]
         },
@@ -875,6 +1003,7 @@ window.UW_DATA = {
             {
               id: "deplete",
               word: "deplete",
+              pronunciation: "/dɪˈpliːt/",
               definition: {
                 en: "to reduce something greatly in number or amount",
                 zh: "耗盡；使枯竭"
@@ -882,11 +1011,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Overfishing has depleted cod stocks to a fraction of their historic levels.", zh: "過度捕撈已使鱈魚資源量降至歷史水準的零頭。" }
               ],
-              seeAlso: ["depleted", "conserve"]
+              seeAlso: ["depleted", "conserve"],
+              collocations: ["deplete reserves", "deplete resources", "rapidly deplete", "deplete stocks"]
             },
             {
               id: "conserve",
               word: "conserve",
+              pronunciation: "/kənˈsɜːv/",
               definition: {
                 en: "to protect something, especially from being lost, wasted, or damaged",
                 zh: "保護；節約"
@@ -894,11 +1025,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Simple changes at home can help families conserve both water and electricity.", zh: "在家中做出簡單的改變，便能協助家庭節約用水與用電。" }
               ],
-              seeAlso: ["conservation", "preserve"]
+              seeAlso: ["conservation", "preserve"],
+              collocations: ["conserve energy", "conserve water", "conserve resources", "help conserve"]
             },
             {
               id: "mitigate",
               word: "mitigate",
+              pronunciation: "/ˈmɪtɪɡeɪt/",
               definition: {
                 en: "to make something less severe or harmful",
                 zh: "減輕；緩和"
@@ -906,11 +1039,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Planting trees in urban areas can mitigate the worst effects of summer heatwaves.", zh: "在都市中種植樹木有助於緩和夏季熱浪最嚴重的影響。" }
               ],
-              seeAlso: ["alleviate", "emissions"]
+              seeAlso: ["alleviate", "emissions"],
+              collocations: ["mitigate the effects", "mitigate risk", "mitigate climate change", "help to mitigate"]
             },
             {
               id: "exacerbate",
               word: "exacerbate",
+              pronunciation: "/ɪɡˈzasəbeɪt/",
               definition: {
                 en: "to make a problem or bad situation worse",
                 zh: "加劇；惡化"
@@ -918,11 +1053,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Cutting public transport funding tends to exacerbate congestion rather than ease it.", zh: "削減公共運輸的經費往往會加劇交通擁堵，而非緩解問題。" }
               ],
-              seeAlso: ["mitigate", "pollution"]
+              seeAlso: ["mitigate", "pollution"],
+              collocations: ["exacerbate the problem", "exacerbate tensions", "only exacerbate", "exacerbate inequality"]
             },
             {
               id: "pollute",
               word: "pollute",
+              pronunciation: "/pəˈluːt/",
               definition: {
                 en: "to make air, water, or land dirty and unsafe by adding harmful substances",
                 zh: "污染"
@@ -931,11 +1068,13 @@ window.UW_DATA = {
                 { en: "Factories that pollute the river should be fined far more heavily than they currently are.", zh: "污染河流的工廠所受到的罰款，應遠高於目前的水準。" }
               ],
               seeAlso: ["pollution", "toxic"],
-              tags: ["work-economy"]
+              tags: ["work-economy"],
+              collocations: ["pollute the air", "pollute rivers", "heavily pollute", "pollute the environment"]
             },
             {
               id: "regenerate",
               word: "regenerate",
+              pronunciation: "/rɪˈdʒenəreɪt/",
               definition: {
                 en: "to grow or be restored to a healthy state again",
                 zh: "再生；復甦"
@@ -943,11 +1082,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Given decades of protection, even badly damaged forests can regenerate.", zh: "只要給予數十年的保護，即便嚴重受損的森林也能逐漸再生。" }
               ],
-              seeAlso: ["renewable", "conserve"]
+              seeAlso: ["renewable", "conserve"],
+              collocations: ["regenerate forests", "naturally regenerate", "regenerate cells", "regenerate the area"]
             },
             {
               id: "emit",
               word: "emit",
+              pronunciation: "/ɪˈmɪt/",
               definition: {
                 en: "to release or send out gas, light, sound, or other substances",
                 zh: "排放；散發"
@@ -955,11 +1096,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Older diesel vehicles emit far more particulates than modern hybrid cars.", zh: "較舊的柴油車所排放的懸浮微粒，遠遠多於現代的混合動力車。" }
               ],
-              seeAlso: ["emissions", "pollute"]
+              seeAlso: ["emissions", "pollute"],
+              collocations: ["emit carbon dioxide", "emit greenhouse gases", "emit pollutants", "emit radiation"]
             },
             {
               id: "preserve",
               word: "preserve",
+              pronunciation: "/prɪˈzɜːv/",
               definition: {
                 en: "to keep something in its original or existing state",
                 zh: "保存；維護"
@@ -967,7 +1110,8 @@ window.UW_DATA = {
               examples: [
                 { en: "National parks were established to preserve landscapes for future generations.", zh: "國家公園的設立，是為了替後代保留這些自然景觀。" }
               ],
-              seeAlso: ["conserve", "pristine"]
+              seeAlso: ["conserve", "pristine"],
+              collocations: ["preserve heritage", "preserve the environment", "carefully preserve", "preserve for future generations"]
             }
           ]
         }
@@ -988,6 +1132,7 @@ window.UW_DATA = {
             {
               id: "automation",
               word: "automation",
+              pronunciation: "/ˌɔːtəˈmeɪʃən/",
               definition: {
                 en: "the use of machines or software to perform tasks previously done by humans",
                 zh: "自動化"
@@ -996,11 +1141,13 @@ window.UW_DATA = {
                 { en: "Automation has reshaped the labour market, eliminating some jobs while creating others.", zh: "自動化重新塑造了勞動市場，淘汰了某些工作，也催生出新的職位。" }
               ],
               seeAlso: ["automate", "workforce"],
-              tags: ["work-economy"]
+              tags: ["work-economy"],
+              collocations: ["industrial automation", "the rise of automation", "automation of tasks", "increased automation"]
             },
             {
               id: "surveillance",
               word: "surveillance",
+              pronunciation: "/səˈveɪləns/",
               definition: {
                 en: "the close monitoring of people, places, or activities, often by authorities",
                 zh: "監控；監視"
@@ -1009,11 +1156,13 @@ window.UW_DATA = {
                 { en: "Mass surveillance raises serious questions about the limits of state power.", zh: "大規模監控引發了關於國家權力界限的嚴肅問題。" }
               ],
               seeAlso: ["privacy", "pervasive"],
-              tags: ["society-culture"]
+              tags: ["society-culture"],
+              collocations: ["mass surveillance", "under surveillance", "state surveillance", "constant surveillance"]
             },
             {
               id: "innovation",
               word: "innovation",
+              pronunciation: "/ˌɪnəˈveɪʃən/",
               definition: {
                 en: "the introduction of new ideas, methods, or products",
                 zh: "創新；革新"
@@ -1022,11 +1171,13 @@ window.UW_DATA = {
                 { en: "Genuine innovation rarely happens in isolation; it builds on what came before.", zh: "真正的創新很少是憑空出現的；它總是建立在前人的成果之上。" }
               ],
               seeAlso: ["innovate", "disruptive"],
-              tags: ["work-economy"]
+              tags: ["work-economy"],
+              collocations: ["technological innovation", "drive innovation", "foster innovation", "a wave of innovation"]
             },
             {
               id: "platform",
               word: "platform",
+              pronunciation: "/ˈplatfɔːm/",
               definition: {
                 en: "an online system or service that allows users to interact, publish, or transact",
                 zh: "平台（尤指網路平台）"
@@ -1035,11 +1186,13 @@ window.UW_DATA = {
                 { en: "Social media platforms wield enormous influence over public discourse.", zh: "社群平台對公共輿論發揮著巨大的影響力。" }
               ],
               seeAlso: ["algorithm", "misinformation"],
-              tags: ["society-culture"]
+              tags: ["society-culture"],
+              collocations: ["online platform", "social media platform", "digital platform", "launch a platform"]
             },
             {
               id: "algorithm",
               word: "algorithm",
+              pronunciation: "/ˈalɡərɪðəm/",
               definition: {
                 en: "a set of rules or steps that a computer follows to solve a problem or make a decision",
                 zh: "演算法"
@@ -1047,11 +1200,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Recommendation algorithms quietly shape what millions of users read each day.", zh: "推薦演算法默默地形塑著數百萬使用者每日所閱讀的內容。" }
               ],
-              seeAlso: ["platform", "biased"]
+              seeAlso: ["platform", "biased"],
+              collocations: ["recommendation algorithm", "complex algorithm", "biased algorithm", "design an algorithm"]
             },
             {
               id: "infrastructure",
               word: "infrastructure",
+              pronunciation: "/ˈɪnfrəstrʌktʃə/",
               definition: {
                 en: "the basic physical and organisational systems needed for a society to function",
                 zh: "基礎設施"
@@ -1060,11 +1215,13 @@ window.UW_DATA = {
                 { en: "Reliable digital infrastructure has become as vital as roads and electricity.", zh: "可靠的數位基礎設施已變得如同道路與電力一樣不可或缺。" }
               ],
               seeAlso: ["digital", "sophisticated"],
-              tags: ["work-economy"]
+              tags: ["work-economy"],
+              collocations: ["digital infrastructure", "invest in infrastructure", "ageing infrastructure", "critical infrastructure"]
             },
             {
               id: "privacy",
               word: "privacy",
+              pronunciation: "/ˈprɪvəsi/",
               definition: {
                 en: "the right or condition of being free from observation or intrusion",
                 zh: "隱私；私隱"
@@ -1073,11 +1230,13 @@ window.UW_DATA = {
                 { en: "Many users surrender their privacy in exchange for free online services.", zh: "許多使用者為了免費的線上服務而放棄了自己的隱私。" }
               ],
               seeAlso: ["surveillance", "platform"],
-              tags: ["society-culture"]
+              tags: ["society-culture"],
+              collocations: ["invade someone's privacy", "right to privacy", "protect privacy", "privacy concerns"]
             },
             {
               id: "misinformation",
               word: "misinformation",
+              pronunciation: "/ˌmɪsɪnfəˈmeɪʃən/",
               definition: {
                 en: "false or inaccurate information, especially that which is deliberately spread",
                 zh: "錯誤資訊；不實訊息"
@@ -1086,7 +1245,8 @@ window.UW_DATA = {
                 { en: "The rapid spread of misinformation online has eroded trust in mainstream media.", zh: "網路上錯誤訊息的快速傳播削弱了大眾對主流媒體的信任。" }
               ],
               seeAlso: ["platform", "circulate"],
-              tags: ["society-culture"]
+              tags: ["society-culture"],
+              collocations: ["spread misinformation", "combat misinformation", "the spread of misinformation", "online misinformation"]
             }
           ]
         },
@@ -1097,6 +1257,7 @@ window.UW_DATA = {
             {
               id: "digital",
               word: "digital",
+              pronunciation: "/ˈdɪdʒɪtəl/",
               definition: {
                 en: "relating to computer technology or information represented as numbers",
                 zh: "數位的；數碼的"
@@ -1104,11 +1265,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Children today grow up entirely within a digital environment from their earliest years.", zh: "如今的兒童從最早的年歲起就完全在數位環境中長大。" }
               ],
-              seeAlso: ["digitize", "infrastructure"]
+              seeAlso: ["digitize", "infrastructure"],
+              collocations: ["digital age", "digital technology", "the digital divide", "go digital"]
             },
             {
               id: "autonomous",
               word: "autonomous",
+              pronunciation: "/ɔːˈtɒnəməs/",
               definition: {
                 en: "acting independently or having the freedom to do so",
                 zh: "自主的；自治的"
@@ -1116,11 +1279,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Fully autonomous vehicles still struggle to handle unpredictable urban traffic.", zh: "全自動駕駛車輛在應對難以預測的市區交通時仍力有未逮。" }
               ],
-              seeAlso: ["automation", "sophisticated"]
+              seeAlso: ["automation", "sophisticated"],
+              collocations: ["autonomous vehicles", "fully autonomous", "autonomous systems", "autonomous region"]
             },
             {
               id: "obsolete",
               word: "obsolete",
+              pronunciation: "/ˈɒbsəliːt/",
               definition: {
                 en: "no longer used because something newer has replaced it",
                 zh: "過時的；廢棄的"
@@ -1129,11 +1294,13 @@ window.UW_DATA = {
                 { en: "Skills that were prized a decade ago can become obsolete in just a few years.", zh: "十年前備受重視的技能，如今可能僅在數年內便已過時。" }
               ],
               seeAlso: ["redundant", "displace"],
-              tags: ["work-economy"]
+              tags: ["work-economy"],
+              collocations: ["become obsolete", "rendered obsolete", "almost obsolete", "obsolete technology"]
             },
             {
               id: "sophisticated",
               word: "sophisticated",
+              pronunciation: "/səˈfɪstɪkeɪtɪd/",
               definition: {
                 en: "highly developed or complex; refined in design or method",
                 zh: "精密的；複雜先進的"
@@ -1141,11 +1308,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Increasingly sophisticated cyber-attacks now target small businesses as well as governments.", zh: "日益精密的網路攻擊如今不僅針對政府，也將矛頭指向中小企業。" }
               ],
-              seeAlso: ["innovation", "infrastructure"]
+              seeAlso: ["innovation", "infrastructure"],
+              collocations: ["highly sophisticated", "sophisticated equipment", "sophisticated techniques", "increasingly sophisticated"]
             },
             {
               id: "disruptive",
               word: "disruptive",
+              pronunciation: "/dɪsˈrʌptɪv/",
               definition: {
                 en: "causing major change by displacing established practices",
                 zh: "顛覆性的；具破壞創新性的"
@@ -1154,11 +1323,13 @@ window.UW_DATA = {
                 { en: "Ride-hailing apps proved disruptive to the taxi industry within just a few years.", zh: "叫車應用程式在短短數年內便顛覆了傳統計程車產業。" }
               ],
               seeAlso: ["innovation", "displace"],
-              tags: ["work-economy"]
+              tags: ["work-economy"],
+              collocations: ["disruptive technology", "disruptive innovation", "highly disruptive", "deeply disruptive"]
             },
             {
               id: "pervasive",
               word: "pervasive",
+              pronunciation: "/pəˈveɪsɪv/",
               definition: {
                 en: "spreading widely and being present everywhere",
                 zh: "普遍的；無孔不入的"
@@ -1166,11 +1337,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Smartphones have become so pervasive that we hardly notice them anymore.", zh: "智慧型手機已無處不在，以至於我們幾乎再也不會留意它們的存在。" }
               ],
-              seeAlso: ["ubiquitous", "prevalent"]
+              seeAlso: ["ubiquitous", "prevalent"],
+              collocations: ["pervasive influence", "increasingly pervasive", "pervasive throughout", "deeply pervasive"]
             },
             {
               id: "addictive",
               word: "addictive",
+              pronunciation: "/əˈdɪktɪv/",
               definition: {
                 en: "causing a strong, often harmful need to use or do something repeatedly",
                 zh: "令人上癮的"
@@ -1179,11 +1352,13 @@ window.UW_DATA = {
                 { en: "Designers openly admit that many social platforms are engineered to be addictive.", zh: "設計師們公開承認，許多社群平台正是被刻意設計成令人上癮。" }
               ],
               seeAlso: ["platform", "algorithm"],
-              tags: ["health-lifestyle"]
+              tags: ["health-lifestyle"],
+              collocations: ["highly addictive", "potentially addictive", "addictive behaviour", "designed to be addictive"]
             },
             {
               id: "biased",
               word: "biased",
+              pronunciation: "/ˈbaɪəst/",
               definition: {
                 en: "showing unfair preference for or against something or someone",
                 zh: "有偏見的；偏頗的"
@@ -1192,7 +1367,8 @@ window.UW_DATA = {
                 { en: "Studies have found that hiring algorithms can be just as biased as the humans who designed them.", zh: "研究發現，僱用演算法可能與設計它的人類一樣帶有偏見。" }
               ],
               seeAlso: ["algorithm", "discriminatory"],
-              tags: ["society-culture", "work-economy"]
+              tags: ["society-culture", "work-economy"],
+              collocations: ["heavily biased", "biased against", "biased reporting", "biased in favour of"]
             }
           ]
         },
@@ -1203,6 +1379,7 @@ window.UW_DATA = {
             {
               id: "automate",
               word: "automate",
+              pronunciation: "/ˈɔːtəmeɪt/",
               definition: {
                 en: "to make a process or system operate by machines or software instead of people",
                 zh: "使自動化"
@@ -1211,11 +1388,13 @@ window.UW_DATA = {
                 { en: "Companies are racing to automate routine tasks in order to free staff for more creative work.", zh: "企業競相將例行工作自動化，以便讓員工得以投入更具創造性的工作。" }
               ],
               seeAlso: ["automation", "automated"],
-              tags: ["work-economy"]
+              tags: ["work-economy"],
+              collocations: ["automate processes", "automate routine tasks", "fully automate", "automate the workflow"]
             },
             {
               id: "augment",
               word: "augment",
+              pronunciation: "/ɔːɡˈment/",
               definition: {
                 en: "to make something greater by adding to it",
                 zh: "增強；擴增"
@@ -1223,11 +1402,13 @@ window.UW_DATA = {
               examples: [
                 { en: "The best AI tools augment human judgement rather than attempt to replace it.", zh: "最好的 AI 工具是用來增強人類判斷，而非試圖取而代之。" }
               ],
-              seeAlso: ["innovate", "sophisticated"]
+              seeAlso: ["innovate", "sophisticated"],
+              collocations: ["augment human ability", "augment income", "significantly augment", "augment reality"]
             },
             {
               id: "displace",
               word: "displace",
+              pronunciation: "/dɪsˈpleɪs/",
               definition: {
                 en: "to force something out of its usual place or replace it with something else",
                 zh: "取代；使移位"
@@ -1236,11 +1417,13 @@ window.UW_DATA = {
                 { en: "Streaming services have largely displaced traditional cable subscriptions in younger households.", zh: "在年輕家庭中，串流服務已大致取代了傳統的有線電視訂閱。" }
               ],
               seeAlso: ["obsolete", "disruptive"],
-              tags: ["work-economy"]
+              tags: ["work-economy"],
+              collocations: ["displace workers", "displace traditional", "be displaced by", "displace communities"]
             },
             {
               id: "innovate",
               word: "innovate",
+              pronunciation: "/ˈɪnəveɪt/",
               definition: {
                 en: "to introduce new ideas, methods, or products",
                 zh: "創新；革新"
@@ -1248,11 +1431,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Smaller firms often innovate more quickly than the giants that dominate their industries.", zh: "規模較小的公司在創新速度上往往比業界的巨擘更為敏捷。" }
               ],
-              seeAlso: ["innovation", "disruptive"]
+              seeAlso: ["innovation", "disruptive"],
+              collocations: ["continue to innovate", "innovate rapidly", "innovate or die", "innovate in the field"]
             },
             {
               id: "digitize",
               word: "digitize",
+              pronunciation: "/ˈdɪdʒɪtaɪz/",
               definition: {
                 en: "to convert information into a digital form for use by a computer",
                 zh: "數位化"
@@ -1260,11 +1445,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Many libraries are racing to digitize fragile manuscripts before they deteriorate further.", zh: "許多圖書館正趕在脆弱手稿進一步損壞之前將其數位化。" }
               ],
-              seeAlso: ["digital", "preserve"]
+              seeAlso: ["digital", "preserve"],
+              collocations: ["digitize records", "digitize archives", "fully digitize", "digitize documents"]
             },
             {
               id: "transmit",
               word: "transmit",
+              pronunciation: "/tranzˈmɪt/",
               definition: {
                 en: "to pass something from one person, place, or thing to another",
                 zh: "傳送；傳播"
@@ -1272,11 +1459,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Modern networks can transmit a feature-length film around the world in seconds.", zh: "現代網路能在數秒之內將一部劇情長片傳送至世界各地。" }
               ],
-              seeAlso: ["circulate", "infrastructure"]
+              seeAlso: ["circulate", "infrastructure"],
+              collocations: ["transmit information", "transmit a signal", "transmit data", "transmit a disease"]
             },
             {
               id: "circulate",
               word: "circulate",
+              pronunciation: "/ˈsɜːkjəleɪt/",
               definition: {
                 en: "to move or be passed from one place or person to another",
                 zh: "流通；傳播"
@@ -1284,11 +1473,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Rumours circulate more freely than facts in any unmoderated online space.", zh: "在任何缺乏管理的網路空間中，謠言的傳播都比事實來得快速。" }
               ],
-              seeAlso: ["misinformation", "transmit"]
+              seeAlso: ["misinformation", "transmit"],
+              collocations: ["circulate widely", "rumours circulate", "circulate freely", "circulate a document"]
             },
             {
               id: "censor",
               word: "censor",
+              pronunciation: "/ˈsensə/",
               definition: {
                 en: "to remove parts of a book, film, or message that are considered unacceptable",
                 zh: "審查；審查刪除"
@@ -1297,7 +1488,8 @@ window.UW_DATA = {
                 { en: "Authoritarian regimes routinely censor news that contradicts the official narrative.", zh: "威權政權慣於審查任何與官方說法相左的新聞。" }
               ],
               seeAlso: ["surveillance", "platform"],
-              tags: ["society-culture"]
+              tags: ["society-culture"],
+              collocations: ["censor the press", "heavily censor", "censor content", "censor information"]
             }
           ]
         }
@@ -1318,6 +1510,7 @@ window.UW_DATA = {
             {
               id: "wellbeing",
               word: "wellbeing",
+              pronunciation: "/ˌwelˈbiːɪŋ/",
               definition: {
                 en: "a state of being comfortable, healthy, or happy",
                 zh: "幸福感；身心健康"
@@ -1326,11 +1519,13 @@ window.UW_DATA = {
                 { en: "Long working hours can erode personal wellbeing even when salaries are generous.", zh: "即使薪資優渥，過長的工時仍會侵蝕個人的身心健康。" }
               ],
               seeAlso: ["balanced", "stress"],
-              tags: ["work-economy"]
+              tags: ["work-economy"],
+              collocations: ["mental wellbeing", "promote wellbeing", "sense of wellbeing", "improve wellbeing"]
             },
             {
               id: "longevity",
               word: "longevity",
+              pronunciation: "/lɒnˈdʒevəti/",
               definition: {
                 en: "long life; the length of time something lasts",
                 zh: "長壽；長久"
@@ -1339,11 +1534,13 @@ window.UW_DATA = {
                 { en: "Researchers attribute Okinawan longevity to diet, community, and a strong sense of purpose.", zh: "研究人員將沖繩居民的長壽歸因於飲食、社群連結與強烈的人生目標感。" }
               ],
               seeAlso: ["nutrition", "wellbeing"],
-              tags: ["society-culture"]
+              tags: ["society-culture"],
+              collocations: ["human longevity", "increased longevity", "longevity of life", "the secret to longevity"]
             },
             {
               id: "epidemic",
               word: "epidemic",
+              pronunciation: "/ˌepɪˈdemɪk/",
               definition: {
                 en: "the rapid spread of a disease or harmful condition within a community",
                 zh: "流行病；疫情"
@@ -1352,11 +1549,13 @@ window.UW_DATA = {
                 { en: "Health officials warn that loneliness is becoming a silent epidemic among the elderly.", zh: "衛生官員警告，孤獨感正在悄然成為老年族群間的一種流行現象。" }
               ],
               seeAlso: ["contagious", "prevention"],
-              tags: ["society-culture"]
+              tags: ["society-culture"],
+              collocations: ["a flu epidemic", "obesity epidemic", "reach epidemic proportions", "contain the epidemic"]
             },
             {
               id: "nutrition",
               word: "nutrition",
+              pronunciation: "/njuːˈtrɪʃən/",
               definition: {
                 en: "the process of taking in food and using it for growth and health",
                 zh: "營養；營養學"
@@ -1364,11 +1563,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Good nutrition in early childhood has lifelong effects on cognitive development.", zh: "幼兒時期良好的營養對於認知發展具有終身的影響。" }
               ],
-              seeAlso: ["nutritious", "balanced"]
+              seeAlso: ["nutritious", "balanced"],
+              collocations: ["good nutrition", "poor nutrition", "child nutrition", "balanced nutrition"]
             },
             {
               id: "obesity",
               word: "obesity",
+              pronunciation: "/əʊˈbiːsəti/",
               definition: {
                 en: "the condition of being seriously overweight in a way that harms health",
                 zh: "肥胖症；過度肥胖"
@@ -1377,11 +1578,13 @@ window.UW_DATA = {
                 { en: "Childhood obesity has more than tripled in many developed countries since the 1980s.", zh: "自一九八〇年代以來，許多已開發國家的兒童肥胖率已增加了三倍以上。" }
               ],
               seeAlso: ["sedentary", "prevention"],
-              tags: ["society-culture"]
+              tags: ["society-culture"],
+              collocations: ["childhood obesity", "the obesity epidemic", "tackle obesity", "rising obesity rates"]
             },
             {
               id: "prevention",
               word: "prevention",
+              pronunciation: "/prɪˈvenʃən/",
               definition: {
                 en: "the action of stopping something bad from happening",
                 zh: "預防；防範"
@@ -1390,11 +1593,13 @@ window.UW_DATA = {
                 { en: "Investment in prevention often costs far less than treating illness after it appears.", zh: "投資於預防的成本，往往遠低於疾病出現後的治療費用。" }
               ],
               seeAlso: ["prevent", "preventable"],
-              tags: ["work-economy"]
+              tags: ["work-economy"],
+              collocations: ["disease prevention", "crime prevention", "prevention is better than cure", "focus on prevention"]
             },
             {
               id: "stress",
               word: "stress",
+              pronunciation: "/stres/",
               definition: {
                 en: "a state of mental or emotional strain caused by demanding circumstances",
                 zh: "壓力；緊張"
@@ -1403,11 +1608,13 @@ window.UW_DATA = {
                 { en: "Chronic stress has been linked to heart disease, depression, and weakened immunity.", zh: "長期壓力已被證實與心臟病、憂鬱症及免疫力下降有所關聯。" }
               ],
               seeAlso: ["chronic", "alleviate"],
-              tags: ["work-economy"]
+              tags: ["work-economy"],
+              collocations: ["chronic stress", "manage stress", "under stress", "stress levels"]
             },
             {
               id: "vaccine",
               word: "vaccine",
+              pronunciation: "/ˈvaksiːn/",
               definition: {
                 en: "a substance used to stimulate the body's immune response against a disease",
                 zh: "疫苗"
@@ -1415,7 +1622,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Widespread vaccine coverage has all but eliminated diseases that once killed millions.", zh: "廣泛的疫苗接種已幾乎根除了過去曾奪走數百萬條人命的疾病。" }
               ],
-              seeAlso: ["prevention", "eradicate"]
+              seeAlso: ["prevention", "eradicate"],
+              collocations: ["develop a vaccine", "vaccine rollout", "vaccine hesitancy", "an effective vaccine"]
             }
           ]
         },
@@ -1426,6 +1634,7 @@ window.UW_DATA = {
             {
               id: "sedentary",
               word: "sedentary",
+              pronunciation: "/ˈsedəntəri/",
               definition: {
                 en: "involving a lot of sitting and little physical activity",
                 zh: "久坐的；缺乏運動的"
@@ -1433,11 +1642,13 @@ window.UW_DATA = {
               examples: [
                 { en: "A sedentary lifestyle is now considered a risk factor as serious as smoking.", zh: "缺乏運動的生活方式如今被視為與吸菸同等嚴重的健康風險。" }
               ],
-              seeAlso: ["obesity", "vigorous"]
+              seeAlso: ["obesity", "vigorous"],
+              collocations: ["a sedentary lifestyle", "sedentary work", "largely sedentary", "sedentary behaviour"]
             },
             {
               id: "contagious",
               word: "contagious",
+              pronunciation: "/kənˈteɪdʒəs/",
               definition: {
                 en: "easily spread from one person or thing to another",
                 zh: "傳染性的；具感染力的"
@@ -1445,11 +1656,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Measles is one of the most contagious diseases known to medicine.", zh: "麻疹是醫學上已知最具傳染力的疾病之一。" }
               ],
-              seeAlso: ["epidemic", "preventable"]
+              seeAlso: ["epidemic", "preventable"],
+              collocations: ["highly contagious", "contagious disease", "extremely contagious", "less contagious"]
             },
             {
               id: "chronic",
               word: "chronic",
+              pronunciation: "/ˈkrɒnɪk/",
               definition: {
                 en: "lasting a long time or constantly recurring",
                 zh: "慢性的；長期的"
@@ -1458,11 +1671,13 @@ window.UW_DATA = {
                 { en: "Chronic illnesses now account for the majority of healthcare spending in developed countries.", zh: "慢性疾病現已佔已開發國家醫療支出的大部分。" }
               ],
               seeAlso: ["stress", "preventable"],
-              tags: ["work-economy"]
+              tags: ["work-economy"],
+              collocations: ["chronic illness", "chronic pain", "chronic shortage", "suffer from chronic"]
             },
             {
               id: "preventable",
               word: "preventable",
+              pronunciation: "/prɪˈventəbəl/",
               definition: {
                 en: "able to be stopped from happening",
                 zh: "可預防的"
@@ -1471,11 +1686,13 @@ window.UW_DATA = {
                 { en: "Many road deaths are entirely preventable with safer infrastructure and stricter enforcement.", zh: "若有更安全的基礎設施與更嚴格的執法，許多交通事故死亡是完全可以避免的。" }
               ],
               seeAlso: ["prevention", "prevent"],
-              tags: ["society-culture"]
+              tags: ["society-culture"],
+              collocations: ["entirely preventable", "easily preventable", "preventable disease", "preventable deaths"]
             },
             {
               id: "nutritious",
               word: "nutritious",
+              pronunciation: "/njuːˈtrɪʃəs/",
               definition: {
                 en: "containing substances that the body needs to stay healthy",
                 zh: "有營養的；營養豐富的"
@@ -1483,11 +1700,13 @@ window.UW_DATA = {
               examples: [
                 { en: "School meals should be both nutritious and appealing if children are actually going to eat them.", zh: "學校餐點若要讓孩子真正願意食用，就必須兼具營養與美味。" }
               ],
-              seeAlso: ["nutrition", "balanced"]
+              seeAlso: ["nutrition", "balanced"],
+              collocations: ["nutritious meals", "highly nutritious", "nutritious food", "cheap and nutritious"]
             },
             {
               id: "balanced",
               word: "balanced",
+              pronunciation: "/ˈbalənst/",
               definition: {
                 en: "containing the right amount of different parts; well-proportioned",
                 zh: "均衡的；平衡的"
@@ -1495,11 +1714,13 @@ window.UW_DATA = {
               examples: [
                 { en: "A balanced diet, regular sleep, and movement are still the foundations of good health.", zh: "均衡的飲食、規律的睡眠與適度的運動，至今仍是健康生活的根本。" }
               ],
-              seeAlso: ["wellbeing", "nutritious"]
+              seeAlso: ["wellbeing", "nutritious"],
+              collocations: ["a balanced diet", "well balanced", "balanced approach", "balanced view"]
             },
             {
               id: "vigorous",
               word: "vigorous",
+              pronunciation: "/ˈvɪɡərəs/",
               definition: {
                 en: "strong, energetic, or done with great force",
                 zh: "充滿活力的；劇烈的"
@@ -1507,11 +1728,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Doctors recommend at least 75 minutes of vigorous exercise per week for adults.", zh: "醫師建議成年人每週至少進行七十五分鐘的劇烈運動。" }
               ],
-              seeAlso: ["sedentary", "wellbeing"]
+              seeAlso: ["sedentary", "wellbeing"],
+              collocations: ["vigorous exercise", "vigorous activity", "vigorous debate", "vigorous defence"]
             },
             {
               id: "lethargic",
               word: "lethargic",
+              pronunciation: "/ləˈθɑːdʒɪk/",
               definition: {
                 en: "lacking energy and enthusiasm",
                 zh: "無精打采的；倦怠的"
@@ -1519,7 +1742,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Skipping breakfast often leaves people lethargic by mid-morning.", zh: "不吃早餐往往讓人在上午過半時就感到無精打采。" }
               ],
-              seeAlso: ["sedentary", "stress"]
+              seeAlso: ["sedentary", "stress"],
+              collocations: ["feel lethargic", "leave someone lethargic", "lethargic and unmotivated", "increasingly lethargic"]
             }
           ]
         },
@@ -1530,6 +1754,7 @@ window.UW_DATA = {
             {
               id: "alleviate",
               word: "alleviate",
+              pronunciation: "/əˈliːvieɪt/",
               definition: {
                 en: "to make pain, suffering, or a problem less severe",
                 zh: "減輕；緩解"
@@ -1537,11 +1762,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Even short daily walks can alleviate mild symptoms of anxiety and low mood.", zh: "即便是每日短暫的散步，也能緩解輕度焦慮與情緒低落的症狀。" }
               ],
-              seeAlso: ["mitigate", "stress"]
+              seeAlso: ["mitigate", "stress"],
+              collocations: ["alleviate pain", "alleviate poverty", "alleviate suffering", "alleviate symptoms"]
             },
             {
               id: "eradicate",
               word: "eradicate",
+              pronunciation: "/ɪˈradɪkeɪt/",
               definition: {
                 en: "to destroy or get rid of something completely",
                 zh: "根除；徹底消除"
@@ -1549,11 +1776,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Vaccination campaigns have come remarkably close to eradicating polio worldwide.", zh: "全球性的疫苗接種行動已驚人地接近於根除小兒麻痺症。" }
               ],
-              seeAlso: ["vaccine", "prevention"]
+              seeAlso: ["vaccine", "prevention"],
+              collocations: ["eradicate poverty", "eradicate a disease", "completely eradicate", "eradicate the virus"]
             },
             {
               id: "prevent",
               word: "prevent",
+              pronunciation: "/prɪˈvent/",
               definition: {
                 en: "to stop something from happening",
                 zh: "預防；防止"
@@ -1561,11 +1790,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Regular check-ups can prevent minor health issues from becoming major ones.", zh: "定期健康檢查能防止小病小痛演變成嚴重問題。" }
               ],
-              seeAlso: ["prevention", "preventable"]
+              seeAlso: ["prevention", "preventable"],
+              collocations: ["prevent disease", "help prevent", "prevent something from happening", "prevent further damage"]
             },
             {
               id: "succumb",
               word: "succumb",
+              pronunciation: "/səˈkʌm/",
               definition: {
                 en: "to fail to resist something powerful, especially illness or temptation",
                 zh: "屈服於；死於（疾病）"
@@ -1573,11 +1804,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Many patients succumb not to the original illness but to complications that follow.", zh: "許多患者最終並非死於原本的疾病，而是死於後續的併發症。" }
               ],
-              seeAlso: ["chronic", "epidemic"]
+              seeAlso: ["chronic", "epidemic"],
+              collocations: ["succumb to illness", "succumb to temptation", "succumb to pressure", "eventually succumb"]
             },
             {
               id: "diagnose",
               word: "diagnose",
+              pronunciation: "/ˈdaɪəɡnəʊz/",
               definition: {
                 en: "to identify a disease or problem by examining the signs",
                 zh: "診斷"
@@ -1585,11 +1818,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Mental health conditions are now being diagnosed earlier and more accurately than ever before.", zh: "心理健康問題如今得以比以往更早、更準確地被診斷出來。" }
               ],
-              seeAlso: ["prescribe", "chronic"]
+              seeAlso: ["prescribe", "chronic"],
+              collocations: ["diagnose a condition", "correctly diagnose", "be diagnosed with", "diagnose early"]
             },
             {
               id: "prescribe",
               word: "prescribe",
+              pronunciation: "/prɪˈskraɪb/",
               definition: {
                 en: "to officially tell someone to use a particular medicine or treatment",
                 zh: "開藥；處方"
@@ -1597,11 +1832,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Doctors should think twice before prescribing antibiotics for common viral infections.", zh: "醫師在為常見病毒感染開立抗生素之前應再三斟酌。" }
               ],
-              seeAlso: ["diagnose", "preventable"]
+              seeAlso: ["diagnose", "preventable"],
+              collocations: ["prescribe medication", "prescribe antibiotics", "doctor prescribed", "prescribe treatment"]
             },
             {
               id: "recover",
               word: "recover",
+              pronunciation: "/rɪˈkʌvə/",
               definition: {
                 en: "to return to a normal state of health, mind, or strength",
                 zh: "康復；恢復"
@@ -1609,11 +1846,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Patients tend to recover more quickly at home than in busy hospital wards.", zh: "病患在家中的康復速度，往往比在忙碌的醫院病房裡更快。" }
               ],
-              seeAlso: ["wellbeing", "regenerate"]
+              seeAlso: ["wellbeing", "regenerate"],
+              collocations: ["recover from illness", "fully recover", "recover quickly", "recover from a setback"]
             },
             {
               id: "nurture",
               word: "nurture",
+              pronunciation: "/ˈnɜːtʃə/",
               definition: {
                 en: "to care for and encourage the growth or development of someone or something",
                 zh: "養育；培養"
@@ -1621,7 +1860,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Parents nurture confidence in children by listening to them more than they correct them.", zh: "父母透過多聆聽、少糾正，來培養孩子的自信心。" }
               ],
-              seeAlso: ["cultivate", "foster"]
+              seeAlso: ["cultivate", "foster"],
+              collocations: ["nurture talent", "nurture creativity", "carefully nurture", "nurture a relationship"]
             }
           ]
         }
@@ -1642,6 +1882,7 @@ window.UW_DATA = {
             {
               id: "productivity",
               word: "productivity",
+              pronunciation: "/ˌprɒdʌkˈtɪvəti/",
               definition: {
                 en: "the rate at which goods or services are produced relative to the resources used",
                 zh: "生產力；生產效率"
@@ -1650,11 +1891,13 @@ window.UW_DATA = {
                 { en: "Studies suggest that shorter weeks can actually raise productivity in knowledge work.", zh: "研究指出，縮短工時實際上可能提升知識型工作的生產力。" }
               ],
               seeAlso: ["productive", "workforce"],
-              tags: ["technology-media"]
+              tags: ["technology-media"],
+              collocations: ["boost productivity", "labour productivity", "increase productivity", "productivity gains"]
             },
             {
               id: "workforce",
               word: "workforce",
+              pronunciation: "/ˈwɜːkfɔːs/",
               definition: {
                 en: "the people employed in a particular industry, company, or country",
                 zh: "勞動力；員工總數"
@@ -1663,11 +1906,13 @@ window.UW_DATA = {
                 { en: "An ageing workforce is forcing many countries to rethink retirement policy.", zh: "勞動力高齡化迫使許多國家重新思考退休制度。" }
               ],
               seeAlso: ["demographic", "automation"],
-              tags: ["society-culture"]
+              tags: ["society-culture"],
+              collocations: ["a skilled workforce", "ageing workforce", "the global workforce", "enter the workforce"]
             },
             {
               id: "recession",
               word: "recession",
+              pronunciation: "/rɪˈseʃən/",
               definition: {
                 en: "a period of temporary economic decline marked by reduced trade and activity",
                 zh: "經濟衰退"
@@ -1676,11 +1921,13 @@ window.UW_DATA = {
                 { en: "Young graduates entering the job market during a recession often suffer lasting wage penalties.", zh: "在經濟衰退期間進入職場的年輕畢業生，往往會長期承受較低的薪資待遇。" }
               ],
               seeAlso: ["volatile", "inflation"],
-              tags: ["society-culture"]
+              tags: ["society-culture"],
+              collocations: ["a deep recession", "enter a recession", "global recession", "emerge from recession"]
             },
             {
               id: "inflation",
               word: "inflation",
+              pronunciation: "/ɪnˈfleɪʃən/",
               definition: {
                 en: "a general rise in prices and fall in the purchasing value of money",
                 zh: "通貨膨脹"
@@ -1689,11 +1936,13 @@ window.UW_DATA = {
                 { en: "Persistent inflation erodes household savings, especially for those on fixed incomes.", zh: "持續的通貨膨脹會侵蝕家庭儲蓄，對於收入固定者尤其不利。" }
               ],
               seeAlso: ["recession", "volatile"],
-              tags: ["society-culture"]
+              tags: ["society-culture"],
+              collocations: ["rising inflation", "curb inflation", "rate of inflation", "double-digit inflation"]
             },
             {
               id: "entrepreneur",
               word: "entrepreneur",
+              pronunciation: "/ˌɒntrəprəˈnɜː/",
               definition: {
                 en: "a person who starts a business, typically taking on financial risks to do so",
                 zh: "創業者；企業家"
@@ -1701,11 +1950,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Successful entrepreneurs rarely follow a single template; they adapt to the moment.", zh: "成功的創業者很少遵循單一模式，他們會因時制宜。" }
               ],
-              seeAlso: ["innovation", "lucrative"]
+              seeAlso: ["innovation", "lucrative"],
+              collocations: ["a successful entrepreneur", "young entrepreneur", "serial entrepreneur", "social entrepreneur"]
             },
             {
               id: "livelihood",
               word: "livelihood",
+              pronunciation: "/ˈlaɪvlihʊd/",
               definition: {
                 en: "the means by which someone earns a living",
                 zh: "生計；謀生方式"
@@ -1714,11 +1965,13 @@ window.UW_DATA = {
                 { en: "The new regulations threaten the livelihoods of thousands of small fishermen.", zh: "新法規威脅到數以千計小型漁民的生計。" }
               ],
               seeAlso: ["precarious", "subsidy"],
-              tags: ["society-culture"]
+              tags: ["society-culture"],
+              collocations: ["earn a livelihood", "threaten livelihoods", "lose your livelihood", "depend on for a livelihood"]
             },
             {
               id: "subsidy",
               word: "subsidy",
+              pronunciation: "/ˈsʌbsɪdi/",
               definition: {
                 en: "money paid, usually by a government, to keep prices low or support an industry",
                 zh: "補貼；補助金"
@@ -1727,11 +1980,13 @@ window.UW_DATA = {
                 { en: "Without state subsidies, the renewable energy sector would have grown far more slowly.", zh: "若沒有國家補貼，再生能源產業的成長速度將會慢得多。" }
               ],
               seeAlso: ["subsidize", "livelihood"],
-              tags: ["environment"]
+              tags: ["environment"],
+              collocations: ["government subsidy", "farm subsidies", "receive a subsidy", "cut subsidies"]
             },
             {
               id: "outsourcing",
               word: "outsourcing",
+              pronunciation: "/ˈaʊtsɔːsɪŋ/",
               definition: {
                 en: "the practice of hiring an outside company to handle work usually done in-house",
                 zh: "外包；委外"
@@ -1739,7 +1994,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Outsourcing customer service overseas can cut costs but often at the expense of quality.", zh: "將客服業務外包至海外雖能降低成本，卻往往以服務品質作為代價。" }
               ],
-              seeAlso: ["outsource", "redundant"]
+              seeAlso: ["outsource", "redundant"],
+              collocations: ["outsourcing of jobs", "rely on outsourcing", "outsourcing services", "the rise of outsourcing"]
             }
           ]
         },
@@ -1750,6 +2006,7 @@ window.UW_DATA = {
             {
               id: "lucrative",
               word: "lucrative",
+              pronunciation: "/ˈluːkrətɪv/",
               definition: {
                 en: "producing a lot of money; very profitable",
                 zh: "有利可圖的；獲利豐厚的"
@@ -1757,11 +2014,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Consulting can be lucrative, but it often comes at the cost of personal time.", zh: "顧問業可能十分賺錢，但往往以犧牲個人時間為代價。" }
               ],
-              seeAlso: ["profitable", "entrepreneur"]
+              seeAlso: ["profitable", "entrepreneur"],
+              collocations: ["a lucrative career", "highly lucrative", "lucrative contract", "lucrative deal"]
             },
             {
               id: "productive",
               word: "productive",
+              pronunciation: "/prəˈdʌktɪv/",
               definition: {
                 en: "producing a good amount of work, results, or value",
                 zh: "有生產力的；富有成效的"
@@ -1769,11 +2028,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Most people are not productive for more than four focused hours a day.", zh: "大多數人每天能保持高度專注且具生產力的時間，其實不超過四小時。" }
               ],
-              seeAlso: ["productivity", "skilled"]
+              seeAlso: ["productivity", "skilled"],
+              collocations: ["highly productive", "productive worker", "productive meeting", "remain productive"]
             },
             {
               id: "automated",
               word: "automated",
+              pronunciation: "/ˈɔːtəmeɪtɪd/",
               definition: {
                 en: "operated by machines or computers with little human input",
                 zh: "自動化的；自動化操作的"
@@ -1781,11 +2042,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Automated checkout systems have quietly replaced cashiers in supermarkets across the country.", zh: "自動結帳系統已悄然取代了全國各地超市的收銀員。" }
               ],
-              seeAlso: ["automation", "automate"]
+              seeAlso: ["automation", "automate"],
+              collocations: ["fully automated", "automated system", "automated process", "automated checkout"]
             },
             {
               id: "skilled",
               word: "skilled",
+              pronunciation: "/skɪld/",
               definition: {
                 en: "having the training or ability to do something well",
                 zh: "有技術的；熟練的"
@@ -1793,11 +2056,13 @@ window.UW_DATA = {
               examples: [
                 { en: "There is a growing shortage of skilled workers in trades such as plumbing and welding.", zh: "水電與焊接等技術工種的熟練工人短缺日益嚴重。" }
               ],
-              seeAlso: ["vocational", "expertise"]
+              seeAlso: ["vocational", "expertise"],
+              collocations: ["highly skilled", "skilled workers", "skilled labour", "skilled in"]
             },
             {
               id: "volatile",
               word: "volatile",
+              pronunciation: "/ˈvɒlətaɪl/",
               definition: {
                 en: "likely to change quickly and unpredictably",
                 zh: "波動的；不穩定的"
@@ -1805,11 +2070,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Crypto markets remain notoriously volatile despite years of mainstream adoption.", zh: "儘管加密貨幣已逐步進入主流，其市場仍以波動劇烈而著稱。" }
               ],
-              seeAlso: ["recession", "inflation"]
+              seeAlso: ["recession", "inflation"],
+              collocations: ["volatile markets", "highly volatile", "politically volatile", "volatile situation"]
             },
             {
               id: "precarious",
               word: "precarious",
+              pronunciation: "/prɪˈkeəriəs/",
               definition: {
                 en: "uncertain or insecure; depending on chance",
                 zh: "不穩定的；岌岌可危的"
@@ -1818,11 +2085,13 @@ window.UW_DATA = {
                 { en: "Gig workers often live in a precarious financial situation, one cancelled shift away from trouble.", zh: "零工工作者的財務狀況往往十分不穩定，只要少接一個班就可能陷入困境。" }
               ],
               seeAlso: ["livelihood", "volatile"],
-              tags: ["society-culture"]
+              tags: ["society-culture"],
+              collocations: ["precarious position", "precarious employment", "financially precarious", "precarious situation"]
             },
             {
               id: "profitable",
               word: "profitable",
+              pronunciation: "/ˈprɒfɪtəbəl/",
               definition: {
                 en: "producing a useful or financial gain",
                 zh: "有利可圖的；獲利的"
@@ -1830,11 +2099,13 @@ window.UW_DATA = {
               examples: [
                 { en: "The company became profitable only in its seventh year of operation.", zh: "該公司直到營運的第七年才開始獲利。" }
               ],
-              seeAlso: ["lucrative", "productivity"]
+              seeAlso: ["lucrative", "productivity"],
+              collocations: ["highly profitable", "profitable business", "become profitable", "commercially profitable"]
             },
             {
               id: "redundant",
               word: "redundant",
+              pronunciation: "/rɪˈdʌndənt/",
               definition: {
                 en: "no longer needed or useful; (of a worker) dismissed because the job is no longer required",
                 zh: "多餘的；被裁員的"
@@ -1842,7 +2113,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Hundreds of staff were made redundant when the factory moved its operations abroad.", zh: "工廠將營運遷至海外時，數百名員工因而遭到資遣。" }
               ],
-              seeAlso: ["outsourcing", "downsize"]
+              seeAlso: ["outsourcing", "downsize"],
+              collocations: ["made redundant", "redundant workers", "become redundant", "redundant equipment"]
             }
           ]
         },
@@ -1853,6 +2125,7 @@ window.UW_DATA = {
             {
               id: "outsource",
               word: "outsource",
+              pronunciation: "/ˈaʊtsɔːs/",
               definition: {
                 en: "to arrange for work to be done by another company, often abroad",
                 zh: "外包；委外處理"
@@ -1860,11 +2133,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Many tech firms outsource their customer support to providers in lower-cost regions.", zh: "許多科技公司將客戶服務外包給成本較低地區的供應商。" }
               ],
-              seeAlso: ["outsourcing", "redundant"]
+              seeAlso: ["outsourcing", "redundant"],
+              collocations: ["outsource production", "outsource jobs", "outsource to", "outsource services"]
             },
             {
               id: "restructure",
               word: "restructure",
+              pronunciation: "/ˌriːˈstrʌktʃə/",
               definition: {
                 en: "to organise a company or system in a new way to make it more effective",
                 zh: "重組；改組"
@@ -1872,11 +2147,13 @@ window.UW_DATA = {
               examples: [
                 { en: "The airline had to restructure its entire route network in order to survive.", zh: "為求生存，該航空公司不得不對其整個航線網絡進行重組。" }
               ],
-              seeAlso: ["downsize", "recession"]
+              seeAlso: ["downsize", "recession"],
+              collocations: ["restructure the company", "restructure debt", "radically restructure", "restructure operations"]
             },
             {
               id: "downsize",
               word: "downsize",
+              pronunciation: "/ˌdaʊnˈsaɪz/",
               definition: {
                 en: "to reduce the number of employees in a company, usually to cut costs",
                 zh: "縮編；裁員"
@@ -1884,11 +2161,13 @@ window.UW_DATA = {
               examples: [
                 { en: "After two weak quarters, the company announced it would downsize by ten percent.", zh: "在連續兩季表現疲軟之後，該公司宣布將裁員百分之十。" }
               ],
-              seeAlso: ["redundant", "restructure"]
+              seeAlso: ["redundant", "restructure"],
+              collocations: ["downsize the workforce", "forced to downsize", "downsize operations", "significantly downsize"]
             },
             {
               id: "generate",
               word: "generate",
+              pronunciation: "/ˈdʒenəreɪt/",
               definition: {
                 en: "to produce or create something, especially income, energy, or ideas",
                 zh: "產生；創造"
@@ -1896,11 +2175,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Tourism continues to generate a significant share of the country's foreign income.", zh: "觀光業持續為該國帶來相當可觀比例的外匯收入。" }
               ],
-              seeAlso: ["productivity", "profitable"]
+              seeAlso: ["productivity", "profitable"],
+              collocations: ["generate income", "generate electricity", "generate interest", "generate revenue"]
             },
             {
               id: "diversify",
               word: "diversify",
+              pronunciation: "/daɪˈvɜːsɪfaɪ/",
               definition: {
                 en: "to start to include more variety of products, investments, or activities",
                 zh: "多元化；分散（投資、業務）"
@@ -1909,11 +2190,13 @@ window.UW_DATA = {
                 { en: "Farmers who diversify their crops cope far better with unpredictable weather.", zh: "作物種類多元化的農民，在面對難以預測的天氣時往往更具韌性。" }
               ],
               seeAlso: ["diversity", "volatile"],
-              tags: ["environment"]
+              tags: ["environment"],
+              collocations: ["diversify the economy", "diversify investments", "diversify your portfolio", "diversify income"]
             },
             {
               id: "privatize",
               word: "privatize",
+              pronunciation: "/ˈpraɪvətaɪz/",
               definition: {
                 en: "to transfer a service or business from public to private ownership",
                 zh: "私有化；民營化"
@@ -1922,11 +2205,13 @@ window.UW_DATA = {
                 { en: "Critics argue that privatizing essential services rarely lowers prices in the long run.", zh: "批評者認為，將基本公共服務私有化在長期而言鮮少能降低價格。" }
               ],
               seeAlso: ["subsidize", "restructure"],
-              tags: ["society-culture"]
+              tags: ["society-culture"],
+              collocations: ["privatize state assets", "privatize industries", "fully privatize", "privatize services"]
             },
             {
               id: "subsidize",
               word: "subsidize",
+              pronunciation: "/ˈsʌbsɪdaɪz/",
               definition: {
                 en: "to pay part of the cost of something, usually to keep prices low",
                 zh: "補貼；資助"
@@ -1935,11 +2220,13 @@ window.UW_DATA = {
                 { en: "Several European countries heavily subsidize public transport in order to reduce car use.", zh: "多個歐洲國家大力補貼公共運輸，以期減少私家車的使用。" }
               ],
               seeAlso: ["subsidy", "privatize"],
-              tags: ["environment"]
+              tags: ["environment"],
+              collocations: ["heavily subsidize", "subsidize farmers", "subsidize the cost", "state-subsidized"]
             },
             {
               id: "monetize",
               word: "monetize",
+              pronunciation: "/ˈmɒnɪtaɪz/",
               definition: {
                 en: "to earn money from something, especially an asset or audience",
                 zh: "貨幣化；變現"
@@ -1948,7 +2235,8 @@ window.UW_DATA = {
                 { en: "Creators struggle to monetize their work fairly when platforms take such a large cut.", zh: "當平台抽成如此之高時，創作者很難公平地將自己的作品變現。" }
               ],
               seeAlso: ["platform", "profitable"],
-              tags: ["technology-media"]
+              tags: ["technology-media"],
+              collocations: ["monetize content", "monetize a website", "monetize an audience", "monetize data"]
             }
           ]
         }
@@ -1969,78 +2257,91 @@ window.UW_DATA = {
             {
               id: "burden",
               word: "burden",
+              pronunciation: "/ˈbɜːdən/",
               definition: {
                 en: "something difficult or unpleasant that you have to deal with or worry about",
                 zh: "負擔，重擔"
               },
               examples: [
-                { en: "the burden of responsibility", zh: "責任的重擔" }
+                { en: "The burden of responsibility for the country's economic recovery now rests with the new government.", zh: "如今，國家經濟復甦的責任重擔已落在新政府的肩上。" }
               ],
-              seeAlso: []
+              seeAlso: [],
+              collocations: ["bear the burden", "ease the burden", "the burden of proof", "place a burden on"]
             },
             {
               id: "commitment",
               word: "commitment",
+              pronunciation: "/kəˈmɪtmənt/",
               definition: {
                 en: "a willingness to give your time and energy to something that you believe in, or a promise or firm decision to do something",
                 zh: "忠誠；投入；奉獻；承諾，保證，諾言"
               },
               examples: [
-                { en: "Players must make a commitment to play for a full season.", zh: "隊員必須保證參加整個賽季的比賽" }
+                { en: "Real change requires a long-term commitment, not just a few months of public attention.", zh: "真正的改變需要長期的投入，而非只靠幾個月的大眾關注。" }
               ],
-              seeAlso: []
+              seeAlso: [],
+              collocations: ["make a commitment", "a firm commitment", "long-term commitment", "commitment to"]
             },
             {
               id: "complication",
               word: "complication",
+              pronunciation: "/ˌkɒmplɪˈkeɪʃən/",
               definition: {
                 en: "something that makes a situation more difficult, or the act of doing this",
                 zh: "使情況複雜化的事物；複雜化"
               },
               examples: [
-                { en: "The age difference was a complication to the relationship.", zh: "年齡差異是使該關係複雜化的一個因素。" }
+                { en: "Cultural differences added a further complication to the negotiations.", zh: "文化差異為這場談判增添了另一層複雜性。" }
               ],
-              seeAlso: []
+              seeAlso: [],
+              collocations: ["serious complications", "lead to complications", "without complication", "an added complication"]
             },
             {
               id: "essence",
               word: "essence",
+              pronunciation: "/ˈesəns/",
               definition: {
                 en: "the basic or most important idea or quality of something",
                 zh: "本質；實質；要素"
               },
               examples: [
-                { en: "The essence of his argument was that education should continue throughout life.", zh: "他的觀點的要旨是教育應該持續終生。" }
+                { en: "The essence of his argument is that education must continue throughout life.", zh: "他論點的核心在於：教育應該貫穿一生。" }
               ],
-              seeAlso: []
+              seeAlso: [],
+              collocations: ["the essence of", "capture the essence", "in essence", "the very essence"]
             },
             {
               id: "implication",
               word: "implication",
+              pronunciation: "/ˌɪmplɪˈkeɪʃən/",
               definition: {
                 en: "the effect that an action or decision will have on something else in the future",
                 zh: "可能的影響；可能的後果"
               },
               examples: [
-                { en: "What are the implications of the new law?", zh: "這部新法意味著甚麼呢？" }
+                { en: "The new law carries far-reaching implications for personal privacy.", zh: "這部新法對個人隱私帶來深遠的影響。" }
               ],
-              seeAlso: []
+              seeAlso: [],
+              collocations: ["serious implications", "have implications for", "wider implications", "policy implications"]
             },
             {
               id: "quintessence",
               word: "quintessence",
+              pronunciation: "/kwɪnˈtesəns/",
               definition: {
                 en: "the most perfect or typical example of a quality or class",
                 zh: "典型，典範"
               },
               examples: [
-                { en: "An American football game is the quintessence of machismo.", zh: "橄欖球賽是大男子氣概的典型表現。" }
+                { en: "For many, Paris remains the quintessence of European elegance.", zh: "對許多人而言，巴黎至今仍是歐洲優雅的典範。" }
               ],
-              seeAlso: ["essence", "quintessential"]
+              seeAlso: ["essence", "quintessential"],
+              collocations: ["the quintessence of", "represent the quintessence", "very quintessence"]
             },
             {
               id: "concept",
               word: "concept",
+              pronunciation: "/ˈkɒnsept/",
               definition: {
                 en: "a principle or idea — an abstract thought formed by combining particular instances",
                 zh: "概念；觀念"
@@ -2048,11 +2349,13 @@ window.UW_DATA = {
               examples: [
                 { en: "The concept of free speech sits at the heart of any liberal democracy.", zh: "言論自由的概念是任何自由民主制度的核心。" }
               ],
-              seeAlso: ["framework", "premise"]
+              seeAlso: ["framework", "premise"],
+              collocations: ["grasp the concept", "abstract concept", "the concept of", "introduce a concept"]
             },
             {
               id: "hypothesis",
               word: "hypothesis",
+              pronunciation: "/haɪˈpɒθəsɪs/",
               definition: {
                 en: "a proposed explanation, put forward as a starting point for further investigation",
                 zh: "假說；假設"
@@ -2061,11 +2364,13 @@ window.UW_DATA = {
                 { en: "Her hypothesis was that early bilingual exposure sharpens attention later in life.", zh: "她的假設是，早期接觸雙語有助於日後集中注意力。" }
               ],
               seeAlso: ["premise", "assume"],
-              tags: ["education-learning"]
+              tags: ["education-learning"],
+              collocations: ["test a hypothesis", "put forward a hypothesis", "support the hypothesis", "working hypothesis"]
             },
             {
               id: "paradigm",
               word: "paradigm",
+              pronunciation: "/ˈparədaɪm/",
               definition: {
                 en: "a typical example, pattern, or model of how something works",
                 zh: "範式；典範"
@@ -2074,11 +2379,13 @@ window.UW_DATA = {
                 { en: "Streaming has become the dominant paradigm for how we consume music.", zh: "串流已成為我們消費音樂的主導模式。" }
               ],
               seeAlso: ["framework", "perspective"],
-              tags: ["technology-media"]
+              tags: ["technology-media"],
+              collocations: ["a paradigm shift", "the dominant paradigm", "new paradigm", "challenge the paradigm"]
             },
             {
               id: "premise",
               word: "premise",
+              pronunciation: "/ˈpremɪs/",
               definition: {
                 en: "an idea or theory on which an argument is based",
                 zh: "前提；假設"
@@ -2086,11 +2393,13 @@ window.UW_DATA = {
               examples: [
                 { en: "The whole essay rests on the premise that history repeats itself.", zh: "整篇文章建立在歷史會重演這一前提之上。" }
               ],
-              seeAlso: ["hypothesis", "assume"]
+              seeAlso: ["hypothesis", "assume"],
+              collocations: ["the basic premise", "rest on the premise", "false premise", "accept the premise"]
             },
             {
               id: "nuance",
               word: "nuance",
+              pronunciation: "/ˈnjuːɑːns/",
               definition: {
                 en: "a very slight difference in meaning, feeling, or sound",
                 zh: "細微差別；微妙之處"
@@ -2098,11 +2407,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Translating poetry means trying to preserve the nuances of the original.", zh: "翻譯詩歌意味著要努力保留原作的細微之處。" }
               ],
-              seeAlso: ["ambiguity", "implicit"]
+              seeAlso: ["ambiguity", "implicit"],
+              collocations: ["subtle nuance", "capture the nuances", "lose the nuance", "nuance of meaning"]
             },
             {
               id: "paradox",
               word: "paradox",
+              pronunciation: "/ˈparədɒks/",
               definition: {
                 en: "a statement that seems contradictory but may in fact be true",
                 zh: "悖論；自相矛盾的說法"
@@ -2110,11 +2421,13 @@ window.UW_DATA = {
               examples: [
                 { en: "It is a paradox that the more choices we have, the harder it is to choose.", zh: "選擇越多反而越難抉擇，這是一個悖論。" }
               ],
-              seeAlso: ["implausible", "contrary-to-popular-belief"]
+              seeAlso: ["implausible", "contrary-to-popular-belief"],
+              collocations: ["an apparent paradox", "the paradox of", "central paradox", "a curious paradox"]
             },
             {
               id: "framework",
               word: "framework",
+              pronunciation: "/ˈfreɪmwɜːk/",
               definition: {
                 en: "a basic structure of ideas or rules that supports a system or argument",
                 zh: "框架；架構"
@@ -2123,11 +2436,13 @@ window.UW_DATA = {
                 { en: "The author builds a framework for thinking about ethics in the age of AI.", zh: "作者建立了一套思考人工智能時代倫理問題的框架。" }
               ],
               seeAlso: ["paradigm", "concept"],
-              tags: ["technology-media"]
+              tags: ["technology-media"],
+              collocations: ["a theoretical framework", "within the framework of", "build a framework", "legal framework"]
             },
             {
               id: "perspective",
               word: "perspective",
+              pronunciation: "/pəˈspektɪv/",
               definition: {
                 en: "a particular way of considering something; a point of view",
                 zh: "觀點；角度；視角"
@@ -2135,11 +2450,13 @@ window.UW_DATA = {
               examples: [
                 { en: "From a historical perspective, this is an unusually peaceful decade.", zh: "從歷史的角度來看，這是一個格外和平的十年。" }
               ],
-              seeAlso: ["paradigm", "holistic"]
+              seeAlso: ["paradigm", "holistic"],
+              collocations: ["from a historical perspective", "gain perspective", "broader perspective", "put into perspective"]
             },
             {
               id: "dichotomy",
               word: "dichotomy",
+              pronunciation: "/daɪˈkɒtəmi/",
               definition: {
                 en: "a division or contrast between two things that are presented as opposed",
                 zh: "二分法；兩分對立"
@@ -2147,11 +2464,13 @@ window.UW_DATA = {
               examples: [
                 { en: "The film resists the easy dichotomy between hero and villain.", zh: "這部電影拒絕了英雄與反派之間簡單的二元對立。" }
               ],
-              seeAlso: ["conversely", "on-the-contrary"]
+              seeAlso: ["conversely", "on-the-contrary"],
+              collocations: ["a false dichotomy", "the dichotomy between", "stark dichotomy", "set up a dichotomy"]
             },
             {
               id: "ambiguity",
               word: "ambiguity",
+              pronunciation: "/ˌambɪˈɡjuːəti/",
               definition: {
                 en: "the quality of being open to more than one interpretation",
                 zh: "模糊；多義性；不明確"
@@ -2159,7 +2478,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Good poetry leaves room for ambiguity; bad instructions do not.", zh: "好的詩歌容許模糊；糟糕的說明則不該如此。" }
               ],
-              seeAlso: ["nuance", "implicit"]
+              seeAlso: ["nuance", "implicit"],
+              collocations: ["moral ambiguity", "leave room for ambiguity", "tolerate ambiguity", "deliberate ambiguity"]
             }
           ]
         },
@@ -2170,18 +2490,21 @@ window.UW_DATA = {
             {
               id: "crucial",
               word: "crucial",
+              pronunciation: "/ˈkruːʃəl/",
               definition: {
                 en: "extremely important or necessary",
                 zh: "至關重要的；關鍵的；決定性的"
               },
               examples: [
-                { en: "Her work has been crucial to the project's success.", zh: "她的工作對於這個專案的成功至關重要。" }
+                { en: "Her contribution was crucial to the success of the entire project.", zh: "她的貢獻對整個專案的成功至關重要。" }
               ],
-              seeAlso: []
+              seeAlso: [],
+              collocations: ["absolutely crucial", "play a crucial role", "crucial to", "a crucial factor"]
             },
             {
               id: "detrimental",
               word: "detrimental",
+              pronunciation: "/ˌdetrɪˈmentəl/",
               definition: {
                 en: "causing harm or damage",
                 zh: "有危害的，有損害的"
@@ -2190,23 +2513,27 @@ window.UW_DATA = {
                 { en: "These chemicals have a detrimental impact on the environment.", zh: "這些化學品對環境有危害。" }
               ],
               seeAlso: [],
-              tags: ["environment"]
+              tags: ["environment"],
+              collocations: ["have a detrimental effect", "detrimental to health", "highly detrimental", "detrimental impact"]
             },
             {
               id: "essential",
               word: "essential",
+              pronunciation: "/ɪˈsenʃəl/",
               definition: {
                 en: "necessary or needed",
                 zh: "必要的，必不可少的"
               },
               examples: [
-                { en: "Water is essential to living things.", zh: "水對於生物來說是不可或缺的。" }
+                { en: "Clean water is essential to all forms of life.", zh: "乾淨的水是一切生命不可或缺的根本。" }
               ],
-              seeAlso: []
+              seeAlso: [],
+              collocations: ["absolutely essential", "essential to", "an essential part", "essential skills"]
             },
             {
               id: "holistic",
               word: "holistic",
+              pronunciation: "/həʊˈlɪstɪk/",
               definition: {
                 en: "dealing with or treating the whole of something or someone and not just a part",
                 zh: "整體的，全面的"
@@ -2215,59 +2542,69 @@ window.UW_DATA = {
                 { en: "Ecological problems usually require holistic solutions.", zh: "生態問題通常需要全面性的解決方法。" }
               ],
               seeAlso: [],
-              tags: ["environment"]
+              tags: ["environment"],
+              collocations: ["a holistic approach", "holistic view", "holistic understanding", "more holistic"]
             },
             {
               id: "implausible",
               word: "implausible",
+              pronunciation: "/ɪmˈplɔːzəbəl/",
               definition: {
                 en: "difficult to believe, or unlikely",
                 zh: "難以置信的；不可能的"
               },
               examples: [
-                { en: "The whole plot of the film is ridiculously implausible.", zh: "影片的整個情節荒謬得令人難以置信。" }
+                { en: "The plot relies on an implausible series of coincidences.", zh: "整個劇情仰賴一連串令人難以置信的巧合。" }
               ],
-              seeAlso: []
+              seeAlso: [],
+              collocations: ["highly implausible", "an implausible explanation", "seem implausible", "frankly implausible"]
             },
             {
               id: "implicit",
               word: "implicit",
+              pronunciation: "/ɪmˈplɪsɪt/",
               definition: {
                 en: "suggested but not communicated directly",
                 zh: "不明言的，含蓄的"
               },
               examples: [
-                { en: "Implicit in the poem's closing lines are the poet's own religious doubts.", zh: "在這首詩最後幾行中隱含著詩人自己的宗教疑慮。" }
+                { en: "Implicit in his proposal is the assumption that markets always self-correct.", zh: "他的提議背後隱含一個假設：市場總是能自我修正。" }
               ],
-              seeAlso: []
+              seeAlso: [],
+              collocations: ["implicit in", "implicit assumption", "implicit understanding", "implicit bias"]
             },
             {
               id: "inarguable",
               word: "inarguable",
+              pronunciation: "/ɪnˈɑːɡjuəbəl/",
               definition: {
                 en: "not able to be argued",
                 zh: "無可爭辯的，不容置疑的"
               },
               examples: [
-                { en: "It is an inarguable fact that today's society has happily thrown its former opinions and values to the wind in favour of a more flamboyant lifestyle.", zh: "這是一個不容爭辯的事實，今天的社會已愉快地拋出其前的意見和價值觀的風，取而代之的是更加華麗的生活方式。" }
+                { en: "It is an inarguable fact that climate patterns have shifted dramatically over the past century.", zh: "氣候模式在過去一個世紀內已發生劇烈變化，這是不容爭辯的事實。" }
               ],
-              seeAlso: []
+              seeAlso: [],
+              collocations: ["an inarguable fact", "inarguable evidence", "almost inarguable"]
             },
             {
               id: "inevitable",
               word: "inevitable",
+              pronunciation: "/ɪnˈevɪtəbəl/",
               definition: {
                 en: "certain to happen and unable to be avoided or prevented",
                 zh: "不可避免的；必然發生的"
               },
               examples: [
-                { en: "The accident was the inevitable consequence/result/outcome of carelessness.", zh: "這次意外是粗心導致的必然結果。" }
+                { en: "The accident was the inevitable consequence of years of negligence.", zh: "這場意外是多年怠忽職守所導致的必然結果。" }
               ],
-              seeAlso: []
+              seeAlso: [],
+              collocations: ["seem inevitable", "the inevitable consequence", "almost inevitable", "an inevitable outcome"]
             },
             {
               id: "inexplicable",
               word: "inexplicable",
+              pronunciation: "/ˌɪnɪkˈsplɪkəbəl/",
               definition: {
                 en: "unable to be explained or understood",
                 zh: "無法說明的；費解的"
@@ -2275,45 +2612,52 @@ window.UW_DATA = {
               examples: [
                 { en: "For some inexplicable reason, he's decided to cancel the project.", zh: "由於某種無法解釋的原因，他決定取消這個專案。" }
               ],
-              seeAlso: []
+              seeAlso: [],
+              collocations: ["for some inexplicable reason", "inexplicable behaviour", "seemingly inexplicable", "an inexplicable decision"]
             },
             {
               id: "quintessential",
               word: "quintessential",
+              pronunciation: "/ˌkwɪntɪˈsenʃəl/",
               definition: {
                 en: "representing the most perfect or typical example of a quality or class",
                 zh: "最典型的；最本質的"
               },
               examples: [
-                { en: "This is the quintessential Los Angeles restaurant, lively but not overheated.", zh: "這是最典型的LA餐廳，充滿活力但不會太過熱。" }
+                { en: "With its narrow streets and corner cafés, this is the quintessential Parisian neighbourhood.", zh: "蜿蜒的小巷與街角咖啡館，使這裡成為最典型的巴黎社區。" }
               ],
-              seeAlso: []
+              seeAlso: [],
+              collocations: ["the quintessential example", "quintessentially English", "quintessential figure", "quintessential moment"]
             },
             {
               id: "ubiquitous",
               word: "ubiquitous",
+              pronunciation: "/juːˈbɪkwɪtəs/",
               definition: {
                 en: "seeming to be everywhere",
                 zh: "普遍存在的，似乎無處不在的"
               },
               examples: [
-                { en: "The mobile phone, that most ubiquitous of consumer-electronic appliances, is about to enter a new age.", zh: "作爲使用最普遍的消費電器，收音機將進入一個新時代。" },
-                { en: "Leather is very much in fashion this season, as is the ubiquitous denim.", zh: "皮裝在這個季節非常流行，當然牛仔服也似乎無處不在。" }
+                { en: "The smartphone, now ubiquitous in daily life, is reshaping how we communicate.", zh: "智慧型手機如今在日常生活中無處不在，正重新塑造我們溝通的方式。" },
+                { en: "Denim has become ubiquitous, appearing in everything from streetwear to high fashion.", zh: "牛仔布料早已隨處可見，從街頭服飾到高級時裝都不難看到它的身影。" }
               ],
               seeAlso: [],
-              tags: ["technology-media"]
+              tags: ["technology-media"],
+              collocations: ["become ubiquitous", "almost ubiquitous", "ubiquitous in", "the ubiquitous smartphone"]
             },
             {
               id: "vital",
               word: "vital",
+              pronunciation: "/ˈvaɪtəl/",
               definition: {
                 en: "extremely important",
                 zh: "必不可少的；極其重要的"
               },
               examples: [
-                { en: "She had found out some information of vital importance.", zh: "她已經查出了一些極為重要的資訊。" }
+                { en: "She had uncovered information of vital importance to the investigation.", zh: "她發掘出對這項調查至關重要的資訊。" }
               ],
-              seeAlso: []
+              seeAlso: [],
+              collocations: ["of vital importance", "play a vital role", "absolutely vital", "vital to"]
             }
           ]
         },
@@ -2324,43 +2668,50 @@ window.UW_DATA = {
             {
               id: "assume",
               word: "assume",
+              pronunciation: "/əˈsjuːm/",
               definition: {
                 en: "to accept something to be true without question or proof",
                 zh: "假定，假設；臆斷，想當然地認為"
               },
               examples: [
-                { en: "I assumed that you knew each other because you went to the same school.", zh: "我以為你們兩個認識對方因為你們上了同一間學校。" },
+                { en: "I assumed you two had already met, since you both went to the same university.", zh: "我以為你們兩位已經見過面，畢竟你們上的是同一所大學。" },
                 { en: "We can't assume the suspects to be guilty simply because they've decided to remain silent.", zh: "我們不能僅僅因為疑犯選擇保持沉默，就斷定他們有罪。" }
               ],
-              seeAlso: []
+              seeAlso: [],
+              collocations: ["assume responsibility", "safe to assume", "wrongly assume", "assume the worst"]
             },
             {
               id: "implement",
               word: "implement",
+              pronunciation: "/ˈɪmplɪment/",
               definition: {
                 en: "to start using a plan or system",
                 zh: "實施"
               },
               examples: [
-                { en: "The changes to the national health system will be implemented next year.", zh: "國民醫療保健制度的改革將於明年實行。" }
+                { en: "The reforms to the national health system will be implemented next year.", zh: "國家醫療體系的改革將於明年開始實施。" }
               ],
-              seeAlso: []
+              seeAlso: [],
+              collocations: ["implement a policy", "fully implement", "implement reforms", "implement changes"]
             },
             {
               id: "analyze",
               word: "analyze",
+              pronunciation: "/ˈanəlaɪz/",
               definition: {
                 en: "to study something carefully by breaking it into parts in order to understand it",
                 zh: "分析；解析"
               },
               examples: [
-                { en: "She spent the afternoon analyzing the results of the survey.", zh: "她花了一個下午分析這份問卷的結果。" }
+                { en: "She spent the afternoon analyzing the results of the survey.", zh: "她花了一整個下午分析這份問卷調查的結果。" }
               ],
-              seeAlso: ["evaluate", "demonstrate"]
+              seeAlso: ["evaluate", "demonstrate"],
+              collocations: ["analyse data", "carefully analyse", "analyse trends", "analyse the impact"]
             },
             {
               id: "argue",
               word: "argue",
+              pronunciation: "/ˈɑːɡjuː/",
               definition: {
                 en: "to give reasons in support of or against something",
                 zh: "主張；論證；辯論"
@@ -2368,11 +2719,13 @@ window.UW_DATA = {
               examples: [
                 { en: "The author argues that empathy can be taught, not just inherited.", zh: "作者主張同理心是可以教會的，並非僅靠遺傳。" }
               ],
-              seeAlso: ["contend", "refute"]
+              seeAlso: ["contend", "refute"],
+              collocations: ["argue that", "argue in favour of", "convincingly argue", "argue against"]
             },
             {
               id: "articulate",
               word: "articulate",
+              pronunciation: "/ɑːˈtɪkjəleɪt/",
               definition: {
                 en: "to express thoughts or feelings clearly in words",
                 zh: "清楚表達；明確闡述"
@@ -2380,11 +2733,13 @@ window.UW_DATA = {
               examples: [
                 { en: "He struggled to articulate why the film had moved him so deeply.", zh: "他難以清楚說出這部電影為何深深打動了他。" }
               ],
-              seeAlso: ["elaborate", "emphasize"]
+              seeAlso: ["elaborate", "emphasize"],
+              collocations: ["clearly articulate", "articulate a vision", "struggle to articulate", "articulate concerns"]
             },
             {
               id: "contend",
               word: "contend",
+              pronunciation: "/kənˈtend/",
               definition: {
                 en: "to claim that something is true, especially in an argument",
                 zh: "聲稱；主張"
@@ -2392,11 +2747,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Critics contend that the new policy will only deepen inequality.", zh: "批評者認為新政策只會加深不平等。" }
               ],
-              seeAlso: ["argue", "refute"]
+              seeAlso: ["argue", "refute"],
+              collocations: ["contend that", "critics contend", "contend with", "many contend"]
             },
             {
               id: "demonstrate",
               word: "demonstrate",
+              pronunciation: "/ˈdemənstreɪt/",
               definition: {
                 en: "to show clearly that something exists or is true; to prove",
                 zh: "證明；演示；說明"
@@ -2404,11 +2761,13 @@ window.UW_DATA = {
               examples: [
                 { en: "The study demonstrates a clear link between sleep and memory.", zh: "這項研究清楚地證明了睡眠與記憶之間的關聯。" }
               ],
-              seeAlso: ["illustrate", "evaluate"]
+              seeAlso: ["illustrate", "evaluate"],
+              collocations: ["demonstrate that", "clearly demonstrate", "studies demonstrate", "demonstrate a link"]
             },
             {
               id: "elaborate",
               word: "elaborate",
+              pronunciation: "/ɪˈlabəreɪt/",
               definition: {
                 en: "to add more detail or explanation to what has already been said",
                 zh: "詳細說明；闡述"
@@ -2416,11 +2775,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Could you elaborate on your second point a little?", zh: "你可以就第二點再詳細說明一下嗎？" }
               ],
-              seeAlso: ["articulate", "emphasize"]
+              seeAlso: ["articulate", "emphasize"],
+              collocations: ["elaborate on", "elaborate further", "could you elaborate", "elaborate a theory"]
             },
             {
               id: "emphasize",
               word: "emphasize",
+              pronunciation: "/ˈemfəsaɪz/",
               definition: {
                 en: "to give particular importance or attention to something",
                 zh: "強調；著重"
@@ -2428,11 +2789,13 @@ window.UW_DATA = {
               examples: [
                 { en: "The teacher emphasized the need for clear, honest writing.", zh: "老師強調寫作必須清楚而誠實。" }
               ],
-              seeAlso: ["articulate", "elaborate"]
+              seeAlso: ["articulate", "elaborate"],
+              collocations: ["strongly emphasize", "emphasize the importance of", "emphasize the need", "repeatedly emphasize"]
             },
             {
               id: "evaluate",
               word: "evaluate",
+              pronunciation: "/ɪˈvaljueɪt/",
               definition: {
                 en: "to judge or calculate the quality, importance, or value of something",
                 zh: "評估；評價"
@@ -2440,11 +2803,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Reviewers were asked to evaluate each essay on clarity and originality.", zh: "評審被要求就清晰度與原創性評估每一篇文章。" }
               ],
-              seeAlso: ["analyze", "demonstrate"]
+              seeAlso: ["analyze", "demonstrate"],
+              collocations: ["critically evaluate", "evaluate the impact", "evaluate options", "evaluate evidence"]
             },
             {
               id: "illustrate",
               word: "illustrate",
+              pronunciation: "/ˈɪləstreɪt/",
               definition: {
                 en: "to make something clear by giving examples",
                 zh: "舉例說明；闡明"
@@ -2452,11 +2817,13 @@ window.UW_DATA = {
               examples: [
                 { en: "Let me illustrate what I mean with a story from last year.", zh: "讓我用去年的一個故事來說明我的意思。" }
               ],
-              seeAlso: ["demonstrate", "for-instance"]
+              seeAlso: ["demonstrate", "for-instance"],
+              collocations: ["clearly illustrate", "illustrate the point", "illustrate with examples", "illustrate a case"]
             },
             {
               id: "refute",
               word: "refute",
+              pronunciation: "/rɪˈfjuːt/",
               definition: {
                 en: "to prove that a statement or argument is wrong",
                 zh: "駁斥；反駁"
@@ -2464,7 +2831,8 @@ window.UW_DATA = {
               examples: [
                 { en: "The data refutes the popular belief that the brain stops developing after childhood.", zh: "數據駁斥了大腦在童年後便停止發展這一普遍看法。" }
               ],
-              seeAlso: ["contend", "contrary-to-popular-belief"]
+              seeAlso: ["contend", "contrary-to-popular-belief"],
+              collocations: ["refute a claim", "convincingly refute", "refute the argument", "evidence to refute"]
             }
           ]
         }

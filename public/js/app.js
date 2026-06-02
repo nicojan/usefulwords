@@ -98,6 +98,18 @@
       alsoIn = `<p class="entry__also-in">Also useful for ${joined}.</p>`;
     }
 
+    const ipa = entry.pronunciation
+      ? `<span class="entry__ipa" aria-label="pronunciation">${esc(entry.pronunciation)}</span>`
+      : "";
+
+    const collocations =
+      entry.collocations && entry.collocations.length
+        ? `<p class="entry__collocations" aria-label="common collocations">
+             <span class="entry__collocations-label">Collocations</span>
+             ${entry.collocations.map((c) => esc(c)).join(" · ")}
+           </p>`
+        : "";
+
     return `
       <article class="entry" id="${escAttr(entry.id)}"
                data-word="${escAttr(entry.word.toLowerCase())}"
@@ -106,12 +118,14 @@
                data-ex="${escAttr(allExampleText(entry).toLowerCase())}">
         <header class="entry__head">
           <${hTag} class="entry__word">${esc(entry.word)}</${hTag}>
+          ${ipa}
           ${posLabel ? `<span class="entry__pos" aria-hidden="true">${esc(posLabel)}</span>` : ""}
         </header>
         <div class="entry__def">
           ${entry.definition.en ? `<p class="entry__def-en">${esc(entry.definition.en)}</p>` : ""}
           ${entry.definition.zh ? `<p class="entry__def-zh" lang="zh-Hant">${esc(entry.definition.zh)}</p>` : ""}
         </div>
+        ${collocations}
         ${examples ? `<div class="entry__examples">${examples}</div>` : ""}
         ${
           seeAlso
