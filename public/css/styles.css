@@ -680,7 +680,7 @@ body.chips-visible {
   border-radius: 14px;
   margin: 14px 0 0;
   overflow: hidden;  /* clips hairline dividers + active highlights */
-  border: 1px solid var(--cat-tint, var(--separator));
+  border: 2px solid var(--cat-tint, var(--separator));
 }
 .category__header {
   display: flex;
@@ -1210,6 +1210,23 @@ mark.hl {
   }
   body.chips-visible { padding-bottom: 0; }
 
+  /* One continuous sidebar surface for the brand + search + topics —
+     painted via a body::before so the background and the right
+     border don't get broken at the seam between the topbar and the
+     tabbar inside it. */
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: var(--sidebar-w);
+    background: var(--bg-grouped);
+    border-right: 0.5px solid var(--separator);
+    z-index: 27;
+    pointer-events: none;
+  }
+
   /* Sidebar surface — brand + search at top, topic list below */
   .topbar {
     position: fixed;
@@ -1222,11 +1239,11 @@ mark.hl {
     align-items: stretch;
     gap: 14px;
     padding: 22px 18px 14px;
-    background: var(--bg-grouped);
+    background: transparent;
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
     border-top: 0;
-    border-right: 0.5px solid var(--separator);
+    border-right: 0;
     z-index: 28;
   }
   .topbar__brand {
@@ -1255,11 +1272,11 @@ mark.hl {
     overflow-y: auto;
     scroll-snap-type: none;
     padding: 4px 10px 24px;
-    background: var(--bg-grouped);
+    background: transparent;
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
     border-top: 0;
-    border-right: 0.5px solid var(--separator);
+    border-right: 0;
     mask-image: none;
     -webkit-mask-image: none;
     z-index: 28;
