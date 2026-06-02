@@ -25,7 +25,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Cities tend to flourish when they embrace cultural and linguistic diversity.", zh: "當城市擁抱文化與語言上的多元時，往往能蓬勃發展。" }
               ],
-              seeAlso: ["multicultural", "integration"]
+              seeAlso: ["multicultural", "integration"],
+              tags: ["education-learning", "work-economy"]
             },
             {
               id: "inequality",
@@ -37,7 +38,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Rising income inequality has become one of the defining issues of our generation.", zh: "貧富差距日益擴大，已成為這一代人面臨的核心議題之一。" }
               ],
-              seeAlso: ["marginalized", "prejudice"]
+              seeAlso: ["marginalized", "prejudice"],
+              tags: ["education-learning", "work-economy"]
             },
             {
               id: "demographic",
@@ -693,7 +695,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Sustainability should be designed into a product, not bolted on as an afterthought.", zh: "永續應在產品設計之初就納入考量，而非事後才匆忙補上。" }
               ],
-              seeAlso: ["sustainable", "conservation"]
+              seeAlso: ["sustainable", "conservation"],
+              tags: ["work-economy"]
             },
             {
               id: "conservation",
@@ -759,7 +762,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Sustainable farming practices can restore soil that intensive agriculture has depleted.", zh: "永續的農耕方式能夠修復被集約農業所耗盡的土壤。" }
               ],
-              seeAlso: ["sustainability", "renewable"]
+              seeAlso: ["sustainability", "renewable"],
+              tags: ["work-economy"]
             },
             {
               id: "renewable",
@@ -973,7 +977,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Automation has reshaped the labour market, eliminating some jobs while creating others.", zh: "自動化重新塑造了勞動市場，淘汰了某些工作，也催生出新的職位。" }
               ],
-              seeAlso: ["automate", "workforce"]
+              seeAlso: ["automate", "workforce"],
+              tags: ["work-economy"]
             },
             {
               id: "surveillance",
@@ -1033,7 +1038,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Reliable digital infrastructure has become as vital as roads and electricity.", zh: "可靠的數位基礎設施已變得如同道路與電力一樣不可或缺。" }
               ],
-              seeAlso: ["digital", "sophisticated"]
+              seeAlso: ["digital", "sophisticated"],
+              tags: ["work-economy"]
             },
             {
               id: "privacy",
@@ -1177,7 +1183,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Companies are racing to automate routine tasks in order to free staff for more creative work.", zh: "企業競相將例行工作自動化，以便讓員工得以投入更具創造性的工作。" }
               ],
-              seeAlso: ["automation", "automated"]
+              seeAlso: ["automation", "automated"],
+              tags: ["work-economy"]
             },
             {
               id: "augment",
@@ -1289,7 +1296,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Long working hours can erode personal wellbeing even when salaries are generous.", zh: "即使薪資優渥，過長的工時仍會侵蝕個人的身心健康。" }
               ],
-              seeAlso: ["balanced", "stress"]
+              seeAlso: ["balanced", "stress"],
+              tags: ["work-economy"]
             },
             {
               id: "longevity",
@@ -1313,7 +1321,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Health officials warn that loneliness is becoming a silent epidemic among the elderly.", zh: "衛生官員警告，孤獨感正在悄然成為老年族群間的一種流行現象。" }
               ],
-              seeAlso: ["contagious", "prevention"]
+              seeAlso: ["contagious", "prevention"],
+              tags: ["society-culture"]
             },
             {
               id: "nutrition",
@@ -1605,7 +1614,8 @@ window.UW_DATA = {
               examples: [
                 { en: "Studies suggest that shorter weeks can actually raise productivity in knowledge work.", zh: "研究指出，縮短工時實際上可能提升知識型工作的生產力。" }
               ],
-              seeAlso: ["productive", "workforce"]
+              seeAlso: ["productive", "workforce"],
+              tags: ["technology-media"]
             },
             {
               id: "workforce",

@@ -208,13 +208,6 @@ body.chips-visible {
   letter-spacing: -0.01em;
   font-variation-settings: "opsz" 14, "SOFT" 50;
 }
-.topbar__brand-mark {
-  color: var(--brand-terracotta);
-  font-size: 20px;
-  line-height: 0;
-  position: relative;
-  top: 2px;
-}
 .topbar__brand-name { color: var(--label); }
 
 /* Search — iOS rounded field on systemFill background */
@@ -277,16 +270,6 @@ body.chips-visible {
   border-bottom: 1px solid var(--rule);
   margin-bottom: 28px;
 }
-.masthead__mark {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-weight: 500;
-  font-size: 36px;
-  line-height: 1;
-  color: var(--brand-terracotta);
-  margin: 0 0 6px;
-  font-variation-settings: "opsz" 60, "SOFT" 30;
-}
 .masthead__title {
   font-family: var(--font-display);
   font-weight: 500;
@@ -309,18 +292,11 @@ body.chips-visible {
   letter-spacing: 0.04em;
 }
 .masthead__sub {
-  margin-top: 22px;
+  margin-top: 18px;
   font-size: 15px;
   line-height: 1.55;
   color: var(--ink-2);
   max-width: 38ch;
-}
-.masthead__stats {
-  margin-top: 14px;
-  font-size: 12px;
-  font-feature-settings: "tnum";
-  color: var(--label-2);
-  letter-spacing: 0.01em;
 }
 
 /* ============================================================
@@ -439,27 +415,18 @@ body.chips-visible {
   pointer-events: none;
 }
 
-/* Word of the day — daily entry surfaced as a compact card. Tinted
-   on its left edge with the word's owning-topic color. */
+/* Word of the day — daily entry surfaced as a compact card. The
+   topic identity is carried by the eyebrow label and the "Open in…"
+   link arrow; the card itself uses a neutral border so the visual
+   weight stays restrained. */
 .wod {
-  position: relative;
   margin: 22px 0 0;
-  padding: 14px 16px 16px 20px;
+  padding: 14px 16px 16px;
   background: var(--bg-tertiary);
   border: 0.5px solid var(--separator);
   border-radius: 14px;
-  overflow: hidden;
 }
 .wod[hidden] { display: none; }
-.wod::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 4px;
-  background: var(--wod-tint, var(--tint));
-}
 .wod__head { margin-bottom: 8px; }
 .wod__eyebrow {
   font-family: var(--font-sans);
@@ -476,7 +443,7 @@ body.chips-visible {
   letter-spacing: 0.04em;
   text-transform: none;
   margin-left: 6px;
-  color: var(--label-3);
+  color: var(--label-2);
 }
 .wod__body {
   display: flex;
@@ -954,6 +921,28 @@ body.chips-visible {
   background: var(--accent-soft);
   border-color: var(--accent);
   color: var(--accent);
+}
+
+/* "Also useful for…" — soft cross-reference under entries whose
+   meaning meaningfully spans multiple topics. The link picks up
+   each target topic's tint as an underline color. */
+.entry__also-in {
+  margin-top: 12px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--label-2);
+}
+.entry__also-link {
+  color: var(--label);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-color: var(--also-tint, var(--tint));
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+  transition: color 0.15s var(--ease);
+}
+.entry__also-link:hover {
+  color: var(--also-tint, var(--tint));
 }
 
 /* Search highlight */

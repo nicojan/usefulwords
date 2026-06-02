@@ -79,6 +79,25 @@
       )
       .join("");
 
+    // Soft cross-reference. `tags` is an optional array of topic ids
+    // where this word is also relevant. The entry still lives in one
+    // canonical topic; this is a hint, not a duplicate placement.
+    const tags = (entry.tags || [])
+      .map((tid) => DATA.sections.find((s) => s.id === tid))
+      .filter(Boolean);
+    let alsoIn = "";
+    if (tags.length) {
+      const chips = tags.map(
+        (s) =>
+          `<a class="entry__also-link" href="#${escAttr(s.id)}" data-topic="${escAttr(s.id)}" style="--also-tint: ${SECTION_TINT_VAR[s.id]}">${esc(s.label.en)}</a>`
+      );
+      let joined;
+      if (chips.length === 1) joined = chips[0];
+      else if (chips.length === 2) joined = `${chips[0]} and ${chips[1]}`;
+      else joined = `${chips.slice(0, -1).join(", ")}, and ${chips[chips.length - 1]}`;
+      alsoIn = `<p class="entry__also-in">Also useful for ${joined}.</p>`;
+    }
+
     return `
       <article class="entry" id="${escAttr(entry.id)}"
                data-word="${escAttr(entry.word.toLowerCase())}"
@@ -97,11 +116,12 @@
         ${
           seeAlso
             ? `<div class="entry__see">
-                 <span class="entry__see-label">See also</span>
+                 <span class="entry__see-label">See Also</span>
                  ${seeAlso}
                </div>`
             : ""
         }
+        ${alsoIn}
       </article>
     `;
   }
@@ -219,8 +239,6 @@
     renderTopicGrid();
     const total = Object.keys(idIndex).length;
     if (countEl) countEl.textContent = total;
-    const mastheadCount = document.getElementById("masthead-count");
-    if (mastheadCount) mastheadCount.textContent = total;
   }
 
   // --- Search ------------------------------------------------------
