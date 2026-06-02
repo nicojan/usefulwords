@@ -792,7 +792,7 @@
         </div>
         ${entry.definition.en ? `<p class="wod__def">${esc(entry.definition.en)}</p>` : ""}
         ${entry.definition.zh ? `<p class="wod__def-zh" lang="zh-Hant">${esc(entry.definition.zh)}</p>` : ""}
-        <span class="wod__topic">in ${esc(sectionData?.label.en || sectionId)}</span>
+        <span class="wod__topic">in <span class="wod__topic-name">${esc(sectionData?.label.en || sectionId)}</span></span>
       </a>
     `;
     section.hidden = false;
