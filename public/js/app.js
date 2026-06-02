@@ -239,8 +239,9 @@
     // dropup is used instead, since it docks in the thumb zone.
     const sectionChipsHTML = "";
 
+    const sectionTintVar = SECTION_TINT_VAR[section.id] || "var(--label)";
     return `
-      <section class="section" id="${escAttr(section.id)}" data-section="${escAttr(section.id)}" aria-labelledby="sec-h-${escAttr(section.id)}">
+      <section class="section" id="${escAttr(section.id)}" data-section="${escAttr(section.id)}" aria-labelledby="sec-h-${escAttr(section.id)}" style="--section-tint: ${sectionTintVar}">
         <header class="section__header">
           <h2 class="section__title" id="sec-h-${escAttr(section.id)}">
             <span class="section__title-en">${esc(section.label.en)}</span>
