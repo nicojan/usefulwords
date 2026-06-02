@@ -18,6 +18,142 @@
   const searchClear = document.querySelector(".search__clear");
   const tabs = Array.from(document.querySelectorAll(".tab"));
 
+  // --- Programmatic scroll lock -----------------------------------
+  // Any in-page link (tab, topic card, see-also chip, recent chip,
+  // WotD card) triggers a smooth document scroll. While that smooth
+  // scroll is in flight, the scroll-spy must NOT fire its own
+  // scrollIntoView calls or mutate document height (chips-visible
+  // padding shift) — both of those compete with the user's smooth
+  // scroll and cause it to land short of the target (e.g., clicking
+  // "transitions" landing the page at "work-economy"). Callers set
+  // the lock for ~PROG_SCROLL_MS, and any user-initiated input
+  // (wheel, touch, keyboard scroll keys) clears it early.
+  let programmaticUntil = 0;
+  let progScrollTimeout = null;
+  const PROG_SCROLL_MS = 900;
+  function markProgrammaticScroll(ms = PROG_SCROLL_MS) {
+    programmaticUntil = Date.now() + ms;
+
+    // Wake every section up before the smooth scroll computes its
+    // target offset. .section uses `content-visibility: auto` with
+    // `contain-intrinsic-size: 0 4000px` — off-screen sections are
+    // laid out at the 4000px placeholder. scrollIntoView then aims
+    // at an inflated offsetTop; as the scroll passes through
+    // intermediate sections they wake up to real (smaller) heights,
+    // the document shrinks, and the scroll lands one or more
+    // sections short of the target. Forcing content-visibility:
+    // visible locks every section at its real height before the
+    // scroll starts.
+    //
+    // We deliberately do NOT restore content-visibility:auto after
+    // the scroll settles. Re-inflating off-screen sections back to
+    // their 4000px placeholders triggers scroll-anchoring to
+    // compensate for thousands of pixels of new layout above the
+    // viewport, and in practice the anchor lands inconsistently —
+    // the user sees the page "pause then jump" into the next
+    // section or onto an arbitrary entry. The perf optimization is
+    // intentionally forfeited for the rest of the session; layout
+    // is cheap on this size of document.
+    document.querySelectorAll(".section").forEach((s) => {
+      s.style.contentVisibility = "visible";
+    });
+    void document.body.offsetHeight; // commit the layout
+
+    // Fire one synthetic scroll event after the lock window closes
+    // so the scroll-spy applies the landed-section state (the
+    // navbar would otherwise stay on whatever was active before
+    // the click if the user doesn't touch anything afterwards).
+    if (progScrollTimeout) clearTimeout(progScrollTimeout);
+    progScrollTimeout = setTimeout(() => {
+      progScrollTimeout = null;
+      if (Date.now() >= programmaticUntil) {
+        window.dispatchEvent(new Event("scroll"));
+      }
+    }, ms + 50);
+  }
+  function isProgrammaticScrolling() {
+    return Date.now() < programmaticUntil;
+  }
+  function clearProgrammaticScroll() { programmaticUntil = 0; }
+  window.addEventListener("wheel", clearProgrammaticScroll, { passive: true });
+  window.addEventListener("touchstart", clearProgrammaticScroll, { passive: true });
+  window.addEventListener("keydown", (e) => {
+    const k = e.key;
+    if (k === "PageDown" || k === "PageUp" || k === "ArrowDown" ||
+        k === "ArrowUp" || k === "Home" || k === "End" || k === " ") {
+      clearProgrammaticScroll();
+    }
+  });
+
+  // Respect prefers-reduced-motion for every programmatic scroll.
+  // Modern browsers generally do this for scrollIntoView already,
+  // but being explicit guards older engines and keeps the intent
+  // visible in code.
+  const reducedMotion = window.matchMedia
+    ? window.matchMedia("(prefers-reduced-motion: reduce)")
+    : null;
+  function smoothBehavior() {
+    return reducedMotion && reducedMotion.matches ? "auto" : "smooth";
+  }
+
+  // Trigger the .is-target flash AFTER the smooth scroll has actually
+  // landed the target. Earlier code added the class synchronously
+  // alongside scrollIntoView, so the 1.4s flash animation often ran
+  // (and finished) before the page arrived. We listen for `scrollend`
+  // when available, and fall back to the same window as the
+  // programmatic-scroll lock for older engines.
+  let flashTimer = null;
+  let flashEndListener = null;
+  function flashTarget(el) {
+    if (!el) return;
+    el.classList.remove("is-target");
+    void el.offsetWidth;
+
+    // Tear down any pending flash from a prior click so it doesn't
+    // race the new one.
+    if (flashTimer) { clearTimeout(flashTimer); flashTimer = null; }
+    if (flashEndListener) {
+      window.removeEventListener("scrollend", flashEndListener);
+      flashEndListener = null;
+    }
+    let fired = false;
+    const fire = () => {
+      if (fired) return;
+      fired = true;
+      if (flashTimer) { clearTimeout(flashTimer); flashTimer = null; }
+      if (flashEndListener) {
+        window.removeEventListener("scrollend", flashEndListener);
+        flashEndListener = null;
+      }
+      el.classList.remove("is-target");
+      void el.offsetWidth;
+      el.classList.add("is-target");
+    };
+    flashEndListener = fire;
+    window.addEventListener("scrollend", flashEndListener, { once: true });
+    // Fallback timer in case scrollend never fires (no smooth scroll
+    // needed, reduced-motion auto-jump, or browsers without scrollend).
+    flashTimer = setTimeout(fire, reducedMotion && reducedMotion.matches ? 60 : PROG_SCROLL_MS);
+  }
+
+  // Center an active tab inside its (possibly overflowing) tabbar
+  // WITHOUT using Element.scrollIntoView. Scrolling the tabbar via
+  // its own .scrollTo keeps the scroll confined to that element and
+  // avoids Chromium's quirk of also nudging the document scroll when
+  // scrollIntoView walks ancestors — which previously made the in-
+  // flight document smooth-scroll land at the wrong section.
+  function ensureTabVisible(tab) {
+    const bar = tab && tab.parentElement;
+    if (!bar) return;
+    if (bar.scrollWidth <= bar.clientWidth) return; // desktop sidebar fits all tabs
+    const targetLeft = tab.offsetLeft + tab.offsetWidth / 2 - bar.clientWidth / 2;
+    const max = bar.scrollWidth - bar.clientWidth;
+    bar.scrollTo({
+      left: Math.max(0, Math.min(max, targetLeft)),
+      behavior: smoothBehavior(),
+    });
+  }
+
   // --- Utilities ---------------------------------------------------
 
   function esc(s) {
@@ -95,7 +231,7 @@
       if (chips.length === 1) joined = chips[0];
       else if (chips.length === 2) joined = `${chips[0]} and ${chips[1]}`;
       else joined = `${chips.slice(0, -1).join(", ")}, and ${chips[chips.length - 1]}`;
-      alsoIn = `<p class="entry__also-in">Also useful for ${joined}.</p>`;
+      alsoIn = `<p class="entry__also-in">also useful for ${joined}</p>`;
     }
 
     const ipa = entry.pronunciation
@@ -130,7 +266,7 @@
         ${
           seeAlso
             ? `<div class="entry__see">
-                 <span class="entry__see-label">See Also</span>
+                 <span class="entry__see-label">see also</span>
                  ${seeAlso}
                </div>`
             : ""
@@ -264,13 +400,12 @@
     const tintVar = SECTION_TINT_VAR[section.id] || SECTION_TINT_VAR["society-culture"];
     return `
       <a class="topic-card" data-target="${escAttr(section.id)}" href="#${escAttr(section.id)}"
+         aria-label="${esc(section.label.en)} — ${total} words"
          style="--tint: ${tintVar}">
-        <span class="topic-card__dot" aria-hidden="true"></span>
         <span class="topic-card__text">
           <span class="topic-card__en">${esc(section.label.en)}</span>
           <span class="topic-card__zh" lang="zh-Hant">${esc(section.label.zh)}</span>
         </span>
-        <span class="topic-card__count" aria-label="${total} words">${total}</span>
       </a>
     `;
   }
@@ -287,16 +422,43 @@
       const id = card.dataset.target;
       const el = document.getElementById(id);
       if (el) {
-        el.scrollIntoView({ behavior: "smooth", block: "start" });
+        markProgrammaticScroll();
+        el.scrollIntoView({ behavior: smoothBehavior(), block: "start" });
         history.replaceState(null, "", `#${id}`);
       }
     });
+  }
+
+  function renderTransitionsSubnav() {
+    // Desktop sidebar only: render the 7 transition sub-categories as a
+    // nested list directly beneath the transitions tab so the sidebar
+    // mirrors the dropup chips' affordance from mobile. CSS hides it
+    // below the desktop breakpoint, where the dropup bubble takes over.
+    const tabbar = document.getElementById("sections-nav");
+    if (!tabbar) return;
+    const transitionsTab = tabbar.querySelector('.tab[data-target="transitions"]');
+    if (!transitionsTab) return;
+    if (document.getElementById("transitions-subnav")) return;
+    const section = DATA.sections.find((s) => s.id === "transitions");
+    if (!section?.categories) return;
+    const subnav = document.createElement("div");
+    subnav.id = "transitions-subnav";
+    subnav.className = "tab-subnav";
+    subnav.setAttribute("aria-label", "Transition categories");
+    subnav.innerHTML = section.categories
+      .map(
+        (c) =>
+          `<a class="tab-subnav__link" href="#cat-${escAttr(c.id)}-transitions" data-cat="${escAttr(c.id)}" aria-current="false">${esc(c.label.en)}</a>`
+      )
+      .join("");
+    transitionsTab.after(subnav);
   }
 
   function render() {
     indexEntries();
     root.innerHTML = DATA.sections.map(sectionHTML).join("");
     renderTopicGrid();
+    renderTransitionsSubnav();
     const total = Object.keys(idIndex).length;
     if (countEl) countEl.textContent = total;
   }
@@ -582,11 +744,7 @@
       applyTint(id);
       if (activeTab && activeTab !== lastActiveTab) {
         lastActiveTab = activeTab;
-        activeTab.scrollIntoView({
-          behavior: "smooth",
-          block: "nearest",
-          inline: "center",
-        });
+        ensureTabVisible(activeTab);
       }
       // Dropup chips: only for the transitions section.
       if (chipsEl) {
@@ -611,6 +769,11 @@
     }
 
     function sync() {
+      // While the user's smooth scroll to a clicked target is in
+      // flight, do not re-run scroll-spy work — its side effects
+      // (chips show/hide, tabbar auto-center) interfere with the
+      // browser's smooth scroll and cause it to land short.
+      if (isProgrammaticScrolling()) return;
       const probe = topbarHeight() + 140;
       let current = null;
       for (const s of sections) {
@@ -641,7 +804,9 @@
         const el = document.getElementById(id);
         if (el) {
           if (document.activeElement === searchInput) searchInput.blur();
-          el.scrollIntoView({ behavior: "smooth", block: "start" });
+          markProgrammaticScroll();
+          activate(id, false); // immediate UI feedback for clicked tab
+          el.scrollIntoView({ behavior: smoothBehavior(), block: "start" });
           history.replaceState(null, "", `#${id}`);
         }
       });
@@ -654,21 +819,34 @@
   function setupChips() {
     if (!chipsEl) return;
 
+    const subnav = document.getElementById("transitions-subnav");
+
+    function navigateToCategory(catId) {
+      const el = document.getElementById(`cat-${catId}-transitions`);
+      if (!el) return;
+      markProgrammaticScroll();
+      el.scrollIntoView({ behavior: smoothBehavior(), block: "start" });
+      history.replaceState(null, "", `#cat-${catId}-transitions`);
+    }
+
     chipsEl.addEventListener("click", (e) => {
       const c = e.target.closest(".chip");
       if (!c) return;
       e.preventDefault();
-      const catId = c.dataset.cat;
-      const el = document.getElementById(`cat-${catId}-transitions`);
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth", block: "start" });
-        history.replaceState(null, "", `#cat-${catId}-transitions`);
-      }
+      navigateToCategory(c.dataset.cat);
     });
+    if (subnav) {
+      subnav.addEventListener("click", (e) => {
+        const a = e.target.closest(".tab-subnav__link");
+        if (!a) return;
+        e.preventDefault();
+        navigateToCategory(a.dataset.cat);
+      });
+    }
 
     let lastActive = null;
     function sync() {
-      if (!chipsEl.classList.contains("is-visible")) return;
+      if (isProgrammaticScrolling()) return;
       const trans = document.getElementById("transitions");
       if (!trans) return;
       const cats = Array.from(trans.querySelectorAll(".category"));
@@ -683,11 +861,20 @@
       chipsEl.querySelectorAll(".chip").forEach((c) => {
         const matches = c.dataset.cat === current;
         c.setAttribute("aria-current", matches ? "true" : "false");
-        if (matches) activeChip = c;
+        // Only treat the mobile dropup chip as the auto-scroll target
+        // when its bubble is actually visible — otherwise scrolling
+        // a hidden, fixed element produces no UI feedback and risks
+        // ancestor-scroll quirks.
+        if (matches && chipsEl.classList.contains("is-visible")) activeChip = c;
       });
+      if (subnav) {
+        subnav.querySelectorAll(".tab-subnav__link").forEach((a) => {
+          a.setAttribute("aria-current", a.dataset.cat === current ? "true" : "false");
+        });
+      }
       if (activeChip && current !== lastActive) {
         lastActive = current;
-        activeChip.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        activeChip.scrollIntoView({ behavior: smoothBehavior(), block: "nearest" });
       }
     }
 
@@ -708,19 +895,25 @@
   function setupSeeAlso() {
     root.addEventListener("click", (e) => {
       const link =
-        e.target.closest(".see-chip") || e.target.closest(".tagged-chip");
+        e.target.closest(".see-chip") ||
+        e.target.closest(".tagged-chip") ||
+        e.target.closest(".entry__also-link");
       if (!link) return;
-      const id = link.dataset.see || link.dataset.recent;
+      let id;
+      if (link.classList.contains("entry__also-link")) {
+        id = link.dataset.topic;
+      } else {
+        id = link.dataset.see || link.dataset.recent;
+      }
       if (!id) return;
       const target = document.getElementById(id);
       if (!target) return;
       e.preventDefault();
-      target.scrollIntoView({ behavior: "smooth", block: "start" });
-      target.classList.remove("is-target");
-      void target.offsetWidth;
-      target.classList.add("is-target");
+      markProgrammaticScroll();
+      target.scrollIntoView({ behavior: smoothBehavior(), block: "start" });
+      flashTarget(target);
       history.replaceState(null, "", `#${id}`);
-      pushRecent(id);
+      if (idIndex[id]) pushRecent(id);
     });
     // Recent chips also count as a "visit" — bump them to the top
     // of the recent list so they stay accessible.
@@ -731,10 +924,9 @@
       const target = document.getElementById(id);
       if (!target) return;
       e.preventDefault();
-      target.scrollIntoView({ behavior: "smooth", block: "start" });
-      target.classList.remove("is-target");
-      void target.offsetWidth;
-      target.classList.add("is-target");
+      markProgrammaticScroll();
+      target.scrollIntoView({ behavior: smoothBehavior(), block: "start" });
+      flashTarget(target);
       history.replaceState(null, "", `#${id}`);
       pushRecent(id);
     });
@@ -814,10 +1006,9 @@
       const target = document.getElementById(id);
       if (!target) return;
       e.preventDefault();
-      target.scrollIntoView({ behavior: "smooth", block: "start" });
-      target.classList.remove("is-target");
-      void target.offsetWidth;
-      target.classList.add("is-target");
+      markProgrammaticScroll();
+      target.scrollIntoView({ behavior: smoothBehavior(), block: "start" });
+      flashTarget(target);
       history.replaceState(null, "", `#${id}`);
       pushRecent(id);
     });
@@ -859,6 +1050,29 @@
       })
       .join("");
     sec.hidden = false;
+  }
+
+  // --- Random-entry shuffle button --------------------------------
+  // Picks a uniformly random entry from idIndex and treats it as if
+  // the user had followed a link to it: smooth-scroll, flash the
+  // is-target highlight, and remember the visit in Recently Viewed.
+  function setupRandomButton() {
+    const btn = document.querySelector(".btn-random");
+    if (!btn) return;
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      const ids = Object.keys(idIndex);
+      if (!ids.length) return;
+      const id = ids[Math.floor(Math.random() * ids.length)];
+      const target = document.getElementById(id);
+      if (!target) return;
+      if (document.activeElement === searchInput) searchInput.blur();
+      markProgrammaticScroll();
+      target.scrollIntoView({ behavior: smoothBehavior(), block: "start" });
+      flashTarget(target);
+      history.replaceState(null, "", `#${id}`);
+      pushRecent(id);
+    });
   }
 
   // --- Onboarding hint --------------------------------------------
@@ -939,7 +1153,7 @@
       if (nextIdx < 0 || nextIdx >= sectionIds.length) return;
 
       const el = document.getElementById(sectionIds[nextIdx]);
-      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+      if (el) el.scrollIntoView({ behavior: smoothBehavior(), block: "start" });
     }
 
     document.addEventListener("touchstart", onStart, { passive: true });
@@ -977,6 +1191,7 @@
     renderRecent();
     renderWod();
     setupHint();
+    setupRandomButton();
     handleInitialHash();
   });
 })();
