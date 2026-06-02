@@ -189,11 +189,12 @@
       body = section.entries.map((e) => entryHTML(e, 3, null)).join("");
     }
 
-    // "More words tagged here" — chips for entries living in OTHER
-    // topics but tagged with this one. Discoverable cross-references
-    // without duplicating the entries.
+    // "Also Tagged Here" — chips for entries living in OTHER topics
+    // but tagged with this one. Hidden when there are fewer than 4
+    // entries pointing here — a sparse surface reads as noise.
+    const TAGGED_HERE_MIN = 4;
     const tagged = entriesTaggedFor(section.id);
-    const moreHTML = tagged.length
+    const moreHTML = tagged.length >= TAGGED_HERE_MIN
       ? `<aside class="tagged-here" aria-label="More words tagged for ${esc(section.label.en)}">
            <h3 class="tagged-here__heading">Also Tagged Here <span class="tagged-here__zh" lang="zh-Hant">相關詞彙</span></h3>
            <div class="tagged-here__list">
@@ -736,20 +737,22 @@
 
     section.dataset.available = "true";
     section.style.setProperty("--wod-tint", SECTION_TINT_VAR[sectionId] || SECTION_TINT_VAR["society-culture"]);
+    // Render the whole card as a single tappable link to the entry.
+    // No more "Open in {topic}" footer — the topic name lives inline
+    // as a subtle pill, and the card itself is the tap target.
     body.innerHTML = `
-      <div class="wod__word-row">
-        <a class="wod__word" href="#${escAttr(entry.id)}" data-wod="${escAttr(entry.id)}">${esc(entry.word)}</a>
-        ${pos ? `<span class="wod__pos" aria-hidden="true">${esc(pos)}</span>` : ""}
-      </div>
-      ${entry.definition.en ? `<p class="wod__def">${esc(entry.definition.en)}</p>` : ""}
-      ${entry.definition.zh ? `<p class="wod__def-zh" lang="zh-Hant">${esc(entry.definition.zh)}</p>` : ""}
-      <a class="wod__link" href="#${escAttr(sectionId)}">
-        Open in ${esc(sectionData?.label.en || sectionId)}
+      <a class="wod__card" href="#${escAttr(entry.id)}" data-wod="${escAttr(entry.id)}">
+        <div class="wod__word-row">
+          <span class="wod__word">${esc(entry.word)}</span>
+          ${pos ? `<span class="wod__pos" aria-hidden="true">${esc(pos)}</span>` : ""}
+        </div>
+        ${entry.definition.en ? `<p class="wod__def">${esc(entry.definition.en)}</p>` : ""}
+        ${entry.definition.zh ? `<p class="wod__def-zh" lang="zh-Hant">${esc(entry.definition.zh)}</p>` : ""}
+        <span class="wod__topic">in ${esc(sectionData?.label.en || sectionId)}</span>
       </a>
     `;
     section.hidden = false;
 
-    // Tapping the word jumps to its full entry and marks it as recent.
     body.querySelector('[data-wod]')?.addEventListener('click', (e) => {
       const id = e.currentTarget.dataset.wod;
       const target = document.getElementById(id);

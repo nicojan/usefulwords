@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" preserveAspectRatio="xMidYMid meet">
+  <rect width="1200" height="630" fill="#FAF7F2"/>
+  <text x="80" y="290" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-weight="500" font-size="160" fill="#1C1611" letter-spacing="-2">Useful Words</text>
+  <text x="80" y="370" font-family="'Songti TC', PMingLiU, serif" font-style="normal" font-weight="500" font-size="64" fill="#5F5F66" letter-spacing="2">實用詞彙</text>
+  <text x="80" y="465" font-family="Helvetica, Arial, sans-serif" font-style="normal" font-weight="400" font-size="34" fill="#5F5F66">a bilingual EN / ZH companion for student writing</text>
+  <line x1="80" y1="535" x2="200" y2="535" stroke="#B86F4A" stroke-width="3"/>
+  <text x="80" y="585" font-family="Helvetica, Arial, sans-serif" font-style="normal" font-weight="500" font-size="22" fill="#5F5F66" letter-spacing="1">forhuman.ca · by Nico Jan</text>
+</svg>
