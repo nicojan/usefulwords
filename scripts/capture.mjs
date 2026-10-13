@@ -55,7 +55,10 @@ async function serve(root) {
 async function openPage(base, device, { scheme = 'light', storage = RETURNING, clock = CLOCK, hash = '' } = {}) {
   const browser = await chromium.launch({
     channel: 'chrome', headless: true,
-    args: [`--force-device-scale-factor=${device.dpr}`, `--window-size=${device.width + 200},${device.height + 200}`, '--hide-scrollbars'],
+    args: [`--force-device-scale-factor=${device.dpr}`, `--window-size=${device.width + 200},${device.height + 200}`, '--hide-scrollbars',
+      // Draw only fully rastered frames: without it, a long fast jump at 2400px wide tears (the top of the frame
+      // stays on an old scroll position while the bottom moves).
+      '--run-all-compositor-stages-before-draw'],
   });
   const ctx = await browser.newContext({ viewport: null, hasTouch: device.mobile, colorScheme: scheme, reducedMotion: 'no-preference' });
   // Shift the clock (time keeps running, so the app's scroll lock and timers behave normally) and seed storage.
