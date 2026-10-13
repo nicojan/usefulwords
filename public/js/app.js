@@ -397,11 +397,11 @@
       : section.entries.length;
     return `
       <a class="topic-card" data-target="${escAttr(section.id)}" href="#${escAttr(section.id)}"
-         aria-label="${esc(section.label.en)} — ${total} words">
-        <span class="topic-card__text">
-          <span class="topic-card__en">${esc(section.label.en)}</span>
-          <span class="topic-card__zh" lang="zh-Hant">${esc(section.label.zh)}</span>
-        </span>
+         aria-label="${esc(UW_TEXT.titleCase(section.label.en))}, ${total} words">
+        <svg class="ic" aria-hidden="true" focusable="false"><use href="#i-${escAttr(section.id)}"/></svg>
+        <span class="topic-card__en">${esc(UW_TEXT.titleCase(section.label.en))}</span>
+        <span class="topic-card__zh" lang="zh-Hant">${esc(section.label.zh)}</span>
+        <span class="topic-card__ct">${total}</span>
       </a>
     `;
   }
@@ -944,9 +944,8 @@
     const pos = POS_LABEL_FOR_CATEGORY[categoryId];
 
     section.dataset.available = "true";
-    // Render the whole card as a single tappable link to the entry.
-    // No more "Open in {topic}" footer — the topic name lives inline
-    // as a subtle pill, and the card itself is the tap target.
+    // The whole block is one link to the entry. "From Education" is
+    // plain muted text: a link inside would nest anchors.
     body.innerHTML = `
       <a class="wod__card" href="#${escAttr(entry.id)}" data-wod="${escAttr(entry.id)}">
         <div class="wod__word-row">
@@ -955,7 +954,7 @@
         </div>
         ${entry.definition.en ? `<p class="wod__def">${esc(entry.definition.en)}</p>` : ""}
         ${entry.definition.zh ? `<p class="wod__def-zh" lang="zh-Hant">${esc(entry.definition.zh)}</p>` : ""}
-        <span class="wod__topic">in <span class="wod__topic-name">${esc(sectionData?.label.en || sectionId)}</span></span>
+        <span class="wod__topic">From ${esc(UW_TEXT.titleCase(sectionData?.label.en || sectionId))}</span>
       </a>
     `;
     section.hidden = false;
@@ -1003,11 +1002,10 @@
         const pos = POS_LABEL_FOR_CATEGORY[found.categoryId];
         return `
           <a class="recent-chip" href="#${escAttr(id)}" data-recent="${escAttr(id)}">
-            ${esc(found.entry.word)}
-            ${pos ? `<span class="recent-chip__pos" aria-hidden="true">${esc(pos)}</span>` : ""}
-          </a>`;
+${esc(found.entry.word)}</a>${pos ? ` <span class="recent-chip__pos" aria-hidden="true">${esc(pos)}</span>` : ""}`;
       })
-      .join("");
+      .filter(Boolean)
+      .join('<span class="recent__sep" aria-hidden="true"> · </span>');
     sec.hidden = false;
   }
 
@@ -1038,8 +1036,9 @@
   function setupHint() {
     const hint = document.getElementById("hint");
     if (!hint) return;
+    // Dismissed on an earlier visit: not rendered at all (this runs before
+    // first paint, so there is no flash and no layout to shift).
     if (lsGet(LS_HINT, false)) {
-      hint.classList.add("hint--dismissed");
       hint.hidden = true;
       return;
     }
@@ -1047,10 +1046,11 @@
     function dismiss() {
       if (dismissed) return;
       dismissed = true;
+      // Fade only (opacity and visibility). The box stays for the rest of
+      // this page load, so an in-flight smooth scroll never sees a layout
+      // shift; it is not rendered on later loads.
       hint.classList.add("hint--dismissed");
       lsSet(LS_HINT, true);
-      // Once the transition finishes, remove from layout entirely.
-      setTimeout(() => { hint.hidden = true; }, 400);
     }
     document.getElementById("topics-grid")?.addEventListener("click", dismiss, { once: true });
     searchInput?.addEventListener("focus", dismiss, { once: true });
