@@ -56,7 +56,10 @@ export function createServer() {
 
 // Run as a script only (not when verify.mjs imports createServer). Compare real paths so a symlinked or
 // space-containing path still counts as "run directly".
-if (process.argv[1] && realpathSync(process.argv[1]) === fileURLToPath(import.meta.url)) {
+const isMain = (() => {
+  try { return !!process.argv[1] && realpathSync(process.argv[1]) === fileURLToPath(import.meta.url); } catch { return false; }
+})();
+if (isMain) {
   createServer().listen(PORT, HOST, () => {
     console.log(`serving ${ROOT} on http://${HOST}:${PORT}`);
   });

@@ -337,7 +337,10 @@ const lineAt = (starts, index) => {
 };
 
 // Innermost-brace rules only ("selector { declarations }"); at-rules wrapping them are not returned.
-function cssRules(source) {
+function cssRules(original) {
+  // Comments are blanked (newlines kept, so line numbers survive): otherwise a comment above a rule becomes part
+  // of its "selector" and `@font-face` no longer matches, and braces inside comments split rules wrongly.
+  const source = original.replace(/\/\*[\s\S]*?\*\//g, (c) => c.replace(/[^\n]/g, ' '));
   const starts = lineStarts(source);
   const rules = [];
   const re = /([^{}]+)\{([^{}]*)\}/g;
