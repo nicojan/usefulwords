@@ -92,7 +92,6 @@ a { color: inherit; text-decoration: none; }
   --runhead-h:    calc(40px + env(safe-area-inset-top));  /* the running head at the top; not --topbar-h, which is the bottom bar on phones */
   --col-w:        600px;                                   /* the reading column: body text, front matter, running head */
   --main-pad:     var(--pad-x);                            /* main column's side padding; set per breakpoint below */
-  --radius:       14px;
 
   /* Motion */
   --ease:         cubic-bezier(0.2, 0.7, 0.2, 1);
@@ -123,7 +122,10 @@ body {
      tabbar, topbar (wordmark, search, random word). */
   padding-bottom: calc(var(--topbar-h) + var(--tabbar-h) + env(safe-area-inset-bottom));
   transition: padding-bottom 0.2s var(--ease);
+  font-size: 17px;
+  line-height: 1.47;
 }
+::selection { background: color-mix(in srgb, var(--accent) 20%, transparent); color: var(--ink); }
 body.chips-visible {
   padding-bottom: calc(var(--topbar-h) + var(--tabbar-h) + var(--chips-h) + env(safe-area-inset-bottom));
 }
@@ -224,6 +226,9 @@ svg.ic {
   font-family: var(--font-sans), var(--font-zh);
   font-size: 16px;
   color: var(--ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 @media (prefers-color-scheme: dark) {
   .search__input { border-color: color-mix(in srgb, var(--muted) 40%, transparent); }
@@ -618,6 +623,28 @@ svg.ic {
   margin-left: auto;
   font-variant-numeric: tabular-nums;
 }
+.section__title-zhline { display: inline-flex; align-items: baseline; white-space: nowrap; }
+.section__title-count { display: none; }
+@media (max-width: 759px) {
+  /* Phones: the count rides the Chinese line ("環境 · 24 words"); the
+     right-hand copy stays in the DOM for screen readers only. */
+  .section__title-count {
+    display: inline;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .section__count {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+}
 @media (max-width: 379px) {
   .section__title { font-size: 30px; }
 }
@@ -638,6 +665,7 @@ svg.ic {
   font-family: var(--font-zh);
   line-height: 1.65;
   text-autospace: normal;
+  text-wrap: pretty;
 }
 
 /* --- Category heading: Literata 600 21px, Chinese and count muted at the
@@ -744,7 +772,6 @@ svg.ic {
 /* ============================================================
    Entry: open layout, no container, a hairline between entries
    ============================================================ */
-.entries { display: block; }
 .entry {
   display: block;
   padding: 18px 0 20px;
@@ -803,6 +830,7 @@ svg.ic {
   line-height: 1.65;
   color: var(--ink);
   text-autospace: normal;
+  text-wrap: pretty;
 }
 
 .entry__collocations {
@@ -819,7 +847,6 @@ svg.ic {
   flex-direction: column;
   gap: 8px;
 }
-.entry__example { display: block; }
 .entry__example-en {
   font-family: var(--font-serif);
   font-style: italic;
@@ -834,6 +861,7 @@ svg.ic {
   line-height: 1.65;
   color: var(--ink-2);
   text-autospace: normal;
+  text-wrap: pretty;
 }
 
 /* Cross-references: one muted line, links in roman terracotta, underlined */
@@ -1142,11 +1170,16 @@ mark.hl {
   /* Random word: label showing, at the foot of the sidebar */
   .btn-random {
     position: fixed;
-    left: 18px;
-    bottom: 14px;
     z-index: 29;
-    width: auto;
-    padding: 0 6px 0 2px;
+    width: var(--sidebar-w);
+    left: 0;
+    bottom: 0;
+    justify-content: flex-start;
+    padding: 12px 18px calc(12px + env(safe-area-inset-bottom));
+    height: auto;
+    background: var(--bg);
+    border-top: 1px solid var(--rule);
+    border-right: 1px solid var(--rule);
     color: var(--accent);
     font-family: var(--font-sans);
     font-weight: 600;
@@ -1213,8 +1246,10 @@ mark.hl {
     --hl:          rgba(255, 204, 0, 0.42);
     --flash:       color-mix(in srgb, var(--accent) 12%, transparent);
   }
-  .rh, .btn-random, .tabbar, .chips, .topbar, .skip, .search { display: none !important; }
+  .rh, .btn-random, .tabbar, .chips, .topbar, .skip, .search, .tab-subnav, .sidebar { display: none !important; }
   body { background: var(--bg); padding: 0; }
+  body::before { display: none; }
+  main.content { margin-left: 0; max-width: none; padding: 0; }
   .content { max-width: none; padding: 24px; }
   .entry { break-inside: avoid; }
 }

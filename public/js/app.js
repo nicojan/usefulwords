@@ -523,7 +523,7 @@
           <h2 class="section__title" id="sec-h-${escAttr(section.id)}">
             <span class="section__title-main"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-${escAttr(section.id)}"/></svg>
             <span class="section__title-en">${esc(UW_TEXT.titleCase(section.label.en))}</span></span>
-            <span class="section__title-zh" lang="zh-Hant">${esc(section.label.zh)}</span>
+            <span class="section__title-zhline"><span class="section__title-zh" lang="zh-Hant">${esc(section.label.zh)}</span><span class="section__title-count" aria-hidden="true">&nbsp;·&nbsp;${total}&nbsp;words</span></span>
           </h2>
           <span class="section__count" aria-label="${total} words">${total}&nbsp;words</span>
         </header>
@@ -1235,7 +1235,7 @@
     renderRecent();
     if (!above) return;
     const delta = root.getBoundingClientRect().top - before;
-    if (delta) window.scrollBy({ top: delta, behavior: "instant" });
+    if (delta) window.scrollBy({ top: delta, behavior: "auto" });
   }
   function renderRecent() {
     const sec = document.getElementById("recent-section");

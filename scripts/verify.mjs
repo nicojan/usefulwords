@@ -1054,6 +1054,17 @@ async function checkScreens(browser, combo, errors) {
     ['environment', { path: '/#environment', settleMs: 1500 }, async () => {}],
     ['transitions', { path: '/#transitions', settleMs: 1500 }, async () => {}],
     ['society', { path: '/#society-culture', settleMs: 1500 }, async () => {}],
+    // A returning visitor: three recently viewed words and the onboarding hint gone, so Recently Viewed shows
+    ['home-returning', { returning: true }, async (p) => {
+      if (!(await p.locator('#recent-section').isVisible())) throw new Error('#recent-section is not visible for a returning visitor');
+    }],
+    // The Also Tagged Here block scrolled to the middle of the viewport
+    ['tagged-here', { path: '/#environment', settleMs: 1500 }, async (p) => {
+      const block = p.locator('.tagged-here').first();
+      if (!(await block.count())) throw new Error('no .tagged-here block rendered');
+      await block.evaluate((el) => el.scrollIntoView({ block: 'center', behavior: 'instant' }));
+      await p.waitForTimeout(400);
+    }],
     ['technology', { path: '/#technology-media', settleMs: 1500 }, async () => {}],
     ['search', {}, async (p) => { await p.fill('#search-input', 'biodiversity'); await p.waitForTimeout(500); }],
     ['empty', {}, async (p) => { await p.fill('#search-input', 'zzzzqq'); await p.waitForTimeout(500); }],
