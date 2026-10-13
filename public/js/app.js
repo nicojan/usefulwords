@@ -409,7 +409,7 @@
   function renderTopicGrid() {
     const grid = document.getElementById("topics-grid");
     if (!grid) return;
-    grid.innerHTML = DATA.sections.map(topicCardHTML).join("");
+    grid.innerHTML = `<ul class="topics__list">${DATA.sections.map((s) => `<li>${topicCardHTML(s)}</li>`).join("")}</ul>`;
 
     grid.addEventListener("click", (e) => {
       const card = e.target.closest(".topic-card");
@@ -1000,9 +1000,7 @@
         const found = findEntry(id);
         if (!found) return "";
         const pos = POS_LABEL_FOR_CATEGORY[found.categoryId];
-        return `
-          <a class="recent-chip" href="#${escAttr(id)}" data-recent="${escAttr(id)}">
-${esc(found.entry.word)}</a>${pos ? ` <span class="recent-chip__pos" aria-hidden="true">${esc(pos)}</span>` : ""}`;
+        return `<a class="recent-chip" href="#${escAttr(id)}" data-recent="${escAttr(id)}">${esc(found.entry.word)}</a>${pos ? ` <span class="recent-chip__pos" aria-hidden="true">${esc(pos)}</span>` : ""}`;
       })
       .filter(Boolean)
       .join('<span class="recent__sep" aria-hidden="true"> · </span>');
@@ -1036,8 +1034,9 @@ ${esc(found.entry.word)}</a>${pos ? ` <span class="recent-chip__pos" aria-hidden
   function setupHint() {
     const hint = document.getElementById("hint");
     if (!hint) return;
-    // Dismissed on an earlier visit: not rendered at all (this runs before
-    // first paint, so there is no flash and no layout to shift).
+    // Dismissed on an earlier visit: an inline script in <head> sets
+    // .hint-seen before first paint, which hides the hint with CSS. This is
+    // the fallback if that script could not read localStorage.
     if (lsGet(LS_HINT, false)) {
       hint.hidden = true;
       return;

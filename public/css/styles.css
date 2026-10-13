@@ -318,7 +318,7 @@ svg.ic {
   font-size: 15px;
   line-height: 1.45;
   color: var(--ink-2);
-  max-width: 38ch;
+  max-width: 60ch;
   text-wrap: pretty;
 }
 
@@ -426,6 +426,7 @@ svg.ic {
 
 /* --- Contents: one row per topic, the whole row is the link --- */
 .topics__grid { display: block; }
+.topics__list { list-style: none; margin: 0; padding: 0; }
 .topic-card {
   display: flex;
   align-items: baseline;
@@ -469,7 +470,7 @@ svg.ic {
   color: var(--muted);
   transition: opacity 0.35s var(--ease), visibility 0.35s var(--ease);
 }
-.hint[hidden] { display: none; }
+.hint[hidden], .hint-seen .hint { display: none; }
 .hint--dismissed { opacity: 0; visibility: hidden; pointer-events: none; }
 
 /* Per-topic intro line under the section title */
