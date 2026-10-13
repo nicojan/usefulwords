@@ -90,7 +90,8 @@ a { color: inherit; text-decoration: none; }
   --side-gap:     14px;
   --side-head-h:  calc(var(--side-pad-top) + var(--brand-h) + var(--side-gap) + var(--search-h) + var(--side-pad-bot));
   --runhead-h:    calc(40px + env(safe-area-inset-top));  /* the running head at the top; not --topbar-h, which is the bottom bar on phones */
-  --col-w:        600px;                                   /* the reading column */
+  --col-w:        600px;                                   /* the reading column: body text, front matter, running head */
+  --main-pad:     var(--pad-x);                            /* main column's side padding; set per breakpoint below */
   --radius:       14px;
 
   /* Motion */
@@ -360,7 +361,7 @@ svg.ic {
 .masthead,
 .wod,
 .recent,
-.topics { max-width: 600px; }
+.topics { max-width: var(--col-w); }
 
 /* --- Masthead (the one place the terracotta comma appears) --- */
 .masthead { padding: 40px 0 0; }
@@ -546,7 +547,7 @@ svg.ic {
 /* Search summary and empty state: muted Atkinson, flush left, no box */
 .search-summary {
   margin: 18px 0 4px;
-  max-width: 600px;
+  max-width: var(--col-w);
   font-size: 15px;
   line-height: 1.47;
   color: var(--muted);
@@ -561,7 +562,7 @@ svg.ic {
 /* --- Topic section: icon, title, Chinese, count. No container. --- */
 .section {
   scroll-margin-top: calc(var(--runhead-h) + 16px);
-  max-width: 600px;
+  max-width: var(--col-w);
   padding-top: 12px;
   margin-top: 40px;
 }
@@ -898,7 +899,7 @@ mark.hl {
 
 /* Empty state: muted text, flush left, no box */
 .empty {
-  max-width: 600px;
+  max-width: var(--col-w);
   padding: 18px 0 40px;
   color: var(--muted);
 }
@@ -916,7 +917,7 @@ mark.hl {
 
 /* Colophon */
 .colophon {
-  max-width: 600px;
+  max-width: var(--col-w);
   margin-top: 48px;
   padding: 16px 0 20px;
   border-top: 1px solid var(--rule);
@@ -1033,6 +1034,7 @@ mark.hl {
     --pad-x: 36px;
     --max-w: 720px;
     --sidebar-w: 248px;
+    --main-pad: 40px;
   }
 
   body { padding-bottom: 0; }
@@ -1164,8 +1166,8 @@ mark.hl {
   main.content {
     margin-left: var(--sidebar-w);
     max-width: 820px;
-    padding-left: 40px;
-    padding-right: 40px;
+    padding-left: var(--main-pad);
+    padding-right: var(--main-pad);
   }
 
 
@@ -1175,8 +1177,8 @@ mark.hl {
   /* Running head across the main column only, aligned with its text */
   .rh {
     left: var(--sidebar-w);
-    --rh-in: 40px;
-    --rh-out: max(40px, calc(100% - var(--rh-in) - var(--col-w)));
+    --rh-in: var(--main-pad);
+    --rh-out: max(var(--main-pad), calc(100% - var(--rh-in) - var(--col-w)));
   }
 }
 
@@ -1184,12 +1186,9 @@ mark.hl {
   :root {
     --max-w: 780px;
     --sidebar-w: 280px;
+    --main-pad: 56px;
   }
-  main.content { max-width: 880px; padding-left: 56px; padding-right: 56px; }
-  .rh {
-    --rh-in: 56px;
-    --rh-out: max(56px, calc(100% - var(--rh-in) - var(--col-w)));
-  }
+  main.content { max-width: 880px; }
 }
 
 /* Prefers-reduced-motion */

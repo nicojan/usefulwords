@@ -106,6 +106,17 @@ const FLASH_CLASS = 'is-target'; // what flashTarget() in app.js adds
 // localStorage names used by app.js; the hint one being set means the onboarding hint is gone (a returning visitor)
 const STORE = { recent: 'uw_recent_v1', hint: 'uw_hint_dismissed_v1' };
 const MIN_CHIPS_CONTENT_PX = 380;
+// A jump lands its target scroll-margin-top (running head + 16px) from the top. Any target that can scroll that far
+// must end up at most this far below the running head; more means something shifted the page under the jump (the
+// first recently-viewed reveal once landed ~100px short). Skipped when the page is scrolled to its end.
+const MAX_LANDING_GAP_PX = 24;
+// The returning-visitor reference already has recently-viewed entries, so the first-visit trials (empty storage,
+// where the first jump reveals the list above the entries) differ from it exactly where it matters.
+const RETURNING_RECENT = ['literacy', 'automate', 'nuance'];
+// Simulated WebKit: Safari has no scroll anchoring, so a layout change above the viewport moves the page there.
+// Injected for extra first-visit trials on phones; the same landing bound applies.
+const NO_ANCHOR_CSS = 'html, body { overflow-anchor: none !important; }';
+const NO_ANCHOR_TRIALS = 2;
 
 // ---------------------------------------------------------------------------
 // In-page helpers (injected once per page as window.__v)
@@ -210,7 +221,8 @@ function isBaseline(url, text) {
 }
 
 // A fresh browser context per page keeps localStorage (recently viewed) from leaking between checks.
-async function openPage(browser, combo, { path: p = '/', recent, returning = false, settleMs = 400, errors } = {}) {
+async function openPage(browser, combo, { path: p = '/', recent: seeded, returning = false, noAnchor = false, settleMs = 400, errors } = {}) {
+  const recent = seeded ?? (returning ? RETURNING_RECENT : undefined);
   const context = await browser.newContext({
     viewport: { width: combo.w, height: combo.h },
     colorScheme: combo.scheme,
@@ -232,6 +244,11 @@ async function openPage(browser, combo, { path: p = '/', recent, returning = fal
   });
   await page.addInitScript(PAGE_HELPERS);
   await page.goto(BASE_URL + p, { waitUntil: 'load' });
+  if (noAnchor) {
+    await page.addStyleTag({ content: NO_ANCHOR_CSS });
+    const off = await page.evaluate(() => [document.documentElement, document.body].every((e) => getComputedStyle(e).overflowAnchor === 'none'));
+    if (!off) throw new Error('could not turn scroll anchoring off (overflow-anchor is not none on html and body)');
+  }
   await page.waitForSelector('.entry', { state: 'attached', timeout: 10000 });
   await page.waitForTimeout(settleMs);
   return { page, context };
@@ -288,6 +305,7 @@ async function measureLanding(page, id) {
       margin: parseFloat(getComputedStyle(target).scrollMarginTop) || 0,
       vh: innerHeight,
       vw: innerWidth,
+      atEnd: scrollY + innerHeight >= document.documentElement.scrollHeight - 2,
       left: r.left,
       hasRh: !!rh,
       rhPosition: rhCs ? rhCs.position : '',
@@ -766,11 +784,14 @@ const expectedVisible = (name, combo) => (name === 'chip' ? combo.phone : name =
 const landed = (m, id) => {
   const problems = landingProblems(m, id);
   const gap = m.missing ? null : m.top - m.rhBottom;
+  if (gap !== null && !m.atEnd && gap > MAX_LANDING_GAP_PX) {
+    problems.push(`#${id} landed ${gap.toFixed(1)}px below the running head, want <= ${MAX_LANDING_GAP_PX} (the page shifted under the jump)`);
+  }
   return problems.length ? { status: 'FAIL', detail: problems.join('; '), gap } : { status: 'PASS', detail: `#${id}: ${landingSummary(m)}`, gap };
 };
 
-async function runClickJump(browser, combo, name, errors, returning) {
-  return withPage(browser, combo, { ...JUMP_PAGE_OPTS[name], returning, errors }, async (page) => {
+async function runClickJump(browser, combo, name, errors, returning, noAnchor) {
+  return withPage(browser, combo, { ...JUMP_PAGE_OPTS[name], returning, noAnchor, errors }, async (page) => {
     const { loc, attr, wrap } = await JUMP_TARGETS[name](page);
     const expected = expectedVisible(name, combo);
     if (!(await loc.count()) || !(await loc.isVisible())) {
@@ -786,8 +807,8 @@ async function runClickJump(browser, combo, name, errors, returning) {
   });
 }
 
-async function runRandomJumps(browser, combo, errors, returning, clicks) {
-  return withPage(browser, combo, { returning, errors }, async (page) => {
+async function runRandomJumps(browser, combo, errors, returning, clicks, noAnchor) {
+  return withPage(browser, combo, { returning, noAnchor, errors }, async (page) => {
     const notes = [];
     const problems = [];
     let lastGap = null;
@@ -803,9 +824,9 @@ async function runRandomJumps(browser, combo, errors, returning, clicks) {
   });
 }
 
-async function runSwipeJump(browser, combo, errors, returning) {
+async function runSwipeJump(browser, combo, errors, returning, noAnchor) {
   if (!combo.phone) return { status: 'SKIP', detail: 'touch gesture, checked on the 390px phone layout only' };
-  return withPage(browser, combo, { path: '/#society-culture', settleMs: 1500, returning, errors }, async (page, context) => {
+  return withPage(browser, combo, { path: '/#society-culture', settleMs: 1500, returning, noAnchor, errors }, async (page, context) => {
     const cdp = await context.newCDPSession(page);
     await page.evaluate(() => { window.__touches = 0; document.addEventListener('touchstart', () => { window.__touches++; }, { capture: true, passive: true }); });
     const plan = await page.evaluate(() => {
@@ -840,19 +861,31 @@ const safely = async (fn) => {
   try { return await fn(); } catch (e) { return { status: 'FAIL', detail: `threw: ${e.message.split('\n')[0]}` }; }
 };
 
-// One jump type, run as a returning visitor (the reference landing) and then as a first-time visitor three times.
-// The "Tap a topic to explore" hint collapses on the first scroll past 240px and shifts the page up under a smooth
-// scroll already in flight, and the effect is racy, so a first-time landing must also match the reference
-// within 2px, and ANY failing trial fails the jump.
+// One jump type, run as a returning visitor (the reference landing, with recently-viewed entries already stored)
+// and then as a first-time visitor three times (empty storage, so the first jump reveals the recently-viewed list
+// above the entries). On phones, NO_ANCHOR_TRIALS more first-visit trials run with scroll anchoring off (WebKit).
+// The "Tap a topic to explore" hint and the recent reveal both change layout above an in-flight jump, so a
+// first-time landing must also match the reference within 2px, and ANY failing trial fails the jump.
 async function runJumpType(browser, combo, name, errors) {
-  const attempt = (returning, clicks) => safely(() => (name === 'random' ? runRandomJumps(browser, combo, errors, returning, clicks)
-    : name === 'swipe' ? runSwipeJump(browser, combo, errors, returning)
-      : runClickJump(browser, combo, name, errors, returning)));
+  const attempt = (returning, clicks, noAnchor = false) => safely(() => (name === 'random' ? runRandomJumps(browser, combo, errors, returning, clicks, noAnchor)
+    : name === 'swipe' ? runSwipeJump(browser, combo, errors, returning, noAnchor)
+      : runClickJump(browser, combo, name, errors, returning, noAnchor)));
   const ref = await attempt(true, 5);
   const rows = [{ name: `${name} (returning)`, ...ref }];
-  if (ref.status === 'SKIP') return [...rows, { name: `${name} (first visit)`, status: 'SKIP', detail: ref.detail }];
-  const trials = [];
-  for (let i = 0; i < FIRST_VISIT_TRIALS; i++) trials.push(await attempt(false, 1));
+  const variants = [
+    { label: 'first visit', trials: FIRST_VISIT_TRIALS, noAnchor: false },
+    ...(combo.phone ? [{ label: 'first visit, no scroll anchoring', trials: NO_ANCHOR_TRIALS, noAnchor: true }] : []),
+  ];
+  for (const v of variants) {
+    if (ref.status === 'SKIP') { rows.push({ name: `${name} (${v.label})`, status: 'SKIP', detail: ref.detail }); continue; }
+    const trials = [];
+    for (let i = 0; i < v.trials; i++) trials.push(await attempt(false, 1, v.noAnchor));
+    rows.push(compareTrials(name, v, ref, trials));
+  }
+  return rows;
+}
+
+function compareTrials(name, v, ref, trials) {
   const comparable = name !== 'random' && ref.status === 'PASS' && typeof ref.gap === 'number';
   const problems = [];
   trials.forEach((t, i) => {
@@ -862,10 +895,9 @@ async function runJumpType(browser, combo, name, errors) {
     }
   });
   const gaps = trials.map((t) => (typeof t.gap === 'number' ? t.gap.toFixed(0) : '?')).join('/');
-  rows.push(problems.length
-    ? { name: `${name} (first visit)`, status: 'FAIL', detail: `${problems.length} of ${FIRST_VISIT_TRIALS} trials failed. ${problems.join('; ')}` }
-    : { name: `${name} (first visit)`, status: 'PASS', detail: `${FIRST_VISIT_TRIALS} trials ok (gaps ${gaps}px${comparable ? `, reference ${ref.gap.toFixed(0)}px` : ''})` });
-  return rows;
+  return problems.length
+    ? { name: `${name} (${v.label})`, status: 'FAIL', detail: `${problems.length} of ${v.trials} trials failed. ${problems.join('; ')}` }
+    : { name: `${name} (${v.label})`, status: 'PASS', detail: `${v.trials} trials ok (gaps ${gaps}px${comparable ? `, reference ${ref.gap.toFixed(0)}px` : ''})` };
 }
 
 async function checkJumps(browser, combo, errors) {

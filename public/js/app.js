@@ -50,6 +50,35 @@
     return Date.now() < programmaticUntil;
   }
   function clearProgrammaticScroll() { programmaticUntil = 0; }
+
+  // Calls fn once the page has come to rest after a jump: at least
+  // minDelayMs has passed, the scroll lock (if any) has expired, and
+  // scrollY has been unchanged for SETTLE_STILL_FRAMES frames (a long
+  // jump can outlast the lock). Stops waiting after SETTLE_MAX_MS.
+  // `scrollend` is not used: a late scrollend from an earlier scroll can
+  // arrive just after a jump starts and would fire this mid-flight.
+  const SETTLE_STILL_FRAMES = 3;
+  const SETTLE_MAX_MS = 6000;
+  function afterScrollSettles(fn, minDelayMs = 0) {
+    const giveUpAt = Date.now() + SETTLE_MAX_MS;
+    const timedOut = () => Date.now() > giveUpAt;
+    const waitStill = (lastY, still) => {
+      requestAnimationFrame(() => {
+        if (isProgrammaticScrolling() && !timedOut()) { waitForLock(0); return; }
+        const y = window.scrollY;
+        const n = y === lastY ? still + 1 : 0;
+        if (n >= SETTLE_STILL_FRAMES || timedOut()) fn();
+        else waitStill(y, n);
+      });
+    };
+    const waitForLock = (minDelay) => {
+      setTimeout(() => {
+        if (isProgrammaticScrolling() && !timedOut()) waitForLock(0);
+        else waitStill(window.scrollY, 0);
+      }, Math.max(16, minDelay, programmaticUntil - Date.now() + 16));
+    };
+    waitForLock(minDelayMs);
+  }
   window.addEventListener("wheel", clearProgrammaticScroll, { passive: true });
   window.addEventListener("touchstart", clearProgrammaticScroll, { passive: true });
   window.addEventListener("keydown", (e) => {
@@ -138,10 +167,15 @@
   // The scroll-spy (setupTabbar's sync) decides the topic and asks
   // syncRunheadContent for the category. Every programmatic jump calls
   // setRunhead(target.closest(".section"), target.closest(".category"))
-  // just before its scrollIntoView. That PINS the label to the target
-  // until the reader next scrolls, taps or presses a key themselves, so
-  // neither the in-flight scroll nor a landing near the foot of the page
-  // (where the target cannot reach the top) can relabel it.
+  // just before its scrollIntoView. That PINS the label to the target,
+  // so neither the in-flight scroll nor a landing near the foot of the
+  // page (where the target cannot reach the top) can relabel it. The pin
+  // is released by position: once the jump has come to rest, scrolling
+  // more than half a screen away from there (by any means: wheel, touch,
+  // scrollbar, find-in-page, a screen reader) hands the label back to
+  // the scroll-spy. Wheel, touch, pointer and scroll keys release it at
+  // once. Resize does not: Chrome Android fires it mid-jump as the URL
+  // bar collapses.
   const rh = document.querySelector(".rh");
   const rhTopic = rh ? rh.querySelector(".rh__topic") : null;
   const rhCat = rh ? rh.querySelector(".rh__cat") : null;
@@ -150,8 +184,14 @@
   // bottom edge counts as current. Otherwise a category jumped to would be
   // relabelled as the one before it.
   const RH_CATEGORY_SLACK = 24;
+  const RH_PIN_RELEASE_SCREENS = 0.5;
+  // A smooth scroll is moving by this time even without the scroll lock
+  // (swipe), so "still" is not mistaken for "not started yet".
+  const RH_PIN_SETTLE_MIN_MS = 120;
   let rhKey = null;
   let rhPinned = false;
+  let rhPinY = null;   // scrollY where the pinned jump came to rest
+  let rhPinToken = 0;  // invalidates the settle wait of an older pin
   let rhSearchActive = false;
 
   function runheadLabel(sectionEl, categoryEl) {
@@ -170,9 +210,9 @@
 
   function setRunhead(sectionEl, categoryEl, pin = true) {
     if (!rh) return;
-    if (pin) rhPinned = true;
     const label = runheadLabel(sectionEl, categoryEl);
     if (!label) return;
+    if (pin) pinRunhead();
     const key = `${label.id}|${label.cat}`;
     if (key === rhKey) return;
     rhKey = key;
@@ -211,14 +251,31 @@
     rh.classList.toggle("rh--on", on);
   }
 
-  function releaseRunhead() { rhPinned = false; }
+  function pinRunhead() {
+    rhPinned = true;
+    rhPinY = null;
+    const token = ++rhPinToken;
+    afterScrollSettles(() => {
+      if (token === rhPinToken && rhPinned) rhPinY = window.scrollY;
+    }, RH_PIN_SETTLE_MIN_MS);
+  }
+
+  function releaseRunhead() {
+    rhPinned = false;
+    rhPinY = null;
+    rhPinToken++;
+  }
+
+  function releaseRunheadIfMoved() {
+    if (!rhPinned || rhPinY === null) return;
+    if (Math.abs(window.scrollY - rhPinY) > window.innerHeight * RH_PIN_RELEASE_SCREENS) releaseRunhead();
+  }
 
   function setupRunhead() {
     if (!rh) return;
     window.addEventListener("wheel", releaseRunhead, { passive: true });
     window.addEventListener("touchstart", releaseRunhead, { passive: true });
     window.addEventListener("pointerdown", releaseRunhead, { passive: true });
-    window.addEventListener("resize", releaseRunhead);
     window.addEventListener("keydown", (e) => {
       const k = e.key;
       if (k === "PageDown" || k === "PageUp" || k === "ArrowDown" || k === "ArrowUp" ||
@@ -228,8 +285,11 @@
     });
     // Visibility is not gated by the programmatic scroll lock: it only
     // toggles visibility and opacity, which cannot move a landing.
+    // Registered before the scroll-spy's listener, so a position release
+    // lands before its sync in the same frame.
     let raf = null;
     window.addEventListener("scroll", () => {
+      releaseRunheadIfMoved();
       if (raf) return;
       raf = requestAnimationFrame(() => { raf = null; syncRunheadVisibility(); });
     }, { passive: true });
@@ -1140,46 +1200,42 @@
     // The list sits above the entries, so rendering it during a jump
     // (the first visit unhides the whole section) moves everything
     // below it under the in-flight smooth scroll, which then lands
-    // short by that height. Render once the scroll has settled instead;
-    // scroll anchoring keeps the landed view still.
-    whenScrollSettles(renderRecent);
+    // short by that height. Render once the scroll has settled instead,
+    // keeping the landed view still.
+    whenScrollSettles(renderRecentStable);
   }
 
   // Runs fn now, or, while a programmatic smooth scroll is in flight,
-  // once the scroll lock has expired AND the page has stopped moving
-  // (a long jump can outlast the lock). `scrollend` is not used: a late
-  // scrollend from an earlier scroll can arrive just after the jump
-  // starts and would fire this mid-flight. Repeated calls share one run.
-  const SETTLE_STILL_FRAMES = 3;
-  const SETTLE_MAX_MS = 6000;
+  // once it has settled. Repeated calls share one run (the latest fn).
   let settlePending = null;
   function whenScrollSettles(fn) {
     if (!isProgrammaticScrolling()) { fn(); return; }
     const first = !settlePending;
     settlePending = fn;
     if (!first) return;
-    const giveUpAt = Date.now() + SETTLE_MAX_MS;
-    const fire = () => {
+    afterScrollSettles(() => {
       const run = settlePending;
       settlePending = null;
       if (run) run();
-    };
-    const waitStill = (lastY, still) => {
-      requestAnimationFrame(() => {
-        if (isProgrammaticScrolling()) { waitForLock(); return; }
-        const y = window.scrollY;
-        const n = y === lastY ? still + 1 : 0;
-        if (n >= SETTLE_STILL_FRAMES || Date.now() > giveUpAt) fire();
-        else waitStill(y, n);
-      });
-    };
-    const waitForLock = () => {
-      setTimeout(() => {
-        if (isProgrammaticScrolling() && Date.now() < giveUpAt) waitForLock();
-        else waitStill(window.scrollY, 0);
-      }, Math.max(16, programmaticUntil - Date.now() + 16));
-    };
-    waitForLock();
+    });
+  }
+
+  // Renders the list without moving what the reader is looking at. When
+  // the section sits above the viewport (the reader is down among the
+  // entries), a change in its height pushes the page. Chromium's scroll
+  // anchoring absorbs that; WebKit (iOS Safari) has none. So measure how
+  // far the entries actually moved and scroll by exactly that much,
+  // which is 0 wherever anchoring already did the work.
+  function renderRecentStable() {
+    const sec = document.getElementById("recent-section");
+    if (!sec) { renderRecent(); return; }
+    const probe = sec.hidden ? sec.nextElementSibling : sec;
+    const above = !!probe && probe.getBoundingClientRect().top < 0;
+    const before = root.getBoundingClientRect().top;
+    renderRecent();
+    if (!above) return;
+    const delta = root.getBoundingClientRect().top - before;
+    if (delta) window.scrollBy({ top: delta, behavior: "instant" });
   }
   function renderRecent() {
     const sec = document.getElementById("recent-section");
@@ -1200,7 +1256,8 @@
       })
       .filter(Boolean)
       .join('<span class="recent__sep" aria-hidden="true"> · </span>');
-    sec.hidden = false;
+    // Stays hidden under an active search, as applyFilter has it.
+    sec.hidden = !!(searchInput && searchInput.value.trim());
   }
 
   // --- Random-entry shuffle button --------------------------------
