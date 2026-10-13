@@ -34,31 +34,6 @@
   function markProgrammaticScroll(ms = PROG_SCROLL_MS) {
     programmaticUntil = Date.now() + ms;
 
-    // Wake every section up before the smooth scroll computes its
-    // target offset. .section uses `content-visibility: auto` with
-    // `contain-intrinsic-size: 0 4000px` — off-screen sections are
-    // laid out at the 4000px placeholder. scrollIntoView then aims
-    // at an inflated offsetTop; as the scroll passes through
-    // intermediate sections they wake up to real (smaller) heights,
-    // the document shrinks, and the scroll lands one or more
-    // sections short of the target. Forcing content-visibility:
-    // visible locks every section at its real height before the
-    // scroll starts.
-    //
-    // We deliberately do NOT restore content-visibility:auto after
-    // the scroll settles. Re-inflating off-screen sections back to
-    // their 4000px placeholders triggers scroll-anchoring to
-    // compensate for thousands of pixels of new layout above the
-    // viewport, and in practice the anchor lands inconsistently —
-    // the user sees the page "pause then jump" into the next
-    // section or onto an arbitrary entry. The perf optimization is
-    // intentionally forfeited for the rest of the session; layout
-    // is cheap on this size of document.
-    document.querySelectorAll(".section").forEach((s) => {
-      s.style.contentVisibility = "visible";
-    });
-    void document.body.offsetHeight; // commit the layout
-
     // Fire one synthetic scroll event after the lock window closes
     // so the scroll-spy applies the landed-section state (the
     // navbar would otherwise stay on whatever was active before
@@ -205,15 +180,15 @@
       )
       .join("");
 
-    const seeAlso = (entry.seeAlso || [])
+    const seeLinks = (entry.seeAlso || [])
       .filter((id) => idIndex[id])
       .map(
         (id) =>
           `<a class="see-chip" href="#${escAttr(id)}" data-see="${escAttr(id)}">${esc(
             wordFor(id) || id
           )}</a>`
-      )
-      .join("");
+      );
+    const seeHTML = seeLinks.length ? `<span class="entry__see">See also ${seeLinks.join(", ")}.</span>` : "";
 
     // Soft cross-reference. `tags` is an optional array of topic ids
     // where this word is also relevant. The entry still lives in one
@@ -221,18 +196,21 @@
     const tags = (entry.tags || [])
       .map((tid) => DATA.sections.find((s) => s.id === tid))
       .filter(Boolean);
-    let alsoIn = "";
+    let alsoHTML = "";
     if (tags.length) {
       const chips = tags.map(
         (s) =>
-          `<a class="entry__also-link" href="#${escAttr(s.id)}" data-topic="${escAttr(s.id)}">${esc(s.label.en)}</a>`
+          `<a class="entry__also-link" href="#${escAttr(s.id)}" data-topic="${escAttr(s.id)}">${esc(UW_TEXT.titleCase(s.label.en))}</a>`
       );
       let joined;
       if (chips.length === 1) joined = chips[0];
       else if (chips.length === 2) joined = `${chips[0]} and ${chips[1]}`;
       else joined = `${chips.slice(0, -1).join(", ")}, and ${chips[chips.length - 1]}`;
-      alsoIn = `<p class="entry__also-in">also useful for ${joined}</p>`;
+      alsoHTML = `<span class="entry__also-in">Also in ${joined}.</span>`;
     }
+    const xref = seeHTML || alsoHTML
+      ? `<p class="entry__xref">${[seeHTML, alsoHTML].filter(Boolean).join(" ")}</p>`
+      : "";
 
     const ipa = entry.pronunciation
       ? `<span class="entry__ipa" aria-label="pronunciation">${esc(entry.pronunciation)}</span>`
@@ -240,10 +218,9 @@
 
     const collocations =
       entry.collocations && entry.collocations.length
-        ? `<p class="entry__collocations" aria-label="common collocations">
-             <span class="entry__collocations-label">Collocations</span>
-             ${entry.collocations.map((c) => esc(c)).join(" · ")}
-           </p>`
+        ? `<p class="entry__collocations" aria-label="common collocations">${entry.collocations
+            .map((c) => UW_TEXT.emphasizeCollocation(c, entry.word, esc))
+            .join(" · ")}</p>`
         : "";
 
     return `
@@ -251,7 +228,8 @@
                data-word="${escAttr(entry.word.toLowerCase())}"
                data-def="${escAttr((entry.definition.en || "").toLowerCase())}"
                data-zh="${escAttr(entry.definition.zh || "")}"
-               data-ex="${escAttr(allExampleText(entry).toLowerCase())}">
+               data-ex="${escAttr(allExampleText(entry).toLowerCase())}"
+               data-col="${escAttr((entry.collocations || []).join(" · ").toLowerCase())}">
         <header class="entry__head">
           <${hTag} class="entry__word">${esc(entry.word)}</${hTag}>
           ${ipa}
@@ -263,15 +241,7 @@
         </div>
         ${collocations}
         ${examples ? `<div class="entry__examples">${examples}</div>` : ""}
-        ${
-          seeAlso
-            ? `<div class="entry__see">
-                 <span class="entry__see-label">see also</span>
-                 ${seeAlso}
-               </div>`
-            : ""
-        }
-        ${alsoIn}
+        ${xref}
       </article>
     `;
   }
@@ -306,11 +276,11 @@
     return `
         <section class="category" id="cat-${escAttr(cat.id)}-${escAttr(sectionId)}" data-cat="${escAttr(cat.id)}" aria-labelledby="cat-h-${escAttr(cat.id)}-${escAttr(sectionId)}">
           <header class="category__header">
-            <h3 class="category__name" id="cat-h-${escAttr(cat.id)}-${escAttr(sectionId)}">${esc(cat.label.en)}</h3>
+            <h3 class="category__name" id="cat-h-${escAttr(cat.id)}-${escAttr(sectionId)}">${esc(UW_TEXT.titleCase(cat.label.en))}</h3>
             <span class="category__name-zh" lang="zh-Hant">${esc(cat.label.zh)}</span>
             <span class="category__count">${cat.entries.length}</span>
           </header>
-          ${entries || `<p style="color:var(--muted);font-style:italic;padding:14px 16px;">No entries yet.</p>`}
+          ${entries || `<p class="category__empty">No entries yet.</p>`}
         </section>
       `;
   }
@@ -345,18 +315,14 @@
     const TAGGED_HERE_MIN = 4;
     const tagged = entriesTaggedFor(section.id);
     const moreHTML = tagged.length >= TAGGED_HERE_MIN
-      ? `<aside class="tagged-here" aria-label="More words tagged for ${esc(section.label.en)}">
+      ? `<aside class="tagged-here" aria-label="More words tagged for ${esc(UW_TEXT.titleCase(section.label.en))}">
            <h3 class="tagged-here__heading">Also Tagged Here <span class="tagged-here__zh" lang="zh-Hant">相關詞彙</span></h3>
-           <div class="tagged-here__list">
-             ${tagged
-               .map(
-                 ({ entry, sectionId }) =>
-                   `<a class="tagged-chip" href="#${escAttr(entry.id)}" data-recent="${escAttr(entry.id)}">
-                      ${esc(entry.word)}
-                    </a>`
-               )
-               .join("")}
-           </div>
+           <p class="tagged-here__list">${tagged
+             .map(
+               ({ entry }) =>
+                 `<a class="tagged-chip" href="#${escAttr(entry.id)}" data-recent="${escAttr(entry.id)}">${esc(entry.word)}</a>`
+             )
+             .join('<span class="tagged-here__sep"> · </span>')}</p>
          </aside>`
       : "";
 
@@ -365,7 +331,7 @@
       section.categories.reduce((s, c) => s + c.entries.length, 0);
 
     const introHTML = section.intro
-      ? `<p class="section__intro">${esc(section.intro.en)}</p>
+      ? `<p class="section__intro">${esc(UW_TEXT.sentenceCase(section.intro.en))}</p>
          <p class="section__intro section__intro--zh" lang="zh-Hant">${esc(section.intro.zh)}</p>`
       : "";
 
@@ -378,7 +344,8 @@
       <section class="section" id="${escAttr(section.id)}" data-section="${escAttr(section.id)}" aria-labelledby="sec-h-${escAttr(section.id)}">
         <header class="section__header">
           <h2 class="section__title" id="sec-h-${escAttr(section.id)}">
-            <span class="section__title-en">${esc(section.label.en)}</span>
+            <svg class="ic" aria-hidden="true" focusable="false"><use href="#i-${escAttr(section.id)}"/></svg>
+            <span class="section__title-en">${esc(UW_TEXT.titleCase(section.label.en))}</span>
             <span class="section__title-zh" lang="zh-Hant">${esc(section.label.zh)}</span>
           </h2>
           <span class="section__count" aria-label="${total} words">${total}&nbsp;words</span>
@@ -463,7 +430,14 @@
 
   let highlightSpan = null;
 
+  // Collocation lines hold <b> emphasis, which splits their text nodes, so
+  // they are highlighted on the concatenated text and rebuilt from their
+  // original markup. The originals are kept here for clearHighlights.
+  const collocationOriginals = new Map(); // <p> -> original innerHTML
+
   function clearHighlights() {
+    collocationOriginals.forEach((html, p) => { p.innerHTML = html; });
+    collocationOriginals.clear();
     document.querySelectorAll("mark.hl").forEach((m) => {
       const parent = m.parentNode;
       parent.replaceChild(document.createTextNode(m.textContent), m);
@@ -480,6 +454,55 @@
       const nodes = entry.querySelectorAll(sel);
       nodes.forEach((node) => highlightNode(node, re));
     }
+    entry.querySelectorAll(".entry__collocations").forEach((p) => highlightCollocations(p, re));
+  }
+
+  // Split a collocation line into { text, bold } segments from its markup.
+  function collocationSegments(html) {
+    const tpl = document.createElement("template");
+    tpl.innerHTML = html;
+    return [...tpl.content.childNodes].map((n) => ({
+      text: n.textContent,
+      bold: n.nodeName === "B",
+    }));
+  }
+
+  function highlightCollocations(p, re) {
+    const original = p.innerHTML;
+    const segments = collocationSegments(original);
+    const text = segments.map((sg) => sg.text).join("");
+    const ranges = [];
+    re.lastIndex = 0;
+    let m;
+    while ((m = re.exec(text)) !== null) {
+      if (!m[0]) { re.lastIndex++; continue; }
+      ranges.push([m.index, m.index + m[0].length]);
+    }
+    re.lastIndex = 0;
+    if (!ranges.length) return;
+    collocationOriginals.set(p, original);
+
+    const inRange = (a, b) => ranges.some(([s, e]) => s <= a && b <= e);
+    let out = "";
+    let open = false;
+    let pos = 0;
+    for (const sg of segments) {
+      const end = pos + sg.text.length;
+      const cuts = [pos, ...ranges.flat().filter((c) => c > pos && c < end), end];
+      const uniq = [...new Set(cuts)].sort((a, b) => a - b);
+      for (let i = 0; i < uniq.length - 1; i++) {
+        const [a, b] = [uniq[i], uniq[i + 1]];
+        const inside = inRange(a, b);
+        if (inside && !open) out += '<mark class="hl">';
+        if (!inside && open) out += "</mark>";
+        open = inside;
+        const piece = esc(sg.text.slice(a - pos, b - pos));
+        out += sg.bold ? `<b>${piece}</b>` : piece;
+      }
+      pos = end;
+    }
+    if (open) out += "</mark>";
+    p.innerHTML = out;
   }
 
   function highlightNode(node, re) {
@@ -527,7 +550,7 @@
         totalShown++;
         return;
       }
-      const hay = `${entry.dataset.word} ${entry.dataset.def} ${entry.dataset.zh} ${entry.dataset.ex}`;
+      const hay = `${entry.dataset.word} ${entry.dataset.def} ${entry.dataset.zh} ${entry.dataset.ex} ${entry.dataset.col}`;
       const hit = hay.toLowerCase().includes(q);
       entry.hidden = !hit;
       if (hit) {

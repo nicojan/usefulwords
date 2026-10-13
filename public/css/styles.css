@@ -473,26 +473,14 @@ svg.ic {
 .hint[hidden], .hint-seen .hint { display: none; }
 .hint--dismissed { opacity: 0; visibility: hidden; pointer-events: none; }
 
-/* Per-topic intro line under the section title */
-.section__intro {
-  margin: 0 4px 12px;
-  font-size: 14px;
-  line-height: 1.5;
-  color: var(--ink-2);
-  max-width: 56ch;
-}
-.section__intro--zh {
-  font-size: 13px;
-  margin-top: -8px;
-  color: var(--ink-2);
-}
-
-/* Search summary — appears while a query is active */
+/* Search summary and empty state: muted Atkinson, flush left, no box */
 .search-summary {
-  margin: 18px 4px 4px;
-  font-size: 13px;
-  color: var(--ink-2);
-  font-feature-settings: "tnum";
+  margin: 18px 0 4px;
+  max-width: 600px;
+  font-size: 15px;
+  line-height: 1.47;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
 }
 .search-summary[hidden] { display: none; }
 .search-summary strong {
@@ -500,102 +488,113 @@ svg.ic {
   font-weight: 600;
 }
 
-/* --- Section --- */
-/* --- Topic section (= primary page) --- */
+/* --- Topic section: icon, title, Chinese, count. No container. --- */
 .section {
   scroll-margin-top: 16px;
+  max-width: 600px;
   padding-top: 12px;
-  margin-top: 18px;
-  /* Virtualize off-screen sections so the browser doesn't pay to lay
-     them out until the user scrolls them into view. Reduces CLS by
-     reserving space upfront. */
-  content-visibility: auto;
-  contain-intrinsic-size: 0 4000px;
+  margin-top: 40px;
 }
 
 .section__header {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  gap: 16px;
-  margin: 8px 4px 16px;
-  position: relative;
+  gap: 4px 16px;
+  margin: 8px 0 10px;
 }
 .section__title {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-weight: 500;
-  font-size: clamp(34px, 8.5vw, 50px);
-  line-height: 1;
-  letter-spacing: -0.015em;
-  color: var(--ink);
   display: flex;
   align-items: baseline;
-  gap: 14px;
   flex-wrap: wrap;
+  gap: 2px 12px;
+  min-width: 0;
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 34px;
+  line-height: 1.15;
+  color: var(--ink);
+  text-wrap: balance;
+}
+.section__title .ic {
+  font-size: 30px;
+  align-self: center;
+  color: var(--ink);
 }
 .section__title-zh {
   font-family: var(--font-zh);
-  font-style: normal;
-  font-weight: 500;
-  font-size: 0.46em;
-  color: var(--ink-2);
-  letter-spacing: 0.04em;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.3;
+  color: var(--muted);
+  white-space: nowrap;
 }
 .section__count {
-  font-family: var(--font-sans);
-  font-feature-settings: "tnum";
-  font-size: 13px;
-  color: var(--ink-2);
+  font-size: 14px;
+  color: var(--muted);
   white-space: nowrap;
   flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+}
+@media (min-width: 760px) {
+  .section__title { font-size: 40px; }
+  .section__title .ic { font-size: 30px; }
 }
 
-/* --- Category card: a grouped rounded container of entries
-   (iOS-style "Settings"-app feel). Border + heading colour pick up
-   the parent topic's tint so each card carries its topic identity
-   even when looked at in isolation. --- */
+/* Per-topic intro: English then Chinese, in --ink-2 */
+.section__intro {
+  margin: 0 0 6px;
+  font-size: 15px;
+  line-height: 1.47;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+.section__intro--zh {
+  font-family: var(--font-zh);
+  line-height: 1.65;
+  text-autospace: normal;
+}
+
+/* --- Category heading: Literata 600 21px, Chinese and count muted at the
+   right, --rule hairline below --- */
 .category {
   scroll-margin-top: 16px;
-  background: var(--bg);
-  border-radius: 14px;
-  margin: 14px 0 0;
-  overflow: hidden;  /* clips hairline dividers + active highlights */
-  border: 2px solid var(--rule);
+  margin-top: 34px;
 }
 .category__header {
   display: flex;
-  align-items: baseline;
-  gap: 10px;
   flex-wrap: wrap;
-  padding: 14px 16px 10px;
-  border-bottom: 0.5px solid var(--rule);
-  background: transparent;
+  align-items: baseline;
+  gap: 4px 12px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--rule);
 }
 .category__name {
-  font-family: var(--font-sans);
-  font-style: normal;
+  flex: 1 0 auto;
+  max-width: 100%;
+  font-family: var(--font-serif);
   font-weight: 600;
-  font-size: 13px;
-  letter-spacing: 0.04em;
-  line-height: 1.1;
-  color: var(--ink-2);
-  text-transform: uppercase;
+  font-size: 21px;
+  line-height: 1.2;
+  color: var(--ink);
+  text-wrap: balance;
 }
 .category__name-zh {
+  margin-left: auto;
   font-family: var(--font-zh);
-  font-style: normal;
-  font-weight: 500;
-  font-size: 12px;
-  color: var(--ink-2);
-  letter-spacing: 0.02em;
+  font-weight: 400;
+  font-size: 15px;
+  color: var(--muted);
+  white-space: nowrap;
 }
 .category__count {
-  margin-left: auto;
-  font-size: 12px;
-  color: var(--ink-2);
-  font-feature-settings: "tnum";
+  min-width: 1.5em;
+  text-align: right;
+  font-size: 14px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
 }
+.category__empty { padding: 14px 0; color: var(--muted); }
 
 /* --- Transitions chips: one horizontally scrolling row docked flush on
    top of the tab bar. Shown only while in Transitions (phones). --- */
@@ -658,13 +657,13 @@ svg.ic {
 }
 
 /* ============================================================
-   Entry — the dictionary card
+   Entry: open layout, no container, a hairline between entries
    ============================================================ */
 .entries { display: block; }
 .entry {
   display: block;
-  padding: 16px 16px 18px;
-  border-bottom: 0.5px solid var(--rule);
+  padding: 18px 0 20px;
+  border-bottom: 1px solid var(--rule);
   scroll-margin-top: 16px;
   position: relative;
 }
@@ -683,225 +682,124 @@ svg.ic {
   display: flex;
   align-items: baseline;
   flex-wrap: wrap;
-  gap: 8px 12px;
-  margin-bottom: 6px;
+  gap: 2px 10px;
 }
 .entry__word {
   font-family: var(--font-serif);
-  font-weight: 500;
-  font-size: clamp(24px, 6vw, 30px);
-  line-height: 1.05;
-  letter-spacing: -0.018em;
+  font-weight: 700;
+  font-size: 26px;
+  line-height: 1.15;
   color: var(--ink);
+  hyphens: none;
+  overflow-wrap: anywhere;
+}
+.entry__ipa {
+  font-family: var(--font-ipa);
+  font-size: 14px;
+  line-height: 1.3;
+  color: var(--muted);
 }
 .entry__pos {
   font-family: var(--font-sans);
   font-style: italic;
-  font-size: 13px;
-  color: var(--ink-2);
-  letter-spacing: 0.02em;
-  line-height: 1.1;
-  align-self: flex-end;
-  margin-bottom: 4px;
+  font-size: 14px;
+  line-height: 1.3;
+  color: var(--muted);
 }
-.entry__ipa {
-  font-family: var(--font-ipa);
-  font-style: normal;
-  font-size: 13px;
-  font-weight: 400;
-  color: var(--ink-2);
-  letter-spacing: 0.01em;
-  line-height: 1.1;
-  align-self: flex-end;
-  margin-bottom: 4px;
-}
-.entry__collocations {
-  margin-top: 8px;
-  font-size: 13px;
-  line-height: 1.55;
-  color: var(--ink);
-}
-.entry__collocations-label {
-  font-family: var(--font-sans);
-  font-weight: 500;
-  font-size: 13px;
-  color: var(--ink-2);
-  margin-right: 6px;
-}
-.entry__word--mark { color: var(--accent); }
 
-.entry__def { margin: 4px 0 6px; }
+.entry__def { margin: 6px 0 0; }
 .entry__def-en {
-  font-family: var(--font-sans);
-  font-size: 16px;
-  line-height: 1.55;
+  line-height: 1.47;
   color: var(--ink);
+  text-wrap: pretty;
 }
 .entry__def-zh {
   font-family: var(--font-zh);
-  font-size: 15px;
-  line-height: 1.55;
-  color: var(--ink-2);
-  margin-top: 2px;
+  line-height: 1.65;
+  color: var(--ink);
+  text-autospace: normal;
 }
 
+.entry__collocations {
+  margin-top: 10px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--ink);
+}
+.entry__collocations b { font-weight: 600; }
+
 .entry__examples {
-  margin-top: 12px;
-  padding-left: 14px;
-  border-left: 2px solid var(--rule);
+  margin: 10px 0 0 18px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 .entry__example { display: block; }
 .entry__example-en {
-  font-family: var(--font-sans);
+  font-family: var(--font-serif);
   font-style: italic;
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.5;
-  color: var(--ink-2);
+  color: var(--ink);
+  text-wrap: pretty;
 }
 .entry__example-zh {
   font-family: var(--font-zh);
-  font-size: 14px;
-  line-height: 1.55;
+  font-size: 16px;
+  line-height: 1.65;
   color: var(--ink-2);
-  margin-top: 1px;
+  text-autospace: normal;
 }
 
-/* Cross-references (see also + also useful for) sit in a "metadata
-   footer" below the entry's main content. A hairline rule + smaller,
-   muted scale demotes them so the eye reads them as supplementary
-   navigation rather than core lexical info. */
-.entry__see {
-  margin-top: 16px;
-  padding-top: 12px;
-  border-top: 0.5px solid var(--rule);
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 6px;
+/* Cross-references: one muted line, links in roman terracotta, underlined */
+.entry__xref {
+  margin-top: 10px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--muted);
 }
-.entry__see-label {
-  font-family: var(--font-sans);
-  font-size: 12px;
-  font-weight: 400;
-  color: var(--ink-2);
-  margin-right: 2px;
-}
-.see-chip {
-  display: inline-flex;
-  align-items: center;
-  min-height: 26px;
-  padding: 2px 10px;
-  border-radius: 999px;
-  border: 1px solid var(--rule);
-  background: transparent;
-  font-size: 12px;
-  color: var(--ink);
-  font-style: italic;
-  font-family: var(--font-serif);
-  transition: background 0.15s var(--ease), border-color 0.15s var(--ease);
-}
-.see-chip:hover, .see-chip:focus-visible {
-  background: var(--flash);
-  border-color: var(--accent);
+.see-chip,
+.entry__also-link,
+.tagged-chip {
   color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  -webkit-tap-highlight-color: transparent;
 }
+.see-chip:hover,
+.entry__also-link:hover,
+.tagged-chip:hover { text-decoration-thickness: 2px; }
 
-/* "Also Tagged Here" — at the bottom of each topic, a small surface
-   listing words living in OTHER topics that are tagged with this
-   one. Discoverability cross-reference. */
-.tagged-here {
-  margin-top: 18px;
-  padding: 14px 16px 16px;
-  background: var(--bg);
-  border: 0.5px solid var(--rule);
-  border-radius: 14px;
-}
+/* "Also Tagged Here": category-heading treatment, then one wrapping line
+   of links separated by " · " */
+.tagged-here { margin-top: 40px; }
 .tagged-here__heading {
-  font-family: var(--font-sans);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 12px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--rule);
+  font-family: var(--font-serif);
   font-weight: 600;
-  font-size: 13px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  line-height: 1.1;
-  color: var(--ink-2);
-  margin-bottom: 10px;
+  font-size: 21px;
+  line-height: 1.2;
+  color: var(--ink);
 }
 .tagged-here__zh {
   font-family: var(--font-zh);
   font-weight: 400;
-  font-size: 12px;
-  letter-spacing: 0.02em;
-  text-transform: none;
-  margin-left: 6px;
-  color: var(--ink-2);
+  font-size: 15px;
+  color: var(--muted);
+  white-space: nowrap;
 }
 .tagged-here__list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
+  margin-top: 10px;
+  font-size: 15px;
+  line-height: 1.7;
 }
-.tagged-chip {
-  display: inline-flex;
-  align-items: center;
-  height: 30px;
-  padding: 0 12px;
-  border-radius: 999px;
-  background: transparent;
-  border: 0.5px solid var(--rule);
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-weight: 500;
-  font-size: 13px;
-  color: var(--ink);
-  text-decoration: none;
-  transition: background 0.15s var(--ease), border-color 0.15s var(--ease);
-  -webkit-tap-highlight-color: transparent;
-}
-.tagged-chip:hover {
-  background: var(--flash);
-  border-color: var(--accent);
-}
-
-/* "Also useful for…" — soft cross-reference under entries whose
-   meaning meaningfully spans multiple topics. The link picks up
-   each target topic's tint as an underline color. */
-.entry__also-in {
-  margin-top: 16px;
-  padding-top: 12px;
-  border-top: 0.5px solid var(--rule);
-  font-size: 12px;
-  line-height: 1.9;  /* allow pills room to breathe inline */
-  color: var(--ink-2);
-}
-/* When the see-also block is directly above, the entry already has
-   its hairline footer; tuck the also-useful row in tighter and skip
-   a second divider so the cross-ref area reads as one unit. */
-.entry__see + .entry__also-in {
-  margin-top: 6px;
-  padding-top: 0;
-  border-top: 0;
-}
-.entry__also-link {
-  display: inline-flex;
-  align-items: center;
-  padding: 1px 9px;
-  border: 2px solid var(--accent);
-  border-radius: 999px;
-  background: transparent;
-  color: var(--ink);
-  font-size: 12px;
-  font-weight: 500;
-  text-decoration: none;
-  transition: background 0.18s var(--ease), color 0.18s var(--ease);
-  -webkit-tap-highlight-color: transparent;
-}
-.entry__also-link:hover, .entry__also-link:focus-visible {
-  background: var(--accent);
-  color: var(--bg);
-}
+.tagged-here__sep { color: var(--muted); white-space: pre-wrap; }
 
 /* Search highlight */
 mark.hl {
@@ -914,22 +812,22 @@ mark.hl {
 /* Hidden entries during filter */
 .entry[hidden], .category[hidden], .section[hidden] { display: none; }
 
-/* Empty state */
+/* Empty state: muted text, flush left, no box */
 .empty {
-  text-align: center;
-  padding: 80px 20px 40px;
+  max-width: 600px;
+  padding: 18px 0 40px;
+  color: var(--muted);
 }
 .empty__title {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: 36px;
-  line-height: 1;
-  color: var(--ink);
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.47;
+  color: var(--muted);
 }
 .empty__sub {
-  margin-top: 10px;
-  color: var(--ink-2);
-  font-size: 14px;
+  margin-top: 2px;
+  font-size: 15px;
+  color: var(--muted);
 }
 
 /* Colophon */
