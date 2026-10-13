@@ -370,6 +370,17 @@ svg.ic {
 
 /* --- Masthead (the one place the terracotta comma appears) --- */
 .masthead { padding: 40px 0 0; }
+/* While a search is active: out of sight, still the page's <h1> for screen readers */
+.masthead--searching {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
 .masthead__title {
   display: flex;
   flex-direction: column;
@@ -661,6 +672,9 @@ svg.ic {
   color: var(--ink-2);
   text-wrap: pretty;
 }
+/* Under a query, browsing aids (topic intros, Also Tagged Here) give way to the matches. */
+.is-searching .section__intro,
+.is-searching .tagged-here { display: none; }
 .section__intro--zh {
   font-family: var(--font-zh);
   line-height: 1.65;

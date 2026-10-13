@@ -189,6 +189,9 @@
   // (swipe), so "still" is not mistaken for "not started yet".
   const RH_PIN_SETTLE_MIN_MS = 120;
   let rhKey = null;
+  let rhSectionId = null; // the section and category the running head names
+  let rhCatId = null;
+  let rhCatFull = "";     // the category's full name, before fitting
   let rhPinned = false;
   let rhPinY = null;   // scrollY where the pinned jump came to rest
   let rhPinToken = 0;  // invalidates the settle wait of an older pin
@@ -213,6 +216,8 @@
     const label = runheadLabel(sectionEl, categoryEl);
     if (!label) return;
     if (pin) pinRunhead();
+    rhSectionId = label.id;
+    rhCatId = (categoryEl && categoryEl.dataset.cat) || null;
     const key = `${label.id}|${label.cat}`;
     if (key === rhKey) return;
     rhKey = key;
@@ -220,7 +225,31 @@
       `<svg class="ic" aria-hidden="true" focusable="false"><use href="#i-${escAttr(label.id)}"/></svg>` +
       `<span class="rh__en">${esc(label.en)}</span>` +
       `<span class="rh__zh" lang="zh-Hant">${esc(label.zh)}</span>`;
-    rhCat.textContent = label.cat;
+    rhCatFull = label.cat;
+    fitRunheadCategory();
+  }
+
+  // Long category names ("Opposition / Limitation / Contradiction") drop
+  // their trailing terms until the line fits, so a narrow phone shows
+  // "Opposition / Limitation" or "Opposition" rather than a cut-off word.
+  function fitRunheadCategory() {
+    if (!rhCat) return;
+    const parts = rhCatFull ? rhCatFull.split(" / ") : [""];
+    for (let n = parts.length; n >= 1; n--) {
+      rhCat.textContent = parts.slice(0, n).join(" / ");
+      if (rhCat.scrollWidth <= rhCat.clientWidth) return;
+    }
+  }
+
+  // The category the running head names in this section: the pinned jump
+  // target, else the one at the running head's edge. Null on the section's
+  // own heading and intro. The Transitions chips and sidebar sub-nav read
+  // this, so they never disagree with the running head.
+  function runheadCategoryIn(sectionEl) {
+    if (!rh || !sectionEl) return null;
+    if (rhPinned && rhSectionId === sectionEl.dataset.section) return rhCatId;
+    const c = categoryAtRunhead(sectionEl);
+    return c ? c.dataset.cat : null;
   }
 
   // The last category in the section whose top is above the running
@@ -293,7 +322,10 @@
       if (raf) return;
       raf = requestAnimationFrame(() => { raf = null; syncRunheadVisibility(); });
     }, { passive: true });
-    window.addEventListener("resize", syncRunheadVisibility);
+    window.addEventListener("resize", () => { syncRunheadVisibility(); fitRunheadCategory(); });
+    // font-display: optional can swap a face in within the first ~100ms,
+    // after the first fit measured the fallback.
+    if (document.fonts) document.fonts.addEventListener("loadingdone", fitRunheadCategory);
     syncRunheadVisibility();
   }
 
@@ -752,11 +784,17 @@
     if (empty) empty.hidden = !(q && totalShown === 0);
     if (searchClear) searchClear.hidden = q.length === 0;
 
-    // Landing surfaces (recent + WOD + topic grid) get out of the way
-    // when a query is active.
+    // Landing surfaces (masthead, recent, WOD, topic grid) get out of the
+    // way when a query is active, so the first match sits near the top.
+    const mastheadSec = document.querySelector(".masthead");
     const recentSec = document.getElementById("recent-section");
     const topicsSec = document.querySelector(".topics");
     const wodSec = document.getElementById("wod-section");
+    // Visually hidden rather than [hidden], so the page keeps its <h1>.
+    if (mastheadSec) mastheadSec.classList.toggle("masthead--searching", !!q);
+    // Topic intros and Also Tagged Here are for browsing; under a query they
+    // only push matches down (styles.css, .is-searching).
+    document.body.classList.toggle("is-searching", !!q);
     if (recentSec) recentSec.hidden = !!q || getRecent().length === 0;
     if (topicsSec) topicsSec.hidden = !!q;
     if (wodSec && wodSec.dataset.available === "true") wodSec.hidden = !!q;
@@ -990,7 +1028,7 @@
 
     function navigateToCategory(catId) {
       const el = document.getElementById(`cat-${catId}-transitions`);
-      if (!el) return;
+      if (!el || el.hidden) return; // a search can hide a category; do not pin to it
       markProgrammaticScroll();
       setRunhead(el.closest(".section"), el.closest(".category"));
       el.scrollIntoView({ behavior: smoothBehavior(), block: "start" });
@@ -1017,14 +1055,8 @@
       if (isProgrammaticScrolling()) return;
       const trans = document.getElementById("transitions");
       if (!trans) return;
-      const cats = Array.from(trans.querySelectorAll(".category"));
-      if (!cats.length) return;
-      const probe = topbarHeight() + 140;
-      let current = cats[0].dataset.cat;
-      for (const c of cats) {
-        if (c.hidden) continue;
-        if (c.getBoundingClientRect().top <= probe) current = c.dataset.cat;
-      }
+      // Same category as the running head, at the same line.
+      const current = runheadCategoryIn(trans);
       let activeChip = null;
       chipsEl.querySelectorAll(".chip").forEach((c) => {
         const matches = c.dataset.cat === current;
@@ -1046,6 +1078,7 @@
           a.setAttribute("aria-current", inTransitions && a.dataset.cat === current ? "true" : "false");
         });
       }
+      if (!current) lastActive = null;
       if (activeChip && current !== lastActive) {
         lastActive = current;
         activeChip.scrollIntoView({ behavior: smoothBehavior(), block: "nearest" });

@@ -106,6 +106,8 @@ const FLASH_CLASS = 'is-target'; // what flashTarget() in app.js adds
 // localStorage names used by app.js; the hint one being set means the onboarding hint is gone (a returning visitor)
 const STORE = { recent: 'uw_recent_v1', hint: 'uw_hint_dismissed_v1' };
 const MIN_CHIPS_CONTENT_PX = 380;
+// Under a search the first match must start within this distance of the top (it started ~500px down under the masthead).
+const MAX_FIRST_MATCH_TOP_PX = 320;
 // A jump lands its target scroll-margin-top (running head + 16px) from the top. Any target that can scroll that far
 // must end up at most this far below the running head; more means something shifted the page under the jump (the
 // first recently-viewed reveal once landed ~100px short). Skipped when the page is scrolled to its end.
@@ -312,12 +314,19 @@ async function measureLanding(page, id) {
       rhShown: !!rh && rhCs.visibility === 'visible' && parseFloat(rhCs.opacity) > 0 && rhCs.display !== 'none',
       rhTopic: rh ? norm(rh.querySelector('.rh__topic')?.textContent) : '',
       rhCat: rh ? norm(rh.querySelector('.rh__cat')?.textContent) : '',
+      rhCatOverflow: !!rh && (() => { const c = rh.querySelector('.rh__cat'); return !!c && c.scrollWidth > c.clientWidth; })(),
       inSection: !!section,
       inCategory: !!category,
       sectionTitle: norm(section?.querySelector('.section__title-en')?.textContent),
       categoryName: norm(category?.querySelector('.category__name')?.textContent),
     };
   }, id);
+}
+
+function rhCategoryFits(shown, full) {
+  const want = full.trim().split(/\s*\/\s*/);
+  const got = shown.trim().split(/\s*\/\s*/);
+  return got.length >= 1 && got[0] !== '' && got.length <= want.length && got.every((t, i) => t === want[i]);
 }
 
 function landingProblems(m, id) {
@@ -333,7 +342,9 @@ function landingProblems(m, id) {
   if (m.inCategory && !m.categoryName) problems.push(`#${id} is in a .category whose .category__name is empty or missing`);
   if (m.hasRh) {
     if (m.sectionTitle && !m.rhTopic.includes(m.sectionTitle)) problems.push(`running head topic "${m.rhTopic}" lacks "${m.sectionTitle}"`);
-    if (m.categoryName && !m.rhCat.includes(m.categoryName)) problems.push(`running head category "${m.rhCat}" lacks "${m.categoryName}"`);
+    // A long name may be fitted to its leading terms ("Opposition / Limitation"), never cut mid-term or emptied.
+    if (m.rhCatOverflow) problems.push(`running head category "${m.rhCat}" overflows its line (cut with an ellipsis)`);
+    if (m.categoryName && !rhCategoryFits(m.rhCat, m.categoryName)) problems.push(`running head category "${m.rhCat}" is not "${m.categoryName}" or its leading terms`);
   }
   return problems;
 }
@@ -987,9 +998,18 @@ async function checkSearch(browser, combo, errors) {
         covered,
         shown: document.querySelectorAll('.entry:not([hidden])').length,
         total: document.querySelectorAll('.entry').length,
+        mastheadShown: (document.querySelector('.masthead')?.getBoundingClientRect().height ?? 0) > 1,
+        h1: !!document.querySelector('h1')?.textContent.trim() && getComputedStyle(document.querySelector('h1')).display !== 'none',
+        browseShown: [...document.querySelectorAll('.section:not([hidden]) .section__intro, .section:not([hidden]) .tagged-here')].filter((el) => el.checkVisibility()).length,
+        firstTop: document.querySelector('.entry:not([hidden])')?.getBoundingClientRect().top ?? null,
       };
     }, phrase);
     const problems = [];
+    // Under a query the front matter, masthead included, gives way so the first match sits near the top.
+    if (r.mastheadShown) problems.push('the masthead is still showing under an active search');
+    if (!r.h1) problems.push('the page lost its <h1> under an active search (the masthead should be visually hidden, not removed)');
+    if (r.browseShown) problems.push(`${r.browseShown} topic intro(s) or Also Tagged Here block(s) still showing under an active search`);
+    if (r.firstTop !== null && r.firstTop > MAX_FIRST_MATCH_TOP_PX) problems.push(`the first match starts ${Math.round(r.firstTop)}px down (want <= ${MAX_FIRST_MATCH_TOP_PX})`);
     if (!r.exists) problems.push('#biodiversity not in the page');
     else if (!r.visible) problems.push(`#biodiversity is hidden (${r.shown} entries shown for the query)`);
     if (r.exists && r.visible && r.marks === 0) problems.push('#biodiversity is visible but has no .hl mark');
@@ -1004,6 +1024,7 @@ async function checkSearch(browser, combo, errors) {
       const marks = await page.evaluate(() => document.querySelectorAll('mark.hl').length);
       if (after !== before) problems.push(`after searching "${q}" and clearing, #biodiversity collocations markup differs from the original`);
       if (marks) problems.push(`after searching "${q}" and clearing, ${marks} mark.hl remain`);
+      if (!(await page.evaluate(() => (document.querySelector('.masthead')?.getBoundingClientRect().height ?? 0) > 100))) problems.push(`after searching "${q}" and clearing, the masthead is not back`);
     }
     if (r.shown >= r.total) problems.push(`the query did not filter anything (${r.shown} of ${r.total} entries shown)`);
     if (problems.length) record('FAIL', 'search collocation', comboLabel(combo), problems.join('; '));
@@ -1011,34 +1032,95 @@ async function checkSearch(browser, combo, errors) {
   });
 }
 
+// Scrolls through Transitions in small steps with the running head's pin released (a wheel event first), and
+// returns, per stop, the category the nav marks current (the docked chip on phones, the sidebar sub-nav link at
+// >=760px) and the one the running head names.
+async function stepThroughTransitions(page, phone) {
+  return page.evaluate(async (phone) => {
+    const sec = document.getElementById('transitions');
+    const start = sec.getBoundingClientRect().top + scrollY - 300;
+    const end = sec.getBoundingClientRect().bottom + scrollY - innerHeight;
+    const frame = () => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+    const norm = (s) => (s || '').replace(/\s+/g, ' ').trim().toLowerCase();
+    scrollTo(0, start);
+    window.dispatchEvent(new WheelEvent('wheel', { deltaY: 1 })); // releases the pin and the scroll lock
+    await frame();
+    const sel = phone ? '#chips .chip[aria-current="true"]' : '.tab-subnav__link[aria-current="true"]';
+    const out = [];
+    for (let y = start; y <= end; y += 23) {
+      scrollTo(0, y);
+      await frame();
+      const c = document.querySelector('.rh__cat');
+      out.push({ y: Math.round(y), nav: norm(document.querySelector(sel)?.textContent), head: norm(c?.textContent),
+        inTransitions: norm(document.querySelector('.rh__topic')?.textContent).startsWith('transitions'),
+        overflow: !!c && c.scrollWidth > c.clientWidth });
+    }
+    return out;
+  }, phone);
+}
+
 async function checkTransitions(browser, combo, errors) {
-  if (!combo.phone) {
-    record('SKIP', 'transitions', comboLabel(combo), 'the docked chips row is a phone layout; checked at 390 only');
-    return;
-  }
+  const navName = combo.phone ? 'chip' : 'sub-nav link';
   await withPage(browser, combo, { errors }, async (page) => {
+    const problems = [];
+    let content = null;
     await page.click('.tab[data-target="transitions"]');
     if (!(await settle(page))) { record('FAIL', 'transitions', comboLabel(combo), NOT_SETTLED.detail); return; }
     await page.waitForTimeout(400);
-    const r = await page.evaluate(() => {
-      const chips = document.getElementById('chips');
-      const tabbar = document.querySelector('.tabbar');
-      const rh = document.querySelector('.rh');
-      const c = chips.getBoundingClientRect();
-      return {
-        visible: !chips.hidden && chips.checkVisibility({ checkVisibilityCSS: true, checkOpacity: true }) && c.width > 0 && c.height > 0,
-        chipsBottom: c.bottom, chipsTop: c.top, tabTop: tabbar.getBoundingClientRect().top,
-        rhBottom: rh ? rh.getBoundingClientRect().bottom : 0,
-      };
-    });
-    const problems = [];
-    if (!r.visible) problems.push('#chips is not visible in Transitions');
-    const gap = r.chipsBottom - r.tabTop;
-    if (Math.abs(gap) > 1) problems.push(`#chips bottom ${r.chipsBottom.toFixed(1)} is ${gap.toFixed(1)}px off the tab bar top ${r.tabTop.toFixed(1)}`);
-    const content = r.chipsTop - r.rhBottom;
-    if (content < MIN_CHIPS_CONTENT_PX) problems.push(`only ${content.toFixed(0)}px of content between the running head and the chips (want >= ${MIN_CHIPS_CONTENT_PX})`);
+    if (combo.phone) {
+      const r = await page.evaluate(() => {
+        const chips = document.getElementById('chips');
+        const tabbar = document.querySelector('.tabbar');
+        const rh = document.querySelector('.rh');
+        const c = chips.getBoundingClientRect();
+        return {
+          visible: !chips.hidden && chips.checkVisibility({ checkVisibilityCSS: true, checkOpacity: true }) && c.width > 0 && c.height > 0,
+          chipsBottom: c.bottom, chipsTop: c.top, tabTop: tabbar.getBoundingClientRect().top,
+          rhBottom: rh ? rh.getBoundingClientRect().bottom : 0,
+        };
+      });
+      if (!r.visible) problems.push('#chips is not visible in Transitions');
+      const gap = r.chipsBottom - r.tabTop;
+      if (Math.abs(gap) > 1) problems.push(`#chips bottom ${r.chipsBottom.toFixed(1)} is ${gap.toFixed(1)}px off the tab bar top ${r.tabTop.toFixed(1)}`);
+      content = r.chipsTop - r.rhBottom;
+      if (content < MIN_CHIPS_CONTENT_PX) problems.push(`only ${content.toFixed(0)}px of content between the running head and the chips (want >= ${MIN_CHIPS_CONTENT_PX})`);
+    }
+    // At every stop the nav and the running head name the same category, or both none (the section's heading and
+    // intro). Every category must be reached, and at least one unpinned "none" stop, or the check proves nothing.
+    const steps = await stepThroughTransitions(page, combo.phone);
+    const cats = await page.$$eval('#transitions .category .category__name', (els) => els.map((e) => e.textContent.replace(/\s+/g, ' ').trim().toLowerCase()));
+    // Above the section the running head names Concepts' category; there the nav must mark nothing.
+    const mismatch = steps.filter((st) => (!st.inTransitions ? st.nav !== '' : st.nav ? !rhCategoryFits(st.head, st.nav) : st.head !== ''));
+    if (mismatch.length) problems.push(`${mismatch.length} of ${steps.length} scroll stops disagree, first at y ${mismatch[0].y}: ${navName} "${mismatch[0].nav}", running head "${mismatch[0].head}"`);
+    const seen = new Set(steps.map((st) => st.nav).filter(Boolean));
+    const unseen = cats.filter((c) => !seen.has(c));
+    if (unseen.length) problems.push(`never current while stepping: ${unseen.join(', ')}`);
+    if (!steps.some((st) => st.inTransitions && !st.nav && !st.head)) problems.push('no stop on the section heading with neither marked (the unpinned "none" branch was never reached)');
+    // The running head's category is fitted, never cut: no overflow, and the full name wherever it fits.
+    const over = steps.filter((st) => st.overflow);
+    if (over.length) problems.push(`.rh__cat overflows at ${over.length} stop(s), first "${over[0].head}"`);
+    if (!combo.phone) {
+      const cut = steps.filter((st) => st.nav && st.head !== st.nav);
+      if (cut.length) problems.push(`at ${combo.w}px the running head shortens "${cut[0].nav}" to "${cut[0].head}"`);
+    } else {
+      // Re-fit on resize: 390 -> 1440 shows the full name, back to 390 shortens it again.
+      await page.click('#chips .chip[data-cat="opposition-limitation-contradiction"]');
+      await settle(page);
+      const head = () => page.evaluate(() => document.querySelector('.rh__cat').textContent.trim().toLowerCase());
+      const narrow = await head();
+      await page.setViewportSize({ width: 1440, height: combo.h });
+      await page.waitForTimeout(300);
+      const wide = await head();
+      await page.setViewportSize({ width: combo.w, height: combo.h });
+      await page.waitForTimeout(300);
+      const back = await head();
+      if (wide !== 'opposition / limitation / contradiction') problems.push(`after widening to 1440 the running head reads "${wide}", not the full name`);
+      if (back !== narrow) problems.push(`after narrowing back the running head reads "${back}", was "${narrow}"`);
+      if (narrow === wide) problems.push(`at ${combo.w}px the running head was not shortened ("${narrow}")`);
+    }
+    const summary = `${navName} and running head agree at all ${steps.length} scroll stops, all ${cats.length} categories reached, no overflow`;
     if (problems.length) record('FAIL', 'transitions', comboLabel(combo), problems.join('; '));
-    else record('PASS', 'transitions', comboLabel(combo), `chips dock on the tab bar, ${content.toFixed(0)}px of content above them`);
+    else record('PASS', 'transitions', comboLabel(combo), combo.phone ? `chips dock on the tab bar, ${content.toFixed(0)}px of content above them; ${summary}` : summary);
   });
 }
 

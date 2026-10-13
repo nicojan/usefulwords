@@ -3411,7 +3411,7 @@ window.UW_DATA = {
         },
         {
           id: "examples-support-emphasis",
-          label: { en: "examples / support / emphasis", zh: "例子/ 支撐 / 強調" },
+          label: { en: "examples / support / emphasis", zh: "例子 / 支撐 / 強調" },
           entries: [
             {
               id: "another-key-point",
