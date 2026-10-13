@@ -14,3 +14,4 @@ Thumbs.db
 # Node (only if wrangler ever pulls deps locally)
 node_modules/
 .wrangler/
+.superpowers/
