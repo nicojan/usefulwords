@@ -225,7 +225,7 @@
     if (tags.length) {
       const chips = tags.map(
         (s) =>
-          `<a class="entry__also-link" href="#${escAttr(s.id)}" data-topic="${escAttr(s.id)}" style="--also-tint: ${SECTION_TINT_VAR[s.id]}">${esc(s.label.en)}</a>`
+          `<a class="entry__also-link" href="#${escAttr(s.id)}" data-topic="${escAttr(s.id)}">${esc(s.label.en)}</a>`
       );
       let joined;
       if (chips.length === 1) joined = chips[0];
@@ -303,9 +303,8 @@
     // transitions section.
     const posLabel = sectionId !== "transitions" ? POS_LABEL_FOR_CATEGORY[cat.id] : null;
     const entries = cat.entries.map((e) => entryHTML(e, 4, posLabel)).join("");
-    const tintVar = SECTION_TINT_VAR[sectionId] || "var(--label-2)";
     return `
-        <section class="category" id="cat-${escAttr(cat.id)}-${escAttr(sectionId)}" data-cat="${escAttr(cat.id)}" aria-labelledby="cat-h-${escAttr(cat.id)}-${escAttr(sectionId)}" style="--cat-tint: ${tintVar}">
+        <section class="category" id="cat-${escAttr(cat.id)}-${escAttr(sectionId)}" data-cat="${escAttr(cat.id)}" aria-labelledby="cat-h-${escAttr(cat.id)}-${escAttr(sectionId)}">
           <header class="category__header">
             <h3 class="category__name" id="cat-h-${escAttr(cat.id)}-${escAttr(sectionId)}">${esc(cat.label.en)}</h3>
             <span class="category__name-zh" lang="zh-Hant">${esc(cat.label.zh)}</span>
@@ -352,7 +351,7 @@
              ${tagged
                .map(
                  ({ entry, sectionId }) =>
-                   `<a class="tagged-chip" href="#${escAttr(entry.id)}" data-recent="${escAttr(entry.id)}" style="--also-tint: ${SECTION_TINT_VAR[sectionId]}">
+                   `<a class="tagged-chip" href="#${escAttr(entry.id)}" data-recent="${escAttr(entry.id)}">
                       ${esc(entry.word)}
                     </a>`
                )
@@ -375,9 +374,8 @@
     // dropup is used instead, since it docks in the thumb zone.
     const sectionChipsHTML = "";
 
-    const sectionTintVar = SECTION_TINT_VAR[section.id] || "var(--label)";
     return `
-      <section class="section" id="${escAttr(section.id)}" data-section="${escAttr(section.id)}" aria-labelledby="sec-h-${escAttr(section.id)}" style="--section-tint: ${sectionTintVar}">
+      <section class="section" id="${escAttr(section.id)}" data-section="${escAttr(section.id)}" aria-labelledby="sec-h-${escAttr(section.id)}">
         <header class="section__header">
           <h2 class="section__title" id="sec-h-${escAttr(section.id)}">
             <span class="section__title-en">${esc(section.label.en)}</span>
@@ -397,11 +395,9 @@
     const total = section.categories
       ? section.categories.reduce((a, c) => a + c.entries.length, 0)
       : section.entries.length;
-    const tintVar = SECTION_TINT_VAR[section.id] || SECTION_TINT_VAR["society-culture"];
     return `
       <a class="topic-card" data-target="${escAttr(section.id)}" href="#${escAttr(section.id)}"
-         aria-label="${esc(section.label.en)} — ${total} words"
-         style="--tint: ${tintVar}">
+         aria-label="${esc(section.label.en)} — ${total} words">
         <span class="topic-card__text">
           <span class="topic-card__en">${esc(section.label.en)}</span>
           <span class="topic-card__zh" lang="zh-Hant">${esc(section.label.zh)}</span>
@@ -636,27 +632,6 @@
   const chipsEl = document.getElementById("chips");
   let chipsRenderedFor = null;
 
-  // Apple HIG topic tints — each topic has its own systemColor so
-  // active states, the brand glyph, and chip highlights re-tint as the
-  // user moves between topics. CSS holds the actual values.
-  const SECTION_TINT_VAR = {
-    "society-culture":     "var(--tint-society-culture)",
-    "education-learning":  "var(--tint-education-learning)",
-    "environment":         "var(--tint-environment)",
-    "technology-media":    "var(--tint-technology-media)",
-    "health-lifestyle":    "var(--tint-health-lifestyle)",
-    "work-economy":        "var(--tint-work-economy)",
-    "concepts":            "var(--tint-concepts)",
-    "transitions":         "var(--tint-transitions)",
-  };
-  let lastTintSection = null;
-  function applyTint(sectionId) {
-    if (sectionId === lastTintSection) return;
-    lastTintSection = sectionId;
-    const v = SECTION_TINT_VAR[sectionId] || SECTION_TINT_VAR["society-culture"];
-    document.body.style.setProperty("--tint", v);
-  }
-
   // POS marker shown next to each entry's headword. Only meaningful
   // when the entry sits inside a parts-of-speech category. For the
   // transitions topic the categories are linking-word types, not POS,
@@ -741,7 +716,6 @@
         t.setAttribute("aria-current", matches ? "true" : "false");
         if (matches) activeTab = t;
       });
-      applyTint(id);
       if (activeTab && activeTab !== lastActiveTab) {
         lastActiveTab = activeTab;
         ensureTabVisible(activeTab);
@@ -984,7 +958,6 @@
     const pos = POS_LABEL_FOR_CATEGORY[categoryId];
 
     section.dataset.available = "true";
-    section.style.setProperty("--wod-tint", SECTION_TINT_VAR[sectionId] || SECTION_TINT_VAR["society-culture"]);
     // Render the whole card as a single tappable link to the entry.
     // No more "Open in {topic}" footer — the topic name lives inline
     // as a subtle pill, and the card itself is the tap target.

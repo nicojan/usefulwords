@@ -9,111 +9,73 @@
 html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 body { line-height: 1.5; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 
-/* Fraunces is self-hosted as a variable woff2 (italic + roman, latin
-   only — ~270 KB total). Preloaded in the HTML so it has a head start
-   on the page paint, and using font-display: block here so the
-   editorial type is the first thing the user sees (it's the
-   signature). IBM Plex Sans and Noto Sans/Serif TC stay on Google
-   Fonts with font-display: optional. */
+/* Fonts are self-hosted subsets in public/fonts/ (OFL). Literata and
+   Atkinson are variable files, so one roman and one italic cover every
+   weight. font-display: optional avoids reflowing ~300 entries under a
+   deep link. Chinese stays on Google Fonts (see index.html). */
 @font-face {
-  font-family: "Fraunces";
+  font-family: "Literata";
   font-style: normal;
-  font-weight: 400 600;
+  font-weight: 400 700;
   font-display: optional;
-  src: url("../fonts/Fraunces-normal-latin.woff2") format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  src: url("../fonts/Literata-roman.woff2") format("woff2");
 }
 @font-face {
-  font-family: "Fraunces";
+  font-family: "Literata";
   font-style: italic;
-  font-weight: 400 600;
+  font-weight: 400;
   font-display: optional;
-  src: url("../fonts/Fraunces-italic-latin.woff2") format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  src: url("../fonts/Literata-italic.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Atkinson Hyperlegible Next";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: optional;
+  src: url("../fonts/AtkinsonNext-roman.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Atkinson Hyperlegible Next";
+  font-style: italic;
+  font-weight: 400;
+  font-display: optional;
+  src: url("../fonts/AtkinsonNext-italic.woff2") format("woff2");
+}
+/* Pronunciations only: a 3 KB Noto Sans subset holding the 39 IPA
+   characters used in data.js, so a string never mixes faces. */
+@font-face {
+  font-family: "UW IPA";
+  font-style: normal;
+  font-weight: 400;
+  font-display: optional;
+  src: url("../fonts/NotoSans-ipa.woff2") format("woff2");
 }
 img, svg { display: block; max-width: 100%; }
 input, button, textarea, select { font: inherit; color: inherit; }
 button { background: none; border: none; padding: 0; cursor: pointer; }
 a { color: inherit; text-decoration: none; }
-:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
-/* --- Tokens — Apple HIG semantic colors (light mode default) --- */
+/* --- Tokens: one ink, one muted grey, one accent --- */
 :root {
   color-scheme: light dark;
 
-  /* Backgrounds */
-  --bg:               #ffffff;            /* systemBackground */
-  --bg-grouped:       #f2f2f7;            /* systemGroupedBackground */
-  --bg-secondary:     #f2f2f7;            /* secondarySystemBackground */
-  --bg-tertiary:      #ffffff;            /* tertiarySystemBackground */
-  /* Card surface — pure white in light gives meaningful contrast
-     against the off-white body; in dark we keep the subtle lift
-     from secondary so the coloured borders still do the heavy
-     lifting and the card doesn't pop too aggressively. */
-  --card-bg:          #ffffff;
+  --bg:          #ffffff;
+  --ink:         #1d1d1f;
+  --ink-2:       #3a3a3c;                    /* Chinese example, intro */
+  --muted:       #6e6e73;                    /* IPA, POS, counts, inactive nav, placeholder */
+  --rule-strong: #1d1d1f;                    /* running head, heading rules */
+  --rule:        #e5e5ea;                    /* between entries and rows; decorative */
+  --accent:      #A0603F;                    /* Human terracotta: links, active marks, focus */
+  --hl:          rgba(255, 204, 0, 0.42);    /* search match, background only */
+  --flash:       color-mix(in srgb, var(--accent) 12%, transparent);  /* jump highlight, background only */
 
-  /* Labels (foreground) — alphas raised slightly from iOS native values
-     so secondary text on white meets WCAG AA contrast (4.5:1). */
-  --label:            rgba(0, 0, 0, 1);
-  --label-2:          rgba(60, 60, 67, 0.74);   /* ~4.7:1 on white */
-  --label-3:          rgba(60, 60, 67, 0.55);   /* decorative use only */
-  --label-4:          rgba(60, 60, 67, 0.18);
-
-  /* Separators */
-  --separator:        rgba(60, 60, 67, 0.29);
-  --separator-opaque: #c6c6c8;
-
-  /* Fills (for chips, controls) */
-  --fill:             rgba(120, 120, 128, 0.20);
-  --fill-2:           rgba(120, 120, 128, 0.16);
-  --fill-3:           rgba(118, 118, 128, 0.12);
-  --fill-4:           rgba(116, 116, 128, 0.08);
-
-  /* Apple HIG system colors — one per topic, deepened from native
-     values so 12–13px tinted text passes 4.5:1 contrast on white.
-     JS sets `--tint` to the active topic's value so the whole UI
-     re-tints as the user moves between topics. */
-  --tint-society-culture:    #3634A3;  /* systemIndigo */
-  --tint-education-learning: #7D3AA6;  /* systemPurple */
-  --tint-environment:        #1F7A36;  /* systemGreen */
-  --tint-technology-media:   #0a6bd6;  /* systemBlue */
-  --tint-health-lifestyle:   #C4143A;  /* systemPink */
-  --tint-work-economy:       #BD4F00;  /* systemOrange */
-  --tint-concepts:           #006E9A;  /* systemTeal */
-  --tint-transitions:        #7F6545;  /* systemBrown accessible — calm, connecting */
-
-  --tint:              var(--tint-society-culture);  /* default; JS overrides */
-  --tint-on:           #ffffff;
-  --tint-soft:         color-mix(in srgb, var(--tint), transparent 85%);
-
-  /* Human (forhuman.ca) brand terracotta — used as a stable accent
-     for the wordmark in both the masthead and the topbar. Picked the
-     deeper of forhuman.ca's two terracotta shades so it clears
-     WCAG AA (4.5:1) on white when used as small text. */
-  --brand-terracotta:  #A0603F;
-
-  /* Search match highlight */
-  --hl:               rgba(255, 204, 0, 0.42);  /* systemYellow tint */
-
-  /* Legacy alias names used through the stylesheet — pointed to new tokens */
-  --paper:            var(--bg);
-  --paper-2:          var(--bg-secondary);
-  --paper-tint:       var(--bg);
-  --ink:              var(--label);
-  --ink-2:            var(--label-2);
-  --ink-mute:         var(--label-3);
-  --rule:             var(--separator);
-  --rule-soft:        var(--separator);
-  --accent:           var(--tint);
-  --accent-2:         var(--tint);
-  --accent-soft:      var(--tint-soft);
-
-  /* Type — webfont first; if the optional load doesn't finish in time
-     the page sits permanently on the system fallback for this session */
-  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
-  --font-sans:    "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
-  --font-zh-serif: "Noto Serif TC", "Songti TC", "PMingLiU", serif;
-  --font-zh-sans:  "Noto Sans TC", "PingFang TC", "Heiti TC", sans-serif;
+  /* Type */
+  --font-serif:    "Literata", Georgia, serif;
+  --font-sans:     "Atkinson Hyperlegible Next", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-zh:       "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  --font-zh-serif: "Noto Serif TC", "Songti TC", serif;
+  --font-ipa:      "UW IPA", "Noto Sans", "Lucida Grande", sans-serif;
 
   /* Geometry */
   --max-w:        680px;
@@ -128,54 +90,24 @@ a { color: inherit; text-decoration: none; }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg:               #000000;            /* systemBackground dark */
-    --bg-grouped:       #000000;
-    --bg-secondary:     #1c1c1e;            /* secondarySystemBackground dark */
-    --bg-tertiary:      #2c2c2e;            /* tertiarySystemBackground dark */
-    --card-bg:          #1c1c1e;            /* matches --bg-secondary — subtle lift on black */
-
-    --label:            rgba(255, 255, 255, 1);
-    --label-2:          rgba(235, 235, 245, 0.60);
-    --label-3:          rgba(235, 235, 245, 0.30);
-    --label-4:          rgba(235, 235, 245, 0.18);
-
-    --separator:        rgba(84, 84, 88, 0.65);
-    --separator-opaque: #38383a;
-
-    --fill:             rgba(120, 120, 128, 0.36);
-    --fill-2:           rgba(120, 120, 128, 0.32);
-    --fill-3:           rgba(118, 118, 128, 0.24);
-    --fill-4:           rgba(118, 118, 128, 0.18);
-
-    /* Dark-mode tints — brightened from Apple's standard system
-       colours so each clears 4.5:1 contrast on bg-tertiary (the card
-       surface category headings sit on). Still recognisable as their
-       systemColor cousins. */
-    --tint-society-culture:    #9D9CFF;   /* brighter indigo */
-    --tint-education-learning: #D78EFF;   /* brighter purple */
-    --tint-environment:        #30D158;   /* systemGreen dark */
-    --tint-technology-media:   #5BA8FF;   /* brighter blue */
-    --tint-health-lifestyle:   #FF6080;   /* brighter pink */
-    --tint-work-economy:       #FF9F0A;   /* systemOrange dark */
-    --tint-concepts:           #64D2FF;   /* systemTeal dark */
-    --tint-transitions:        #CFA37A;   /* brown — replaces gray */
-
-    --tint:              var(--tint-society-culture);
-    --tint-on:           #ffffff;
-    --tint-soft:         color-mix(in srgb, var(--tint), transparent 78%);
-    --brand-terracotta:  #D08B62;   /* slightly brighter for dark */
-
-    --hl:               rgba(255, 214, 10, 0.36);  /* systemYellow dark */
+    --bg:          #161412;
+    --ink:         #ece8e3;
+    --ink-2:       #c9c4be;
+    --muted:       #9a948d;
+    --rule-strong: rgba(236, 232, 227, 0.6);
+    --rule:        #2e2a27;
+    --accent:      #D08B62;
+    --hl:          rgba(255, 204, 0, 0.28);
+    --flash:       color-mix(in srgb, var(--accent) 18%, transparent);
   }
 }
 
 /* --- Page --- */
-/* Grouped iOS-style background so the rounded cards stand out. */
-html { background: var(--bg-grouped); }
+html { background: var(--bg); }
 body {
   font-family: var(--font-sans);
-  color: var(--label);
-  background: var(--bg-grouped);
+  color: var(--ink);
+  background: var(--bg);
   min-height: 100dvh;
   /* Bottom stack on mobile, top→bottom: chips (when visible) → tabbar
      → topbar (brand + search). All in the thumb zone. */
@@ -191,7 +123,7 @@ body.chips-visible {
   position: absolute;
   left: -9999px;
   top: 8px;
-  background: var(--label);
+  background: var(--ink);
   color: var(--bg);
   padding: 8px 12px;
   border-radius: 8px;
@@ -220,7 +152,7 @@ body.chips-visible {
   background: color-mix(in oklab, var(--bg) 86%, transparent);
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
-  border-top: 0.5px solid var(--separator);
+  border-top: 0.5px solid var(--rule);
 }
 
 /* Random-entry shuffler. Lives at the bottom-left of the viewport as
@@ -274,11 +206,6 @@ body.chips-visible {
 .btn-random:hover .btn-random__glow { animation-duration: 1.4s; }
 .btn-random:hover .btn-random__die { animation-duration: 0.6s; }
 .btn-random:active .btn-random__die { transform: scale(0.92); }
-.btn-random:focus-visible {
-  outline: 2px solid var(--label);
-  outline-offset: 4px;
-  border-radius: 50%;
-}
 
 /* Soft golden breathe — opacity + scale pulse together so the glow
    feels alive without rotating. */
@@ -322,13 +249,13 @@ body.chips-visible {
   align-items: baseline;
   gap: 6px;
   flex-shrink: 0;
-  font-family: var(--font-display);
+  font-family: var(--font-serif);
   font-weight: 500;
   font-size: 17px;
   letter-spacing: -0.01em;
   font-variation-settings: "opsz" 14, "SOFT" 50;
 }
-.topbar__brand-name { color: var(--brand-terracotta); }
+.topbar__brand-name { color: var(--accent); }
 
 /* Search — iOS rounded field on systemFill background */
 .search {
@@ -339,31 +266,21 @@ body.chips-visible {
   gap: 8px;
   height: 36px;
   padding: 0 10px 0 12px;
-  background: var(--fill-3);
-  border: 0;
+  background: transparent;
+  border: 1px solid var(--rule);
   border-radius: 10px;
-  transition: background 0.15s var(--ease);
 }
-.search:focus-within {
-  background: var(--fill);
-  /* Neutral focus ring — never borrows a section tint. --label flips
-     between near-black (light) and white (dark), so the ring is
-     high-contrast on either fill regardless of which topic is current. */
-  box-shadow: inset 0 0 0 3px var(--label);
-  outline: none;
-}
-.search__icon { color: var(--label-2); flex-shrink: 0; }
-.search:focus-within .search__icon { color: var(--label); }
+.search__icon { color: var(--ink-2); flex-shrink: 0; }
+.search:focus-within .search__icon { color: var(--ink); }
 .search__input {
   flex: 1;
   border: none;
-  outline: none;
   background: transparent;
   font-size: 15px;
   color: var(--ink);
   min-width: 0;
 }
-.search__input::placeholder { color: var(--ink-mute); opacity: 0.9; }
+.search__input::placeholder { color: var(--muted); opacity: 0.9; }
 .search__input::-webkit-search-cancel-button { display: none; }
 .search__clear {
   display: inline-flex;
@@ -372,10 +289,10 @@ body.chips-visible {
   width: 24px;
   height: 24px;
   border-radius: 999px;
-  color: var(--ink-mute);
+  color: var(--muted);
   transition: color 0.15s var(--ease), background 0.15s var(--ease);
 }
-.search__clear:hover { color: var(--ink); background: var(--accent-soft); }
+.search__clear:hover { color: var(--ink); background: var(--flash); }
 
 /* ============================================================
    Content
@@ -395,14 +312,14 @@ body.chips-visible {
   margin-bottom: 28px;
 }
 .masthead__title {
-  font-family: var(--font-display);
+  font-family: var(--font-serif);
   font-weight: 500;
   font-style: italic;
   font-size: clamp(44px, 13vw, 78px);
   line-height: 0.92;
   letter-spacing: -0.02em;
   font-variation-settings: "opsz" 100, "SOFT" 30;
-  color: var(--brand-terracotta);
+  color: var(--accent);
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -412,7 +329,7 @@ body.chips-visible {
   font-style: normal;
   font-weight: 500;
   font-size: 0.5em;
-  color: var(--label-2);
+  color: var(--ink-2);
   letter-spacing: 0.04em;
 }
 .masthead__sub {
@@ -424,7 +341,7 @@ body.chips-visible {
 }
 
 /* ============================================================
-   Landing topic grid — visual index of all topics with their tints
+   Landing topic grid — visual index of all topics
    ============================================================ */
 .topics {
   margin: 32px 0 12px;
@@ -436,19 +353,19 @@ body.chips-visible {
   margin: 0 4px 14px;
 }
 .topics__heading {
-  font-family: var(--font-display);
+  font-family: var(--font-serif);
   font-style: italic;
   font-weight: 500;
   font-size: 22px;
   line-height: 1.1;
   letter-spacing: -0.01em;
-  color: var(--label);
+  color: var(--ink);
   font-variation-settings: "opsz" 60, "SOFT" 40;
 }
 .topics__heading-zh {
   font-family: var(--font-zh-serif);
   font-size: 14px;
-  color: var(--label-2);
+  color: var(--ink-2);
   letter-spacing: 0.02em;
 }
 
@@ -469,8 +386,8 @@ body.chips-visible {
   display: flex;
   align-items: center;
   padding: 14px 16px;
-  background: var(--card-bg);
-  border: 2px solid var(--tint);
+  background: var(--bg);
+  border: 2px solid var(--accent);
   border-radius: 14px;
   text-decoration: none;
   color: inherit;
@@ -479,8 +396,7 @@ body.chips-visible {
 }
 .topic-card:hover,
 .topic-card:focus-visible {
-  background: var(--tint);
-  outline: none;
+  background: var(--accent);
 }
 .topic-card:hover .topic-card__en,
 .topic-card:focus-visible .topic-card__en {
@@ -505,13 +421,13 @@ body.chips-visible {
   font-size: 17px;
   font-weight: 500;
   line-height: 1.2;
-  color: var(--label);
+  color: var(--ink);
   transition: color 0.18s var(--ease);
 }
 .topic-card__zh {
-  font-family: var(--font-zh-sans);
+  font-family: var(--font-zh);
   font-size: 13px;
-  color: var(--label-2);
+  color: var(--ink-2);
   letter-spacing: 0.02em;
   transition: color 0.18s var(--ease);
 }
@@ -526,7 +442,7 @@ body.chips-visible {
   margin: 14px 4px 0;
   font-size: 13px;
   line-height: 1.45;
-  color: var(--label-2);
+  color: var(--ink-2);
   transition: opacity 0.35s var(--ease), max-height 0.35s var(--ease), margin-top 0.35s var(--ease);
 }
 .hint[hidden] { display: none; }
@@ -548,13 +464,13 @@ body.chips-visible {
 }
 .wod[hidden] { display: none; }
 .wod__heading {
-  font-family: var(--font-display);
+  font-family: var(--font-serif);
   font-style: italic;
   font-weight: 500;
   font-size: 18px;
   line-height: 1.1;
   letter-spacing: -0.01em;
-  color: var(--label);
+  color: var(--ink);
   margin: 0 4px 12px;
   font-variation-settings: "opsz" 60, "SOFT" 40;
 }
@@ -563,15 +479,15 @@ body.chips-visible {
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
-  color: var(--label-2);
+  color: var(--ink-2);
   letter-spacing: 0.02em;
   margin-left: 6px;
 }
 .wod__card {
   display: block;
   padding: 14px 16px 16px;
-  background: var(--card-bg);
-  border: 2px solid var(--wod-tint, var(--tint));
+  background: var(--bg);
+  border: 2px solid var(--accent);
   border-radius: 14px;
   color: inherit;
   text-decoration: none;
@@ -580,8 +496,7 @@ body.chips-visible {
 }
 .wod__card:hover,
 .wod__card:focus-visible {
-  background: var(--wod-tint, var(--tint));
-  outline: none;
+  background: var(--accent);
 }
 .wod__card:hover .wod__word,
 .wod__card:hover .wod__def,
@@ -609,32 +524,32 @@ body.chips-visible {
   flex-wrap: wrap;
 }
 .wod__word {
-  font-family: var(--font-display);
+  font-family: var(--font-serif);
   font-style: normal;
   font-weight: 500;
   font-size: 26px;
   line-height: 1.05;
   letter-spacing: -0.018em;
-  color: var(--label);
+  color: var(--ink);
   font-variation-settings: "opsz" 28, "SOFT" 40;
 }
 .wod__pos {
   font-family: var(--font-sans);
   font-style: italic;
   font-size: 13px;
-  color: var(--label-2);
+  color: var(--ink-2);
 }
 .wod__def {
   font-family: var(--font-sans);
   font-size: 15px;
   line-height: 1.5;
-  color: var(--label);
+  color: var(--ink);
   margin-top: 6px;
 }
 .wod__def-zh {
-  font-family: var(--font-zh-sans);
+  font-family: var(--font-zh);
   font-size: 13px;
-  color: var(--label-2);
+  color: var(--ink-2);
   margin-top: 2px;
 }
 .wod__topic {
@@ -642,11 +557,11 @@ body.chips-visible {
   margin-top: 10px;
   font-size: 12px;
   font-weight: 500;
-  color: var(--label-2);
+  color: var(--ink-2);
   letter-spacing: 0.01em;
 }
 .wod__topic-name {
-  color: var(--wod-tint, var(--tint));
+  color: var(--accent);
   font-weight: 600;
 }
 
@@ -661,19 +576,19 @@ body.chips-visible {
   margin: 0 4px 12px;
 }
 .recent__heading {
-  font-family: var(--font-display);
+  font-family: var(--font-serif);
   font-style: italic;
   font-weight: 500;
   font-size: 18px;
   line-height: 1.1;
   letter-spacing: -0.01em;
-  color: var(--label);
+  color: var(--ink);
   font-variation-settings: "opsz" 60, "SOFT" 40;
 }
 .recent__heading-zh {
   font-family: var(--font-zh-serif);
   font-size: 13px;
-  color: var(--label-2);
+  color: var(--ink-2);
   letter-spacing: 0.02em;
 }
 .recent__list {
@@ -687,26 +602,26 @@ body.chips-visible {
   gap: 8px;
   padding: 7px 14px;
   border-radius: 999px;
-  background: var(--bg-tertiary);
-  border: 0.5px solid var(--separator);
-  font-family: var(--font-display);
+  background: var(--bg);
+  border: 0.5px solid var(--rule);
+  font-family: var(--font-serif);
   font-style: italic;
   font-weight: 500;
   font-size: 14px;
-  color: var(--label);
+  color: var(--ink);
   text-decoration: none;
   font-variation-settings: "opsz" 14, "SOFT" 50;
   transition: background 0.15s var(--ease);
   -webkit-tap-highlight-color: transparent;
 }
 .recent-chip:hover {
-  background: color-mix(in srgb, var(--bg-tertiary), var(--tint) 6%);
+  background: color-mix(in srgb, var(--bg), var(--accent) 6%);
 }
 .recent-chip__pos {
   font-family: var(--font-sans);
   font-style: italic;
   font-size: 11px;
-  color: var(--label-2);
+  color: var(--ink-2);
   letter-spacing: 0.02em;
 }
 
@@ -715,25 +630,25 @@ body.chips-visible {
   margin: 0 4px 12px;
   font-size: 14px;
   line-height: 1.5;
-  color: var(--label-2);
+  color: var(--ink-2);
   max-width: 56ch;
 }
 .section__intro--zh {
   font-size: 13px;
   margin-top: -8px;
-  color: var(--label-2);
+  color: var(--ink-2);
 }
 
 /* Search summary — appears while a query is active */
 .search-summary {
   margin: 18px 4px 4px;
   font-size: 13px;
-  color: var(--label-2);
+  color: var(--ink-2);
   font-feature-settings: "tnum";
 }
 .search-summary[hidden] { display: none; }
 .search-summary strong {
-  color: var(--label);
+  color: var(--ink);
   font-weight: 600;
 }
 
@@ -759,14 +674,14 @@ body.chips-visible {
   position: relative;
 }
 .section__title {
-  font-family: var(--font-display);
+  font-family: var(--font-serif);
   font-style: italic;
   font-weight: 500;
   font-size: clamp(34px, 8.5vw, 50px);
   line-height: 1;
   letter-spacing: -0.015em;
   font-variation-settings: "opsz" 100, "SOFT" 30;
-  color: var(--section-tint, var(--label));
+  color: var(--ink);
   display: flex;
   align-items: baseline;
   gap: 14px;
@@ -777,14 +692,14 @@ body.chips-visible {
   font-style: normal;
   font-weight: 500;
   font-size: 0.46em;
-  color: var(--label-2);
+  color: var(--ink-2);
   letter-spacing: 0.04em;
 }
 .section__count {
   font-family: var(--font-sans);
   font-feature-settings: "tnum";
   font-size: 13px;
-  color: var(--label-2);
+  color: var(--ink-2);
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -795,11 +710,11 @@ body.chips-visible {
    even when looked at in isolation. --- */
 .category {
   scroll-margin-top: 16px;
-  background: var(--card-bg);
+  background: var(--bg);
   border-radius: 14px;
   margin: 14px 0 0;
   overflow: hidden;  /* clips hairline dividers + active highlights */
-  border: 2px solid var(--cat-tint, var(--separator));
+  border: 2px solid var(--rule);
 }
 .category__header {
   display: flex;
@@ -807,7 +722,7 @@ body.chips-visible {
   gap: 10px;
   flex-wrap: wrap;
   padding: 14px 16px 10px;
-  border-bottom: 0.5px solid var(--separator);
+  border-bottom: 0.5px solid var(--rule);
   background: transparent;
 }
 .category__name {
@@ -817,21 +732,21 @@ body.chips-visible {
   font-size: 13px;
   letter-spacing: 0.04em;
   line-height: 1.1;
-  color: var(--cat-tint, var(--label-2));
+  color: var(--ink-2);
   text-transform: uppercase;
 }
 .category__name-zh {
-  font-family: var(--font-zh-sans);
+  font-family: var(--font-zh);
   font-style: normal;
   font-weight: 500;
   font-size: 12px;
-  color: var(--label-2);
+  color: var(--ink-2);
   letter-spacing: 0.02em;
 }
 .category__count {
   margin-left: auto;
   font-size: 12px;
-  color: var(--label-2);
+  color: var(--ink-2);
   font-feature-settings: "tnum";
 }
 
@@ -850,7 +765,7 @@ body.chips-visible {
   bottom: calc(var(--topbar-h) + var(--tabbar-h) + env(safe-area-inset-bottom) + 12px);
   z-index: 35;
 
-  background: var(--bg-secondary);
+  background: var(--bg);
   border: 0;
   border-radius: 18px;
   filter:
@@ -866,7 +781,7 @@ body.chips-visible {
 }
 @media (prefers-color-scheme: dark) {
   .chips {
-    background: var(--bg-tertiary);
+    background: var(--bg);
     filter:
       drop-shadow(0 14px 30px rgba(0, 0, 0, 0.65))
       drop-shadow(0 4px 10px rgba(0, 0, 0, 0.45));
@@ -906,13 +821,13 @@ body.chips-visible {
   height: 0;
   border-left: 8px solid transparent;
   border-right: 8px solid transparent;
-  border-top: 8px solid var(--bg-secondary);
+  border-top: 8px solid var(--bg);
   transform: translateX(-50%);
   pointer-events: none;
   transition: left 0.28s var(--ease);
 }
 @media (prefers-color-scheme: dark) {
-  .chips::after { border-top-color: var(--bg-tertiary); }
+  .chips::after { border-top-color: var(--bg); }
 }
 
 .chip {
@@ -929,7 +844,7 @@ body.chips-visible {
   font-weight: 500;
   font-size: 13px;
   line-height: 1.3;
-  color: var(--label);
+  color: var(--ink);
   white-space: normal;
   text-align: left;
   scroll-snap-align: start;
@@ -937,12 +852,12 @@ body.chips-visible {
   -webkit-tap-highlight-color: transparent;
   text-decoration: none;
 }
-.chip:hover { background: var(--fill-3); }
-.chip:active { background: var(--fill-2); }
+.chip:hover { background: var(--rule); }
+.chip:active { background: var(--rule); }
 .chip[aria-current="true"] {
   /* Transitions tint (systemBrown) for the active chip; flip text
      to black in dark mode where the brown variant is lighter. */
-  background: var(--tint);
+  background: var(--accent);
   color: #fff;
 }
 @media (prefers-color-scheme: dark) {
@@ -956,7 +871,7 @@ body.chips-visible {
 .entry {
   display: block;
   padding: 16px 16px 18px;
-  border-bottom: 0.5px solid var(--separator);
+  border-bottom: 0.5px solid var(--rule);
   scroll-margin-top: 16px;
   position: relative;
 }
@@ -964,21 +879,11 @@ body.chips-visible {
 .entry.is-target {
   animation: flash 1.4s var(--ease);
 }
-/* Gold flash — matches the die's halo so a "you landed here" cue
-   reads as the same visual family as the shuffler that often brings
-   you here. Independent of the section tint so the cue doesn't morph
-   with topic. */
+/* Jump highlight: the accent wash from --flash fades out. */
 @keyframes flash {
   0%   { background: transparent; }
-  18%  { background: rgba(242, 161, 0, 0.18); }
+  18%  { background: var(--flash); }
   100% { background: transparent; }
-}
-@media (prefers-color-scheme: dark) {
-  @keyframes flash {
-    0%   { background: transparent; }
-    18%  { background: rgba(255, 201, 60, 0.16); }
-    100% { background: transparent; }
-  }
 }
 
 .entry__head {
@@ -989,30 +894,30 @@ body.chips-visible {
   margin-bottom: 6px;
 }
 .entry__word {
-  font-family: var(--font-display);
+  font-family: var(--font-serif);
   font-weight: 500;
   font-size: clamp(24px, 6vw, 30px);
   line-height: 1.05;
   letter-spacing: -0.018em;
-  color: var(--label);
+  color: var(--ink);
   font-variation-settings: "opsz" 28, "SOFT" 40;
 }
 .entry__pos {
   font-family: var(--font-sans);
   font-style: italic;
   font-size: 13px;
-  color: var(--label-2);
+  color: var(--ink-2);
   letter-spacing: 0.02em;
   line-height: 1.1;
   align-self: flex-end;
   margin-bottom: 4px;
 }
 .entry__ipa {
-  font-family: var(--font-sans);
+  font-family: var(--font-ipa);
   font-style: normal;
   font-size: 13px;
   font-weight: 400;
-  color: var(--label-2);
+  color: var(--ink-2);
   letter-spacing: 0.01em;
   line-height: 1.1;
   align-self: flex-end;
@@ -1022,16 +927,16 @@ body.chips-visible {
   margin-top: 8px;
   font-size: 13px;
   line-height: 1.55;
-  color: var(--label);
+  color: var(--ink);
 }
 .entry__collocations-label {
   font-family: var(--font-sans);
   font-weight: 500;
   font-size: 13px;
-  color: var(--label-2);
+  color: var(--ink-2);
   margin-right: 6px;
 }
-.entry__word--mark { color: var(--tint); }
+.entry__word--mark { color: var(--accent); }
 
 .entry__def { margin: 4px 0 6px; }
 .entry__def-en {
@@ -1041,7 +946,7 @@ body.chips-visible {
   color: var(--ink);
 }
 .entry__def-zh {
-  font-family: var(--font-zh-sans);
+  font-family: var(--font-zh);
   font-size: 15px;
   line-height: 1.55;
   color: var(--ink-2);
@@ -1051,7 +956,7 @@ body.chips-visible {
 .entry__examples {
   margin-top: 12px;
   padding-left: 14px;
-  border-left: 2px solid var(--rule-soft);
+  border-left: 2px solid var(--rule);
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -1065,7 +970,7 @@ body.chips-visible {
   color: var(--ink-2);
 }
 .entry__example-zh {
-  font-family: var(--font-zh-sans);
+  font-family: var(--font-zh);
   font-size: 14px;
   line-height: 1.55;
   color: var(--ink-2);
@@ -1079,7 +984,7 @@ body.chips-visible {
 .entry__see {
   margin-top: 16px;
   padding-top: 12px;
-  border-top: 0.5px solid var(--separator);
+  border-top: 0.5px solid var(--rule);
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -1089,7 +994,7 @@ body.chips-visible {
   font-family: var(--font-sans);
   font-size: 12px;
   font-weight: 400;
-  color: var(--label-2);
+  color: var(--ink-2);
   margin-right: 2px;
 }
 .see-chip {
@@ -1103,12 +1008,12 @@ body.chips-visible {
   font-size: 12px;
   color: var(--ink);
   font-style: italic;
-  font-family: var(--font-display);
+  font-family: var(--font-serif);
   font-variation-settings: "opsz" 14, "SOFT" 50;
   transition: background 0.15s var(--ease), border-color 0.15s var(--ease);
 }
 .see-chip:hover, .see-chip:focus-visible {
-  background: var(--accent-soft);
+  background: var(--flash);
   border-color: var(--accent);
   color: var(--accent);
 }
@@ -1119,8 +1024,8 @@ body.chips-visible {
 .tagged-here {
   margin-top: 18px;
   padding: 14px 16px 16px;
-  background: var(--card-bg);
-  border: 0.5px solid var(--separator);
+  background: var(--bg);
+  border: 0.5px solid var(--rule);
   border-radius: 14px;
 }
 .tagged-here__heading {
@@ -1130,17 +1035,17 @@ body.chips-visible {
   letter-spacing: 0.04em;
   text-transform: uppercase;
   line-height: 1.1;
-  color: var(--label-2);
+  color: var(--ink-2);
   margin-bottom: 10px;
 }
 .tagged-here__zh {
-  font-family: var(--font-zh-sans);
+  font-family: var(--font-zh);
   font-weight: 400;
   font-size: 12px;
   letter-spacing: 0.02em;
   text-transform: none;
   margin-left: 6px;
-  color: var(--label-2);
+  color: var(--ink-2);
 }
 .tagged-here__list {
   display: flex;
@@ -1154,20 +1059,20 @@ body.chips-visible {
   padding: 0 12px;
   border-radius: 999px;
   background: transparent;
-  border: 0.5px solid var(--separator);
-  font-family: var(--font-display);
+  border: 0.5px solid var(--rule);
+  font-family: var(--font-serif);
   font-style: italic;
   font-weight: 500;
   font-size: 13px;
-  color: var(--label);
+  color: var(--ink);
   text-decoration: none;
   font-variation-settings: "opsz" 14, "SOFT" 50;
   transition: background 0.15s var(--ease), border-color 0.15s var(--ease);
   -webkit-tap-highlight-color: transparent;
 }
 .tagged-chip:hover {
-  background: color-mix(in srgb, var(--bg-tertiary), var(--also-tint, var(--tint)) 8%);
-  border-color: var(--also-tint, var(--tint));
+  background: var(--flash);
+  border-color: var(--accent);
 }
 
 /* "Also useful for…" — soft cross-reference under entries whose
@@ -1176,10 +1081,10 @@ body.chips-visible {
 .entry__also-in {
   margin-top: 16px;
   padding-top: 12px;
-  border-top: 0.5px solid var(--separator);
+  border-top: 0.5px solid var(--rule);
   font-size: 12px;
   line-height: 1.9;  /* allow pills room to breathe inline */
-  color: var(--label-2);
+  color: var(--ink-2);
 }
 /* When the see-also block is directly above, the entry already has
    its hairline footer; tuck the also-useful row in tighter and skip
@@ -1193,10 +1098,10 @@ body.chips-visible {
   display: inline-flex;
   align-items: center;
   padding: 1px 9px;
-  border: 2px solid var(--also-tint, var(--tint));
+  border: 2px solid var(--accent);
   border-radius: 999px;
   background: transparent;
-  color: var(--label);
+  color: var(--ink);
   font-size: 12px;
   font-weight: 500;
   text-decoration: none;
@@ -1204,9 +1109,8 @@ body.chips-visible {
   -webkit-tap-highlight-color: transparent;
 }
 .entry__also-link:hover, .entry__also-link:focus-visible {
-  background: var(--also-tint, var(--tint));
+  background: var(--accent);
   color: var(--bg);
-  outline: none;
 }
 
 /* Search highlight */
@@ -1226,7 +1130,7 @@ mark.hl {
   padding: 80px 20px 40px;
 }
 .empty__title {
-  font-family: var(--font-display);
+  font-family: var(--font-serif);
   font-style: italic;
   font-size: 36px;
   line-height: 1;
@@ -1255,9 +1159,8 @@ mark.hl {
 }
 .colophon a:hover,
 .colophon a:focus-visible {
-  color: var(--brand-terracotta);
-  border-color: var(--brand-terracotta);
-  outline: none;
+  color: var(--accent);
+  border-color: var(--accent);
 }
 .colophon__meta {
   margin-top: 6px;
@@ -1287,7 +1190,7 @@ mark.hl {
   background: color-mix(in oklab, var(--bg) 86%, transparent);
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
-  border-top: 0.5px solid var(--separator);
+  border-top: 0.5px solid var(--rule);
   -ms-overflow-style: none;
   scrollbar-width: none;
   /* Mask the leading/trailing edges so the next tab fades in/out
@@ -1314,7 +1217,7 @@ mark.hl {
   gap: 2px;
   padding: 0 12px;
   min-width: 74px;  /* lets 5 tabs peek into a 390-wide viewport */
-  color: var(--label-2);
+  color: var(--ink-2);
   font-family: var(--font-sans);
   transition: color 0.15s var(--ease);
   -webkit-tap-highlight-color: transparent;
@@ -1328,7 +1231,7 @@ mark.hl {
   letter-spacing: -0.005em;
 }
 .tab__zh {
-  font-family: var(--font-zh-sans);
+  font-family: var(--font-zh);
   font-style: normal;
   font-weight: 400;
   font-size: 10px;
@@ -1336,9 +1239,9 @@ mark.hl {
   letter-spacing: 0.04em;
   opacity: 0.85;
 }
-.tab:hover { color: var(--label); }
+.tab:hover { color: var(--ink); }
 .tab[aria-current="true"] {
-  color: var(--tint);
+  color: var(--accent);
 }
 .tab[aria-current="true"]::before {
   content: "";
@@ -1348,7 +1251,7 @@ mark.hl {
   transform: translateX(-50%);
   width: 22px;
   height: 2px;
-  background: var(--tint);
+  background: var(--accent);
   border-radius: 2px;
 }
 
@@ -1360,7 +1263,7 @@ mark.hl {
   width: 9px;
   height: 9px;
   border-radius: 999px;
-  background: var(--tab-tint, var(--label-2));
+  background: var(--muted);
   flex-shrink: 0;
 }
 
@@ -1394,8 +1297,8 @@ mark.hl {
     left: 0;
     bottom: 0;
     width: var(--sidebar-w);
-    background: var(--bg-grouped);
-    border-right: 0.5px solid var(--separator);
+    background: var(--bg);
+    border-right: 0.5px solid var(--rule);
     z-index: 27;
     pointer-events: none;
   }
@@ -1469,17 +1372,8 @@ mark.hl {
      the aria-current resting state via source order + combined selector. */
   .tab:hover, .tab:focus-visible,
   .tab[aria-current="true"]:hover, .tab[aria-current="true"]:focus-visible {
-    background: var(--tab-tint, var(--tint));
+    background: var(--accent);
     color: var(--bg);
-    outline: none;
-  }
-  /* Focus-only refinement: keyboard users get an inset bg-coloured ring
-     inside the saturated fill so focus is distinct from hover. Layered
-     after the combined selector above so the outline wins for :focus-visible. */
-  .tab:focus-visible,
-  .tab[aria-current="true"]:focus-visible {
-    outline: 2px solid var(--bg);
-    outline-offset: -4px;
   }
   /* Flip the dot so it remains visible against the saturated fill */
   .tab:hover .tab__dot,
@@ -1499,7 +1393,7 @@ mark.hl {
     flex-direction: column;
     margin: 2px 0 6px 22px;
     padding-left: 10px;
-    border-left: 0.5px solid var(--separator);
+    border-left: 0.5px solid var(--rule);
   }
   .tab-subnav__link {
     display: block;
@@ -1507,7 +1401,7 @@ mark.hl {
     border-radius: 8px;
     font-family: var(--font-sans);
     font-size: 12px;
-    color: var(--label-2);
+    color: var(--ink-2);
     text-decoration: none;
     transition: color 0.15s var(--ease), background 0.15s var(--ease);
     -webkit-tap-highlight-color: transparent;
@@ -1515,11 +1409,10 @@ mark.hl {
   .tab-subnav__link:hover,
   .tab-subnav__link:focus-visible {
     color: var(--bg);
-    background: var(--tint-transitions);
-    outline: none;
+    background: var(--accent);
   }
   .tab-subnav__link[aria-current="true"] {
-    color: var(--tint-transitions);
+    color: var(--accent);
     font-weight: 500;
   }
   .tab-subnav__link[aria-current="true"]:hover,
@@ -1542,8 +1435,8 @@ mark.hl {
      and fills the tab fully (combined selector above). */
   .tab[aria-current="true"] {
     background: transparent;
-    color: var(--label);
-    box-shadow: inset 0 0 0 2px var(--tab-tint, var(--label-2));
+    color: var(--ink);
+    box-shadow: inset 0 0 0 2px var(--muted);
   }
   .tab[aria-current="true"]::before { content: none; }
 
@@ -1579,10 +1472,21 @@ mark.hl {
   }
 }
 
-/* Print */
+/* Print: light tokens regardless of the scheme, chrome hidden */
 @media print {
-  .topbar, .tabbar, .chips, .skip, .search { display: none !important; }
-  body { background: white; padding: 0; }
+  :root {
+    --bg:          #ffffff;
+    --ink:         #1d1d1f;
+    --ink-2:       #3a3a3c;
+    --muted:       #6e6e73;
+    --rule-strong: #1d1d1f;
+    --rule:        #e5e5ea;
+    --accent:      #A0603F;
+    --hl:          rgba(255, 204, 0, 0.42);
+    --flash:       color-mix(in srgb, var(--accent) 12%, transparent);
+  }
+  .rh, .btn-random, .tabbar, .chips, .topbar, .skip, .search { display: none !important; }
+  body { background: var(--bg); padding: 0; }
   .content { max-width: none; padding: 24px; }
   .entry { break-inside: avoid; }
 }
