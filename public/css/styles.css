@@ -89,6 +89,8 @@ a { color: inherit; text-decoration: none; }
   --side-pad-bot: 14px;
   --side-gap:     14px;
   --side-head-h:  calc(var(--side-pad-top) + var(--brand-h) + var(--side-gap) + var(--search-h) + var(--side-pad-bot));
+  --runhead-h:    calc(40px + env(safe-area-inset-top));  /* the running head at the top; not --topbar-h, which is the bottom bar on phones */
+  --col-w:        600px;                                   /* the reading column */
   --radius:       14px;
 
   /* Motion */
@@ -281,6 +283,74 @@ svg.ic {
   max-width: var(--max-w);
   margin: 0 auto;
   padding: 0 var(--pad-x);
+}
+
+/* ============================================================
+   Running head: one quiet line at the top of the reading area naming
+   the current topic and category, like the header line of a dictionary
+   page. Fixed, so it is outside the document flow, and shown and hidden
+   with visibility and opacity only (.rh--on, set by app.js): it never
+   changes layout under an in-flight smooth scroll. The line and its
+   hairline are inset to the reading column; --rh-in and --rh-out are
+   that column's edges, as percentages of the running head's own width.
+   ============================================================ */
+.rh {
+  --rh-in:  calc(max(0px, (100% - var(--max-w)) / 2) + var(--pad-x));
+  --rh-out: max(var(--pad-x), calc(100% - var(--rh-in) - var(--col-w)));
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 26;  /* under the bars and the sidebar (27 and up) */
+  display: flex;
+  align-items: center;
+  height: var(--runhead-h);
+  padding-top: env(safe-area-inset-top);
+  background: var(--bg);
+  font-family: var(--font-sans);
+  white-space: nowrap;
+  pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.15s var(--ease), visibility 0.15s var(--ease);
+}
+.rh--on { visibility: visible; opacity: 1; }
+.rh::after {
+  content: "";
+  position: absolute;
+  left: var(--rh-in);
+  right: var(--rh-out);
+  bottom: 0;
+  border-bottom: 1px solid var(--rule-strong);
+}
+.rh__topic {
+  flex: 0 1 auto;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: var(--rh-in);
+  font-size: 15px;
+  line-height: 1.2;
+  color: var(--ink);
+}
+.rh__topic .ic { font-size: 16px; }
+.rh__en { font-weight: 600; }
+.rh__zh {
+  font-family: var(--font-zh);
+  font-size: 14px;
+  color: var(--muted);
+}
+.rh__cat {
+  flex: 1 1 0;
+  min-width: 0;
+  margin: 0 var(--rh-out) 0 16px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: right;
+  font-size: 14px;
+  line-height: 1.2;
+  color: var(--muted);
 }
 
 /* ============================================================
@@ -490,7 +560,7 @@ svg.ic {
 
 /* --- Topic section: icon, title, Chinese, count. No container. --- */
 .section {
-  scroll-margin-top: 16px;
+  scroll-margin-top: calc(var(--runhead-h) + 16px);
   max-width: 600px;
   padding-top: 12px;
   margin-top: 40px;
@@ -502,7 +572,9 @@ svg.ic {
   align-items: baseline;
   justify-content: space-between;
   gap: 4px 16px;
-  margin: 8px 0 10px;
+  margin: 8px 0 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--rule-strong);  /* heading rule, as under the front-matter labels */
 }
 .section__title {
   display: flex;
@@ -570,7 +642,7 @@ svg.ic {
 /* --- Category heading: Literata 600 21px, Chinese and count muted at the
    right, --rule hairline below --- */
 .category {
-  scroll-margin-top: 16px;
+  scroll-margin-top: calc(var(--runhead-h) + 16px);
   margin-top: 34px;
 }
 .category__header {
@@ -676,7 +748,7 @@ svg.ic {
   display: block;
   padding: 18px 0 20px;
   border-bottom: 1px solid var(--rule);
-  scroll-margin-top: 16px;
+  scroll-margin-top: calc(var(--runhead-h) + 16px);
   position: relative;
 }
 .entry:last-child { border-bottom: 0; }
@@ -1099,6 +1171,13 @@ mark.hl {
 
   /* The sidebar is the topic nav; the docked row is a phone layout */
   .chips { display: none !important; }
+
+  /* Running head across the main column only, aligned with its text */
+  .rh {
+    left: var(--sidebar-w);
+    --rh-in: 40px;
+    --rh-out: max(40px, calc(100% - var(--rh-in) - var(--col-w)));
+  }
 }
 
 @media (min-width: 1100px) {
@@ -1107,6 +1186,10 @@ mark.hl {
     --sidebar-w: 280px;
   }
   main.content { max-width: 880px; padding-left: 56px; padding-right: 56px; }
+  .rh {
+    --rh-in: 56px;
+    --rh-out: max(56px, calc(100% - var(--rh-in) - var(--col-w)));
+  }
 }
 
 /* Prefers-reduced-motion */

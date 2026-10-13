@@ -684,11 +684,19 @@ function measureContrastInPage() {
   return { items, headings, hasRh: !!document.querySelector('.rh') };
 }
 
+// Waits until no CSS transition or animation is running (the chips row and the running head fade in), so a colour
+// is never sampled mid-fade at a fraction of its opacity. Throws after ANIMATION_SETTLE_MS, which fails the check.
+const ANIMATION_SETTLE_MS = 5000;
+async function animationsSettled(page) {
+  await page.waitForFunction(() => document.getAnimations().every((a) => a.playState !== 'running' && !a.pending), null, { timeout: ANIMATION_SETTLE_MS });
+}
+
 async function checkContrast(browser, combo) {
   const all = new Map(); // element key -> the item with the LOWEST ratio seen across states
   const headings = new Map(); // element path -> highest rule count seen across states
   let hasRh = false;
   const collect = async (page) => {
+    await animationsSettled(page);
     const got = await page.evaluate(measureContrastInPage);
     hasRh = hasRh || got.hasRh;
     for (const it of got.items) {

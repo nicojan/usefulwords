@@ -129,6 +129,123 @@
     });
   }
 
+  // --- Running head -----------------------------------------------
+  // A fixed one-line strip naming the current topic and category. It
+  // is position: fixed and shown or hidden by toggling .rh--on
+  // (visibility and opacity only), so it never changes layout under an
+  // in-flight smooth scroll; see the programmatic scroll lock above.
+  //
+  // The scroll-spy (setupTabbar's sync) decides the topic and asks
+  // syncRunheadContent for the category. Every programmatic jump calls
+  // setRunhead(target.closest(".section"), target.closest(".category"))
+  // just before its scrollIntoView. That PINS the label to the target
+  // until the reader next scrolls, taps or presses a key themselves, so
+  // neither the in-flight scroll nor a landing near the foot of the page
+  // (where the target cannot reach the top) can relabel it.
+  const rh = document.querySelector(".rh");
+  const rhTopic = rh ? rh.querySelector(".rh__topic") : null;
+  const rhCat = rh ? rh.querySelector(".rh__cat") : null;
+  // A jump lands its target 16px under the running head (scroll-margin-top),
+  // so a category whose top is within this distance of the running head's
+  // bottom edge counts as current. Otherwise a category jumped to would be
+  // relabelled as the one before it.
+  const RH_CATEGORY_SLACK = 24;
+  let rhKey = null;
+  let rhPinned = false;
+  let rhSearchActive = false;
+
+  function runheadLabel(sectionEl, categoryEl) {
+    const id = sectionEl && sectionEl.dataset.section;
+    const sec = id ? DATA.sections.find((s) => s.id === id) : null;
+    if (!sec) return null;
+    const catId = categoryEl && categoryEl.dataset.cat;
+    const cat = catId && sec.categories ? sec.categories.find((c) => c.id === catId) : null;
+    return {
+      id: sec.id,
+      en: UW_TEXT.titleCase(sec.label.en),
+      zh: sec.label.zh,
+      cat: cat ? UW_TEXT.titleCase(cat.label.en) : "",
+    };
+  }
+
+  function setRunhead(sectionEl, categoryEl, pin = true) {
+    if (!rh) return;
+    if (pin) rhPinned = true;
+    const label = runheadLabel(sectionEl, categoryEl);
+    if (!label) return;
+    const key = `${label.id}|${label.cat}`;
+    if (key === rhKey) return;
+    rhKey = key;
+    rhTopic.innerHTML =
+      `<svg class="ic" aria-hidden="true" focusable="false"><use href="#i-${escAttr(label.id)}"/></svg>` +
+      `<span class="rh__en">${esc(label.en)}</span>` +
+      `<span class="rh__zh" lang="zh-Hant">${esc(label.zh)}</span>`;
+    rhCat.textContent = label.cat;
+  }
+
+  // The last category in the section whose top is above the running
+  // head's bottom edge (plus the jump gap).
+  function categoryAtRunhead(sectionEl) {
+    const line = rh.getBoundingClientRect().bottom + RH_CATEGORY_SLACK;
+    let current = null;
+    for (const c of sectionEl.querySelectorAll(".category")) {
+      if (c.hidden) continue;
+      if (c.getBoundingClientRect().top > line) break;
+      current = c;
+    }
+    return current;
+  }
+
+  function syncRunheadContent(sectionEl) {
+    if (!rh || rhPinned || !sectionEl) return;
+    setRunhead(sectionEl, categoryAtRunhead(sectionEl), false);
+  }
+
+  // Shown once the first topic has scrolled under it (the front matter
+  // is no longer beneath it) and while no search is active.
+  function syncRunheadVisibility() {
+    if (!rh) return;
+    const first = root.querySelector(".section");
+    const on = !rhSearchActive && !!first &&
+      first.getBoundingClientRect().top < rh.getBoundingClientRect().bottom;
+    rh.classList.toggle("rh--on", on);
+  }
+
+  function releaseRunhead() { rhPinned = false; }
+
+  function setupRunhead() {
+    if (!rh) return;
+    window.addEventListener("wheel", releaseRunhead, { passive: true });
+    window.addEventListener("touchstart", releaseRunhead, { passive: true });
+    window.addEventListener("pointerdown", releaseRunhead, { passive: true });
+    window.addEventListener("resize", releaseRunhead);
+    window.addEventListener("keydown", (e) => {
+      const k = e.key;
+      if (k === "PageDown" || k === "PageUp" || k === "ArrowDown" || k === "ArrowUp" ||
+          k === "Home" || k === "End" || k === " " || k === "Tab") {
+        releaseRunhead();
+      }
+    });
+    // Visibility is not gated by the programmatic scroll lock: it only
+    // toggles visibility and opacity, which cannot move a landing.
+    let raf = null;
+    window.addEventListener("scroll", () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => { raf = null; syncRunheadVisibility(); });
+    }, { passive: true });
+    window.addEventListener("resize", syncRunheadVisibility);
+    syncRunheadVisibility();
+  }
+
+  // Search hides the running head; clearing it re-reads the position.
+  function runheadSearchChanged(active) {
+    if (!rh) return;
+    rhSearchActive = active;
+    releaseRunhead();
+    syncRunheadVisibility();
+    if (!active) window.dispatchEvent(new Event("scroll"));
+  }
+
   // --- Utilities ---------------------------------------------------
 
   function esc(s) {
@@ -386,6 +503,7 @@
       const el = document.getElementById(id);
       if (el) {
         markProgrammaticScroll();
+        setRunhead(el.closest(".section"), el.closest(".category"));
         el.scrollIntoView({ behavior: smoothBehavior(), block: "start" });
         history.replaceState(null, "", `#${id}`);
       }
@@ -596,6 +714,8 @@
         summary.innerHTML = `<strong>${totalShown}</strong> match${totalShown === 1 ? "" : "es"} across <strong>${topicsWithMatches}</strong> ${plural}`;
       }
     }
+
+    runheadSearchChanged(q.length > 0);
   }
 
   function setupSearch() {
@@ -768,6 +888,7 @@
       const onLanding = current === null;
       if (!current) current = sections[0].id;
       activate(current, onLanding);
+      syncRunheadContent(sections.find((s) => s.id === current));
     }
 
     let raf = null;
@@ -791,6 +912,7 @@
           if (document.activeElement === searchInput) searchInput.blur();
           markProgrammaticScroll();
           activate(id, false); // immediate UI feedback for clicked tab
+          setRunhead(el.closest(".section"), el.closest(".category"));
           el.scrollIntoView({ behavior: smoothBehavior(), block: "start" });
           history.replaceState(null, "", `#${id}`);
         }
@@ -810,6 +932,7 @@
       const el = document.getElementById(`cat-${catId}-transitions`);
       if (!el) return;
       markProgrammaticScroll();
+      setRunhead(el.closest(".section"), el.closest(".category"));
       el.scrollIntoView({ behavior: smoothBehavior(), block: "start" });
       history.replaceState(null, "", `#cat-${catId}-transitions`);
     }
@@ -852,9 +975,15 @@
         // ancestor-scroll quirks.
         if (matches && chipsEl.classList.contains("is-visible")) activeChip = c;
       });
+      // The sidebar sub-nav marks a category only while Transitions is
+      // the current section (the scroll-spy's tab state); elsewhere, and
+      // on the front matter, nothing in it is current.
       if (subnav) {
+        const inTransitions = document
+          .querySelector('.tab[data-target="transitions"]')
+          ?.getAttribute("aria-current") === "true";
         subnav.querySelectorAll(".tab-subnav__link").forEach((a) => {
-          a.setAttribute("aria-current", a.dataset.cat === current ? "true" : "false");
+          a.setAttribute("aria-current", inTransitions && a.dataset.cat === current ? "true" : "false");
         });
       }
       if (activeChip && current !== lastActive) {
@@ -892,6 +1021,7 @@
       if (!target) return;
       e.preventDefault();
       markProgrammaticScroll();
+      setRunhead(target.closest(".section"), target.closest(".category"));
       target.scrollIntoView({ behavior: smoothBehavior(), block: "start" });
       flashTarget(target);
       history.replaceState(null, "", `#${id}`);
@@ -907,6 +1037,7 @@
       if (!target) return;
       e.preventDefault();
       markProgrammaticScroll();
+      setRunhead(target.closest(".section"), target.closest(".category"));
       target.scrollIntoView({ behavior: smoothBehavior(), block: "start" });
       flashTarget(target);
       history.replaceState(null, "", `#${id}`);
@@ -987,6 +1118,7 @@
       if (!target) return;
       e.preventDefault();
       markProgrammaticScroll();
+      setRunhead(target.closest(".section"), target.closest(".category"));
       target.scrollIntoView({ behavior: smoothBehavior(), block: "start" });
       flashTarget(target);
       history.replaceState(null, "", `#${id}`);
@@ -1005,7 +1137,49 @@
     let r = getRecent();
     r = [id, ...r.filter((x) => x !== id)].slice(0, RECENT_MAX);
     lsSet(LS_RECENT, r);
-    renderRecent();
+    // The list sits above the entries, so rendering it during a jump
+    // (the first visit unhides the whole section) moves everything
+    // below it under the in-flight smooth scroll, which then lands
+    // short by that height. Render once the scroll has settled instead;
+    // scroll anchoring keeps the landed view still.
+    whenScrollSettles(renderRecent);
+  }
+
+  // Runs fn now, or, while a programmatic smooth scroll is in flight,
+  // once the scroll lock has expired AND the page has stopped moving
+  // (a long jump can outlast the lock). `scrollend` is not used: a late
+  // scrollend from an earlier scroll can arrive just after the jump
+  // starts and would fire this mid-flight. Repeated calls share one run.
+  const SETTLE_STILL_FRAMES = 3;
+  const SETTLE_MAX_MS = 6000;
+  let settlePending = null;
+  function whenScrollSettles(fn) {
+    if (!isProgrammaticScrolling()) { fn(); return; }
+    const first = !settlePending;
+    settlePending = fn;
+    if (!first) return;
+    const giveUpAt = Date.now() + SETTLE_MAX_MS;
+    const fire = () => {
+      const run = settlePending;
+      settlePending = null;
+      if (run) run();
+    };
+    const waitStill = (lastY, still) => {
+      requestAnimationFrame(() => {
+        if (isProgrammaticScrolling()) { waitForLock(); return; }
+        const y = window.scrollY;
+        const n = y === lastY ? still + 1 : 0;
+        if (n >= SETTLE_STILL_FRAMES || Date.now() > giveUpAt) fire();
+        else waitStill(y, n);
+      });
+    };
+    const waitForLock = () => {
+      setTimeout(() => {
+        if (isProgrammaticScrolling() && Date.now() < giveUpAt) waitForLock();
+        else waitStill(window.scrollY, 0);
+      }, Math.max(16, programmaticUntil - Date.now() + 16));
+    };
+    waitForLock();
   }
   function renderRecent() {
     const sec = document.getElementById("recent-section");
@@ -1045,6 +1219,7 @@
       if (!target) return;
       if (document.activeElement === searchInput) searchInput.blur();
       markProgrammaticScroll();
+      setRunhead(target.closest(".section"), target.closest(".category"));
       target.scrollIntoView({ behavior: smoothBehavior(), block: "start" });
       flashTarget(target);
       history.replaceState(null, "", `#${id}`);
@@ -1133,7 +1308,10 @@
       if (nextIdx < 0 || nextIdx >= sectionIds.length) return;
 
       const el = document.getElementById(sectionIds[nextIdx]);
-      if (el) el.scrollIntoView({ behavior: smoothBehavior(), block: "start" });
+      if (el) {
+        setRunhead(el.closest(".section"), el.closest(".category"));
+        el.scrollIntoView({ behavior: smoothBehavior(), block: "start" });
+      }
     }
 
     document.addEventListener("touchstart", onStart, { passive: true });
@@ -1149,6 +1327,7 @@
     const target = document.getElementById(hash) || document.getElementById(`cat-${hash}`);
     if (target) {
       requestAnimationFrame(() => {
+        setRunhead(target.closest(".section"), target.closest(".category"));
         target.scrollIntoView({ block: "start" });
         if (target.classList.contains("entry")) {
           target.classList.add("is-target");
@@ -1164,6 +1343,7 @@
   document.addEventListener("DOMContentLoaded", () => {
     render();
     setupSearch();
+    setupRunhead();
     setupTabbar();
     setupChips();
     setupSeeAlso();
