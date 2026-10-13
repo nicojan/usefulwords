@@ -171,7 +171,7 @@ svg.ic {
   align-items: center;
   gap: 8px;
   height: calc(var(--topbar-h) + env(safe-area-inset-bottom));
-  padding: 0 12px 0 var(--pad-x) env(safe-area-inset-bottom);
+  padding: 0 12px env(safe-area-inset-bottom) var(--pad-x);
   background: var(--bg);
   border-top: 1px solid var(--rule);
 }
@@ -187,6 +187,11 @@ svg.ic {
   color: var(--ink);
 }
 .topbar__brand-name { color: inherit; }
+
+@media (max-width: 379px) {
+  .topbar { gap: 10px; }
+  .topbar__brand { font-size: 16px; }
+}
 
 /* Search: the input is the whole field (border, radius, icon inset),
    so its focus ring wraps the icon instead of colliding with it. */
@@ -1236,7 +1241,7 @@ mark.hl {
     justify-content: stretch;
     column-gap: 10px;
     row-gap: 0;
-    min-height: 40px;
+    min-height: 44px;
     padding: 0 0 0 2px;
     color: var(--ink-2);
     scroll-snap-align: none;

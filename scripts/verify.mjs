@@ -1013,6 +1013,19 @@ async function checkScreens(browser, combo, errors) {
       await shot(page, 'wod', { clip: await wod.boundingBox() });
     });
   } catch (e) { problems.push(`wod: ${e.message.split('\n')[0]}`); }
+  if (combo.phone) {
+    try {
+      await withPage(browser, combo, { errors }, async (page) => {
+        const r = await page.evaluate(() => ({
+          brandLeft: document.querySelector('.topbar__brand').getBoundingClientRect().left,
+          dieRight: document.querySelector('.btn-random').getBoundingClientRect().right,
+          w: innerWidth,
+        }));
+        if (r.brandLeft < 16) throw new Error(`bottom bar: wordmark left ${r.brandLeft.toFixed(1)} < 16 (topbar padding dropped?)`);
+        if (r.dieRight > r.w - 8) throw new Error(`bottom bar: random button right ${r.dieRight.toFixed(1)} > ${r.w - 8}`);
+      });
+    } catch (e) { problems.push(e.message.split('\n')[0]); }
+  }
   if (problems.length) record('FAIL', 'screens', comboLabel(combo), problems.join('; '));
   else record('PASS', 'screens', comboLabel(combo), `${saved.length} screenshots written to .superpowers/shots/ (not a visual check: nothing asserts on their content)`);
 }
