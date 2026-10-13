@@ -310,7 +310,7 @@
             <span class="category__name-zh" lang="zh-Hant">${esc(cat.label.zh)}</span>
             <span class="category__count">${cat.entries.length}</span>
           </header>
-          ${entries || `<p style="color:var(--label-2);font-style:italic;padding:14px 16px;">No entries yet.</p>`}
+          ${entries || `<p style="color:var(--muted);font-style:italic;padding:14px 16px;">No entries yet.</p>`}
         </section>
       `;
   }
