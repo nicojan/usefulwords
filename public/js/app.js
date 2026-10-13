@@ -444,7 +444,7 @@
     subnav.innerHTML = section.categories
       .map(
         (c) =>
-          `<a class="tab-subnav__link" href="#cat-${escAttr(c.id)}-transitions" data-cat="${escAttr(c.id)}" aria-current="false">${esc(c.label.en)}</a>`
+          `<a class="tab-subnav__link" href="#cat-${escAttr(c.id)}-transitions" data-cat="${escAttr(c.id)}" aria-current="false">${esc(UW_TEXT.titleCase(c.label.en))}</a>`
       )
       .join("");
     transitionsTab.after(subnav);
@@ -625,9 +625,9 @@
     return parseInt(v, 10) || 60;
   }
 
-  // Dropup chips bubble — restored for the transitions section
-  // because its 7 sub-categories benefit from a thumb-zone
-  // jump-nav. Other topics (3 POS sub-cats each) are self-evident
+  // Docked chips row — shown only in the transitions section,
+  // flush on top of the tab bar, because its 7 sub-categories
+  // benefit from a thumb-zone jump-nav. Other topics (3 POS sub-cats each) are self-evident
   // from the rendered cards and don't get a dropup.
   const chipsEl = document.getElementById("chips");
   let chipsRenderedFor = null;
@@ -678,20 +678,10 @@
     const items = section.categories
       .map(
         (c) =>
-          `<a class="chip" href="#cat-${escAttr(c.id)}-transitions" data-cat="${escAttr(c.id)}">${esc(c.label.en)}</a>`
+          `<a class="chip" href="#cat-${escAttr(c.id)}-transitions" data-cat="${escAttr(c.id)}">${esc(UW_TEXT.titleCase(c.label.en))}</a>`
       )
       .join("");
     chipsEl.innerHTML = `<div class="chips__list">${items}</div>`;
-  }
-
-  function positionChipsAtTransitionsTab() {
-    if (!chipsEl) return;
-    const tab = document.querySelector('.tab[data-target="transitions"]');
-    if (!tab) return;
-    const tabRect = tab.getBoundingClientRect();
-    const chipsRect = chipsEl.getBoundingClientRect();
-    const chevronX = tabRect.left + tabRect.width / 2 - chipsRect.left;
-    chipsEl.style.setProperty("--chevron-x", `${chevronX}px`);
   }
 
   function setupTabbar() {
@@ -725,7 +715,6 @@
         if (!onLanding && id === "transitions") {
           if (chipsEl.hasAttribute("hidden")) chipsEl.removeAttribute("hidden");
           renderChipsForTransitions();
-          positionChipsAtTransitionsTab();
           chipsEl.inert = false;
           requestAnimationFrame(() => {
             requestAnimationFrame(() => {
@@ -857,10 +846,7 @@
       if (raf) return;
       raf = requestAnimationFrame(() => { raf = null; sync(); });
     }, { passive: true });
-    window.addEventListener("resize", () => {
-      sync();
-      positionChipsAtTransitionsTab();
-    });
+    window.addEventListener("resize", sync);
     requestAnimationFrame(sync);
   }
 
