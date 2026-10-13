@@ -22,10 +22,12 @@ import { createServer } from './serve.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SHOTS = path.join(ROOT, '.superpowers', 'shots');
-// Set in main(): the URL under test, and whether styles.css defines a .rh rule (which makes .rh mandatory).
+// Set in main(): the URL under test, and whether the served index.html contains an element with class `rh`
+// (which makes the running head mandatory). Gated on markup, not CSS: a `.rh` selector in a print rule or a
+// future stylesheet does not mean the element exists.
 let BASE_URL = '';
 let RH_REQUIRED = false;
-const RH_RULE_RE = /(^|[\s,}])\.rh\s*[{,]/m;
+const RH_MARKUP_RE = /class="[^"]*\brh\b[^"]*"/;
 
 // ---------------------------------------------------------------------------
 // Configuration
@@ -298,7 +300,7 @@ async function measureLanding(page, id) {
 function landingProblems(m, id) {
   if (m.missing) return [`target #${id} not found`];
   const problems = [];
-  if (RH_REQUIRED && !m.hasRh) problems.push('styles.css defines a .rh rule but the page has no .rh element');
+  if (RH_REQUIRED && !m.hasRh) problems.push('the served index.html contains a .rh element but the rendered page has none');
   if (m.hasRh && !['fixed', 'sticky'].includes(m.rhPosition)) problems.push(`.rh position is "${m.rhPosition}", want fixed or sticky`);
   if (m.hasRh && !m.rhShown) problems.push('.rh is hidden after the jump');
   if (m.top < m.rhBottom - 1) problems.push(`#${id} top ${m.top.toFixed(1)} is under the running head (bottom ${m.rhBottom.toFixed(1)})`);
@@ -705,7 +707,7 @@ async function checkContrast(browser, combo) {
   const failing = items.filter((i) => i.req > 0 && i.ratio < i.req);
 
   const missingRules = [];
-  if (RH_REQUIRED && !hasRh) missingRules.push('styles.css defines a .rh rule but the page has no .rh element');
+  if (RH_REQUIRED && !hasRh) missingRules.push('the served index.html contains a .rh element but the rendered page has none');
   if (hasRh) {
     const all2 = [...headings.values()];
     for (const h of all2.filter((x) => x.isRh && x.count === 0)) missingRules.push(`no rule measured on ${h.sel}`);
@@ -1096,11 +1098,11 @@ async function main() {
   const known = new Set(['grep', ...BROWSER_CHECKS.map(([n]) => norm(n))]);
   for (const o of only || []) if (!known.has(o)) throw new Error(`unknown check "${o}". Known: ${[...known].join(', ')}`);
 
-  const css = await readFile(path.join(ROOT, 'public', 'css', 'styles.css'), 'utf8');
-  RH_REQUIRED = RH_RULE_RE.test(css.replace(/\/\*[\s\S]*?\*\//g, ''));
   const { server, url } = await startServer();
   BASE_URL = url;
-  console.log(`verify: ${BASE_URL}${only ? `  only=${[...only].join(',')}` : ''}  (.rh ${RH_REQUIRED ? 'REQUIRED: styles.css defines it' : 'not required yet: no .rh rule in styles.css'})`);
+  const served = await fetch(`${BASE_URL}/`).then((r) => r.text());
+  RH_REQUIRED = RH_MARKUP_RE.test(served);
+  console.log(`verify: ${BASE_URL}${only ? `  only=${[...only].join(',')}` : ''}  (.rh ${RH_REQUIRED ? 'REQUIRED: index.html has an element with class rh' : 'not required yet: no element with class rh in index.html'})`);
   let browser;
   try {
     if (wanted('grep')) await checkGrep();
