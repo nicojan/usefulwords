@@ -322,7 +322,7 @@
                ({ entry }) =>
                  `<a class="tagged-chip" href="#${escAttr(entry.id)}" data-recent="${escAttr(entry.id)}">${esc(entry.word)}</a>`
              )
-             .join('<span class="tagged-here__sep"> · </span>')}</p>
+             .join('<span class="tagged-here__sep" aria-hidden="true"> · </span>')}</p>
          </aside>`
       : "";
 
@@ -344,8 +344,8 @@
       <section class="section" id="${escAttr(section.id)}" data-section="${escAttr(section.id)}" aria-labelledby="sec-h-${escAttr(section.id)}">
         <header class="section__header">
           <h2 class="section__title" id="sec-h-${escAttr(section.id)}">
-            <svg class="ic" aria-hidden="true" focusable="false"><use href="#i-${escAttr(section.id)}"/></svg>
-            <span class="section__title-en">${esc(UW_TEXT.titleCase(section.label.en))}</span>
+            <span class="section__title-main"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-${escAttr(section.id)}"/></svg>
+            <span class="section__title-en">${esc(UW_TEXT.titleCase(section.label.en))}</span></span>
             <span class="section__title-zh" lang="zh-Hant">${esc(section.label.zh)}</span>
           </h2>
           <span class="section__count" aria-label="${total} words">${total}&nbsp;words</span>
@@ -586,15 +586,14 @@
     // Summary line — total matches and how many topics they span.
     const summary = document.getElementById("search-summary");
     if (summary) {
-      if (!q) {
+      if (!q || !totalShown) {
+        // No query, or no matches: the empty state speaks alone.
         summary.hidden = true;
         summary.innerHTML = "";
       } else {
         summary.hidden = false;
         const plural = topicsWithMatches === 1 ? "topic" : "topics";
-        summary.innerHTML = totalShown
-          ? `<strong>${totalShown}</strong> match${totalShown === 1 ? "" : "es"} across <strong>${topicsWithMatches}</strong> ${plural}`
-          : `No matches for <strong>${esc(query.trim())}</strong>`;
+        summary.innerHTML = `<strong>${totalShown}</strong> match${totalShown === 1 ? "" : "es"} across <strong>${topicsWithMatches}</strong> ${plural}`;
       }
     }
   }

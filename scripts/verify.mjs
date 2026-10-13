@@ -194,6 +194,11 @@ function record(status, name, ctx, detail) {
   if (!ctx) { console.log(lines.join('\n')); return; }
   buffers.set(ctx, [...(buffers.get(ctx) || []), ...lines]);
 }
+// Narrow phones: only the `screens` check runs on these (a light scheme is enough), to keep the run short.
+const SCREEN_ONLY_COMBOS = [
+  { w: 375, h: 812, scheme: 'light', phone: true },
+  { w: 360, h: 740, scheme: 'light', phone: true },
+];
 const comboLabel = (c) => `${c.w} ${c.scheme}`;
 
 // ---------------------------------------------------------------------------
@@ -923,6 +928,8 @@ async function checkDeepLink(browser, combo, errors) {
 async function checkSearch(browser, combo, errors) {
   const phrase = 'loss of biodiversity';
   await withPage(browser, combo, { errors }, async (page) => {
+    const colHTML = () => page.evaluate(() => document.querySelector('#biodiversity .entry__collocations')?.innerHTML ?? null);
+    const before = await colHTML();
     await page.fill('#search-input', phrase);
     await page.waitForTimeout(500);
     const r = await page.evaluate((needle) => {
@@ -947,6 +954,17 @@ async function checkSearch(browser, combo, errors) {
     else if (!r.visible) problems.push(`#biodiversity is hidden (${r.shown} entries shown for the query)`);
     if (r.exists && r.visible && r.marks === 0) problems.push('#biodiversity is visible but has no .hl mark');
     else if (r.exists && r.visible && !r.covered) problems.push(`#biodiversity has ${r.marks} .hl mark(s) but none covers the whole phrase "${phrase}"`);
+    // Restore pin: clearing a search must give back the exact original collocation markup (the <b> emphasis).
+    for (const q of ['ss', 'y · r']) {
+      await page.fill('#search-input', q);
+      await page.waitForTimeout(300);
+      await page.fill('#search-input', '');
+      await page.waitForTimeout(300);
+      const after = await colHTML();
+      const marks = await page.evaluate(() => document.querySelectorAll('mark.hl').length);
+      if (after !== before) problems.push(`after searching "${q}" and clearing, #biodiversity collocations markup differs from the original`);
+      if (marks) problems.push(`after searching "${q}" and clearing, ${marks} mark.hl remain`);
+    }
     if (r.shown >= r.total) problems.push(`the query did not filter anything (${r.shown} of ${r.total} entries shown)`);
     if (problems.length) record('FAIL', 'search collocation', comboLabel(combo), problems.join('; '));
     else record('PASS', 'search collocation', comboLabel(combo), `#biodiversity visible, .hl covers "${phrase}", ${r.shown} of ${r.total} entries shown`);
@@ -995,6 +1013,8 @@ async function checkScreens(browser, combo, errors) {
     ['home', {}, async () => {}],
     ['environment', { path: '/#environment', settleMs: 1500 }, async () => {}],
     ['transitions', { path: '/#transitions', settleMs: 1500 }, async () => {}],
+    ['society', { path: '/#society-culture', settleMs: 1500 }, async () => {}],
+    ['technology', { path: '/#technology-media', settleMs: 1500 }, async () => {}],
     ['search', {}, async (p) => { await p.fill('#search-input', 'biodiversity'); await p.waitForTimeout(500); }],
     ['empty', {}, async (p) => { await p.fill('#search-input', 'zzzzqq'); await p.waitForTimeout(500); }],
   ];
@@ -1136,7 +1156,12 @@ async function main() {
           }
         }
       }));
-      for (const combo of COMBOS) console.log((buffers.get(comboLabel(combo)) || []).join('\n'));
+      const screensCheck = browserChecks.filter(([n]) => norm(n) === 'screens');
+      await Promise.all(SCREEN_ONLY_COMBOS.filter(() => screensCheck.length).map(async (combo) => {
+        try { await screensCheck[0][1](browser, combo, []); }
+        catch (e) { record('FAIL', 'screens', comboLabel(combo), `threw: ${e.message.split('\n')[0]}`); }
+      }));
+      for (const combo of [...COMBOS, ...SCREEN_ONLY_COMBOS]) console.log((buffers.get(comboLabel(combo)) || []).join('\n'));
     }
   } finally {
     await browser?.close();

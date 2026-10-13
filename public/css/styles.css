@@ -498,6 +498,7 @@ svg.ic {
 
 .section__header {
   display: flex;
+  flex-wrap: wrap;
   align-items: baseline;
   justify-content: space-between;
   gap: 4px 16px;
@@ -516,9 +517,16 @@ svg.ic {
   color: var(--ink);
   text-wrap: balance;
 }
+/* Icon and English stay one unit (the icon never sits alone on a line);
+   the English may wrap beside it, and only the Chinese drops below. */
+.section__title-main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
 .section__title .ic {
   font-size: 30px;
-  align-self: center;
   color: var(--ink);
 }
 .section__title-zh {
@@ -534,7 +542,11 @@ svg.ic {
   color: var(--muted);
   white-space: nowrap;
   flex-shrink: 0;
+  margin-left: auto;
   font-variant-numeric: tabular-nums;
+}
+@media (max-width: 379px) {
+  .section__title { font-size: 30px; }
 }
 @media (min-width: 760px) {
   .section__title { font-size: 40px; }
