@@ -3,6 +3,7 @@
 // Usage: node scripts/serve.mjs   (PORT / HOST env override the defaults)
 import http from 'node:http';
 import { readFile, stat } from 'node:fs/promises';
+import { realpathSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -53,7 +54,9 @@ export function createServer() {
   });
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+// Run as a script only (not when verify.mjs imports createServer). Compare real paths so a symlinked or
+// space-containing path still counts as "run directly".
+if (process.argv[1] && realpathSync(process.argv[1]) === fileURLToPath(import.meta.url)) {
   createServer().listen(PORT, HOST, () => {
     console.log(`serving ${ROOT} on http://${HOST}:${PORT}`);
   });
