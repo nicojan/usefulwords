@@ -259,42 +259,87 @@ const CLIPS = {
 };
 
 // --- Stills ---
+// DevTools' own screenshot at the real device scale. page.screenshot under the forced scale factor and the metrics
+// override came out shifted up by ~20 CSS px on a deep-linked page (running head clipped, bottom bar too high).
+async function shoot(cdp, file, crop) {
+  const { data } = await cdp.send('Page.captureScreenshot', { format: 'png' });
+  if (!crop) { await writeFile(file, Buffer.from(data, 'base64')); return; }
+  const tmp = `${file}.full.png`;
+  await writeFile(tmp, Buffer.from(data, 'base64'));
+  const r = (v) => Math.round(v * crop.dpr);
+  execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', tmp, '-vf', `crop=${r(crop.width)}:${r(crop.height)}:${r(crop.x)}:${r(crop.y)}`, file]);
+  await rm(tmp, { force: true });
+}
+
 const STILLS = {
   'still-front-matter': async (base) => {
-    const { browser, page } = await openPage(base, PHONE, { scheme: 'light' });
-    await page.screenshot({ path: path.join(OUT, 'still-front-matter-390-light.png'), scale: 'device' });
+    const { browser, page, cdp } = await openPage(base, PHONE, { scheme: 'light' });
+    await shoot(cdp, path.join(OUT, 'still-front-matter-390-light.png'));
     await browser.close();
   },
   'still-entry': async (base) => {
-    const { browser, page } = await openPage(base, PHONE, { scheme: 'dark', hash: '#mitigate' });
-    const el = page.locator('#mitigate');
-    const box = await el.boundingBox();
-    await page.screenshot({ path: path.join(OUT, 'still-entry-mitigate-390-dark.png'), scale: 'device',
-      clip: { x: 0, y: Math.max(0, box.y - 20), width: 390, height: box.height + 40 } });
+    const { browser, page, cdp } = await openPage(base, PHONE, { scheme: 'dark', hash: '#mitigate' });
+    // Exactly the entry's box: its own padding is the margin, and no neighbouring rule or headword shows.
+    const box = await page.locator('#mitigate').boundingBox();
+    await shoot(cdp, path.join(OUT, 'still-entry-mitigate-390-dark.png'),
+      { x: 0, y: box.y, width: PHONE.width, height: box.height - 1, dpr: PHONE.dpr }); // -1: the entry's bottom rule
     await browser.close();
   },
   'still-desktop': async (base) => {
-    const { browser, page } = await openPage(base, DESKTOP, { scheme: 'light', hash: '#environment' });
-    await page.screenshot({ path: path.join(OUT, 'still-desktop-environment-1200-light.png'), scale: 'device' });
+    const { browser, page, cdp } = await openPage(base, DESKTOP, { scheme: 'light', hash: '#environment' });
+    await shoot(cdp, path.join(OUT, 'still-desktop-environment-1200-light.png'));
     await browser.close();
   },
   'still-transitions': async (base) => {
-    const { browser, page } = await openPage(base, PHONE, { scheme: 'light', hash: '#concepts' });
+    const { browser, page, cdp } = await openPage(base, PHONE, { scheme: 'light', hash: '#concepts' });
     await tapEl(page, '.tab[data-target="transitions"]'); await settled(page, 600);
     await tapEl(page, '#chips .chip[data-cat="opposition-limitation-contradiction"]'); await settled(page, FLASH_MS);
-    await page.screenshot({ path: path.join(OUT, 'still-transitions-390-light.png'), scale: 'device' });
+    await shoot(cdp, path.join(OUT, 'still-transitions-390-light.png'));
     await browser.close();
   },
   'still-environment': async (base) => {
-    const { browser, page } = await openPage(base, PHONE, { scheme: 'light', hash: '#environment' });
-    await page.screenshot({ path: path.join(OUT, 'still-environment-october-390-light.png'), scale: 'device' });
+    const { browser, page, cdp } = await openPage(base, PHONE, { scheme: 'light', hash: '#environment' });
+    await shoot(cdp, path.join(OUT, 'still-environment-october-390-light.png'));
+    await browser.close();
+  },
+  // One process image: the three design decisions from the brainstorm mockups (.superpowers/, gitignored, local
+  // only), chosen option at full strength, rejected ones at 30%, with none of the mockups' prose.
+  process: async () => {
+    const dir = path.resolve(ROOT, '..', '.superpowers', 'brainstorm', '73164-1791873895', 'content');
+    const tmp = path.join(OUT, '.frames', 'process');
+    await mkdir(tmp, { recursive: true });
+    const browser = await chromium.launch({ channel: 'chrome', headless: true });
+    for (const [name, sel] of [['typeface', '.e'], ['entry-layout-v1', '.phone'], ['topic-icons-v2', '.ui.set, .phone.ui']]) {
+      const page = await browser.newPage({ viewport: { width: 1280, height: 900 }, deviceScaleFactor: 3 });
+      await page.goto(`file://${dir}/${name}.html`);
+      await page.evaluate(() => document.fonts.ready);
+      await wait(800);
+      let i = 0;
+      for (const el of await page.$$(sel)) await el.screenshot({ path: path.join(tmp, `${name}-${i++}.png`) });
+      await page.close();
+    }
+    const html = `<!doctype html><html><head><style>
+      html,body{margin:0;background:#fff} img{display:block} .no{opacity:.3}
+      .sheet{display:flex;gap:64px;align-items:flex-start;padding:56px;width:max-content}
+      .col{display:flex;flex-direction:column;gap:24px} .row{display:flex;gap:24px}
+      .type img{height:245px} .entry img{height:782px} .set{width:410px} .ph{width:362px}
+    </style></head><body><div class="sheet" id="sheet">
+      <div class="col type"><img class="no" src="typeface-0.png"><img src="typeface-1.png"><img class="no" src="typeface-2.png"></div>
+      <div class="row entry"><img src="entry-layout-v1-0.png"><img class="no" src="entry-layout-v1-1.png"></div>
+      <div class="col"><img class="set" src="topic-icons-v2-0.png"><img class="ph" src="topic-icons-v2-1.png"><img class="set no" src="topic-icons-v2-2.png"></div>
+    </div></body></html>`;
+    await writeFile(path.join(tmp, 'sheet.html'), html);
+    const page = await browser.newPage({ viewport: { width: 2200, height: 1000 }, deviceScaleFactor: 2 });
+    await page.goto(`file://${tmp}/sheet.html`);
+    await wait(500);
+    await page.locator('#sheet').screenshot({ path: path.join(OUT, 'process-decisions.png') });
     await browser.close();
   },
   'june-still': async () => {
     if (!process.env.JUNE_ROOT) throw new Error('set JUNE_ROOT to the June build (see the header)');
     const june = await serve(path.resolve(process.env.JUNE_ROOT));
-    const { browser, page } = await openPage(june.base, PHONE, { scheme: 'light', hash: '#environment', clock: null });
-    await page.screenshot({ path: path.join(OUT, 'still-environment-june-390-light.png'), scale: 'device' });
+    const { browser, page, cdp } = await openPage(june.base, PHONE, { scheme: 'light', hash: '#environment', clock: null });
+    await shoot(cdp, path.join(OUT, 'still-environment-june-390-light.png'));
     await browser.close(); june.srv.close();
   },
 };
